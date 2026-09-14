@@ -637,6 +637,33 @@ function show(page,btn){
  else if(page==="library") renderLibrary();
  else renderSettings();
 }
+function handleCredentialResponse(response){
+  try{
+    const data = JSON.parse(atob(response.credential.split('.')[1]));
+
+    localStorage.setItem("ishynUser", JSON.stringify({
+      name: data.name,
+      email: data.email,
+      picture: data.picture
+    }));
+
+    document.getElementById("googleLogin").style.display = "none";
+
+    alert("Login successful! Welcome " + data.name);
+  }catch(e){
+    alert("Google login error. Please try again.");
+  }
+}
+
+function checkLogin(){
+  const user = localStorage.getItem("ishynUser");
+
+  if(user){
+    document.getElementById("googleLogin").style.display = "none";
+  }
+}
+
+checkLogin();
 
 function renderHome(){
 
