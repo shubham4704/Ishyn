@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<meta name="theme-color" content="#0b0c08">
+<title>Ishyn Music</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#0b0c08;color:#f5f3e8;font-family:Arial,sans-serif}
+.app{max-width:520px;margin:auto;min-height:100vh;padding-bottom:92px}
+header{padding:22px 18px 10px;display:flex;justify-content:space-between;align-items:center}
+.logo{font-size:28px;font-weight:800;letter-spacing:-1px}.icon{background:#22231a;border:0;color:#eee;border-radius:50%;width:42px;height:42px;font-size:20px}
+.page{padding:10px 18px}.title{font-size:25px;font-weight:800;margin:12px 0}.sub{color:#aaa;font-size:13px}
+.search{width:100%;padding:15px 17px;border-radius:18px;border:1px solid #33362a;background:#171810;color:#fff;font-size:16px;outline:none}
+.hero{margin:16px 0;padding:20px;border-radius:25px;background:#25271b}.hero h2{margin:0 0 8px;font-size:24px}.hero p{color:#bbb;margin:0 0 15px}
+.btn{border:0;border-radius:16px;padding:12px 17px;background:#dfe5a0;color:#17180f;font-weight:700}
+.row{display:flex;gap:12px;overflow:auto;padding-bottom:8px}.card{min-width:145px;background:#171810;border-radius:18px;padding:12px}.cover{width:100%;aspect-ratio:1;border-radius:14px;background:linear-gradient(135deg,#41452c,#12130f);display:grid;place-items:center;font-size:36px}.card b{display:block;margin-top:9px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.card small{color:#aaa}
+.list{margin-top:10px}.song{display:flex;align-items:center;gap:12px;padding:11px 0;border-bottom:1px solid #202117}.thumb{width:52px;height:52px;border-radius:12px;background:#292b1d;display:grid;place-items:center;font-size:22px}.songinfo{flex:1;min-width:0}.songinfo b{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.songinfo small{color:#999}.play{border:0;background:#2b2d20;color:#fff;border-radius:50%;width:40px;height:40px}
+nav{position:fixed;bottom:0;left:0;right:0;max-width:520px;margin:auto;background:#11120eec;backdrop-filter:blur(14px);display:flex;justify-content:space-around;padding:10px 4px 14px;border-top:1px solid #27291e;z-index:5}nav button{background:none;border:0;color:#999;font-size:11px}nav button.active{color:#e5eaa8}nav span{display:block;font-size:20px;margin-bottom:3px}
+#player{position:fixed;bottom:66px;left:50%;transform:translateX(-50%);max-width:500px;width:calc(100% - 20px);background:#202117;border:1px solid #393b2d;border-radius:18px;padding:10px 12px;display:none;z-index:4}.pname{font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.controls{display:flex;justify-content:center;gap:18px;margin-top:7px}.controls button{border:0;border-radius:50%;width:38px;height:38px;background:#34372a;color:#fff}
+input[type=file]{display:none}.empty{padding:35px 10px;text-align:center;color:#999}
+</style>
+</head>
+<body>
+<div class="app">
+<header><div class="logo">Ishyn</div><button class="icon" onclick="show('settings')">⚙</button></header>
+<main id="main"></main>
+<div id="player"><div class="pname" id="pname">Nothing playing</div><div class="controls"><button onclick="prev()">⏮</button><button onclick="togglePlay()" id="pp">▶</button><button onclick="next()">⏭</button></div></div>
+<nav>
+<button class="active" onclick="show('home',this)"><span>⌂</span>Home</button>
+<button onclick="show('search',this)"><span>⌕</span>Search</button>
+<button onclick="show('library',this)"><span>♫</span>Library</button>
+<button onclick="show('settings',this)"><span>⚙</span>Settings</button>
+</nav>
+<audio id="audio"></audio>
+</div>
+<script>
+const main=document.getElementById('main'),audio=document.getElementById('audio');
+let songs=[],idx=-1;
+const KEY='ishynSongs';
+function load(){try{songs=JSON.parse(localStorage.getItem(KEY)||'[]')}catch(e){songs=[]}}
+function save(){localStorage.setItem(KEY,JSON.stringify(songs))}
+function show(page,btn){
+ if(btn){document.querySelectorAll('nav button').forEach(x=>x.classList.remove('active'));btn.classList.add('active')}
+ if(page==='home')main.innerHTML=`<section class="page"><div class="title">Welcome to Ishyn</div><div class="sub">Your music, your vibe.</div><div class="hero"><h2>My Music</h2><p>Play your saved songs directly from your phone.</p><label class="btn">＋ Add songs <input type="file" accept="audio/*" multiple onchange="addFiles(this.files)"></label></div><div class="title">Recently added</div><div id="homeList" class="list"></div></section>`;
+ else if(page==='search')main.innerHTML=`<section class="page"><div class="title">Search</div><input id="q" class="search" placeholder="Search your saved songs..." oninput="renderSearch()"><div id="results" class="list"></div></section>`;
+ else if(page==='library')main.innerHTML=`<section class="page"><div class="title">Library</div><div class="sub">${songs.length} saved song(s)</div><div style="height:12px"></div><label class="btn">＋ Add songs <input type="file" accept="audio/*" multiple onchange="addFiles(this.files)"></label><div id="lib" class="list"></div></section>`;
+ else main.innerHTML=`<section class="page"><div class="title">About Ishyn</div><div class="hero"><h2>Ishyn Music</h2><p>Created by Shubham Rawat</p><p class="sub">Phone-friendly music web app.</p></div><div class="title">Storage</div><div class="sub">Your song list is saved in this browser. Audio files themselves may be cleared by the browser, so for permanent cloud storage we can add a backend later.</div></section>`;
+ renderAll()
+}
+function renderAll(){let h=document.getElementById('homeList');if(h)renderInto(h,songs.slice(-8).reverse());let l=document.getElementById('lib');if(l)renderInto(l,songs);renderSearch()}
+function renderSearch(){let r=document.getElementById('results');if(!r)return;let q=(document.getElementById('q')?.value||'').toLowerCase();renderInto(r,songs.filter(s=>s.name.toLowerCase().includes(q)))}
+function renderInto(el,list){if(!list.length){el.innerHTML='<div class="empty">No songs yet. Add an MP3/audio file above.</div>';return}el.innerHTML=list.map((s,i)=>`<div class="song"><div class="thumb">♫</div><div class="songinfo"><b>${esc(s.name)}</b><small>Local song</small></div><button class="play" onclick="play(${songs.indexOf(s)})">▶</button></div>`).join('')}
+function esc(x){return x.replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
+function addFiles(files){[...files].forEach(f=>{songs.push({name:f.name,src:null});let reader=new FileReader();reader.onload=()=>{songs[songs.length-1].src=reader.result;save();renderAll()};reader.readAsDataURL(f)});renderAll()}
+function play(i){if(!songs[i]?.src)return alert('This song is still being saved. Please wait a moment and tap play again.');idx=i;audio.src=songs[i].src;audio.play();document.getElementById('player').style.display='block';document.getElementById('pname').textContent=songs[i].name;document.getElementById('pp').textContent='⏸'}
+function togglePlay(){if(idx<0)return;if(audio.paused){audio.play();pp.textContent='⏸'}else{audio.pause();pp.textContent='▶'}}
+function next(){if(!songs.length)return;play((idx+1)%songs.length)}
+function prev(){if(!songs.length)return;play((idx-1+songs.length)%songs.length)}
+audio.onended=next;
+load();show('home');
+</script>
+</body>
+</html>
