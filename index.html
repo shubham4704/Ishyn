@@ -3,218 +3,1346 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
-
+<meta name="theme-color" content="#0b0909">
 <title>Ishyn Music</title>
-<meta name="theme-color" content="#0b0809">
 
 <style>
-*{
-  box-sizing:border-box;
-}
-
-html,body{
-  margin:0;
-  padding:0;
-  min-height:100%;
-  background:#0b0809;
-  color:#fff;
-  font-family:Arial,sans-serif;
-}
+*{box-sizing:border-box}
 
 body{
-  padding-bottom:100px;
+ margin:0;
+ background:#0b0909;
+ color:#fff;
+ font-family:Arial,sans-serif;
+ padding-bottom:100px;
 }
 
-button,input{
-  font:inherit;
-}
-
-button{
-  cursor:pointer;
-}
+button,input{font-family:inherit}
 
 .app{
-  width:100%;
-  max-width:700px;
-  margin:auto;
-  padding:18px 18px 125px;
+ width:100%;
+ max-width:600px;
+ margin:auto;
+ padding:18px 16px 120px;
+}
+
+/* SPLASH */
+
+#splash{
+ position:fixed;
+ inset:0;
+ z-index:9999;
+ background:#0b0909;
+ display:flex;
+ flex-direction:column;
+ align-items:center;
+ justify-content:center;
+}
+
+.splash-logo{
+ font-size:58px;
+ font-weight:900;
+ letter-spacing:-3px;
+}
+
+.splash-logo span{color:#f0aaa5}
+
+.splash-credit{
+ margin-top:15px;
+ color:#aaa;
+ font-size:16px;
 }
 
 /* HEADER */
 
 header{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  margin-bottom:18px;
+ display:flex;
+ align-items:center;
+ justify-content:space-between;
+ margin-bottom:20px;
 }
 
 .logo{
-  font-size:34px;
-  font-weight:800;
-  letter-spacing:-1.5px;
+ font-size:34px;
+ font-weight:900;
+ letter-spacing:-2px;
 }
 
-.logo span{
-  color:#ffb5b5;
-}
-
-.header-actions{
-  display:flex;
-  gap:10px;
-}
+.logo span{color:#f0aaa5}
 
 .icon{
-  width:48px;
-  height:48px;
-  border-radius:50%;
-  border:1px solid #3b2929;
-  background:#171112;
-  color:#fff;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:21px;
-}
-
-.icon:active{
-  transform:scale(.92);
-}
-
-/* SEARCH */
-
-.search{
-  width:100%;
-  padding:16px 18px;
-  border-radius:18px;
-  border:1px solid #38292a;
-  outline:none;
-  background:#171112;
-  color:white;
-  margin-bottom:18px;
-}
-
-.search::placeholder{
-  color:#8e8585;
-}
-
-.search:focus{
-  border-color:#d99393;
+ width:46px;
+ height:46px;
+ border-radius:50%;
+ border:1px solid #352827;
+ background:#171211;
+ color:#fff;
+ font-size:21px;
 }
 
 /* HERO */
 
 .hero{
-  padding:25px 21px;
-  border-radius:24px;
-  margin-bottom:25px;
-
-  background:
-    radial-gradient(circle at 90% 10%,rgba(255,170,170,.18),transparent 40%),
-    linear-gradient(145deg,#24191a,#120e0f);
-
-  border:1px solid #38292a;
-  box-shadow:0 15px 35px rgba(0,0,0,.35);
+ padding:25px;
+ border-radius:25px;
+ background:linear-gradient(145deg,#302321,#151111);
+ border:1px solid #382b29;
+ margin-bottom:25px;
+ box-shadow:0 15px 40px rgba(0,0,0,.3);
 }
 
 .hero h1{
-  margin:0 0 8px;
-  font-size:29px;
+ margin:0 0 8px;
+ font-size:29px;
 }
 
 .hero p{
-  margin:0;
-  color:#aaa0a0;
+ margin:0;
+ color:#aaa;
 }
 
-/* CATEGORY BUTTONS */
+/* SEARCH */
+
+.search{
+ width:100%;
+ padding:16px 18px;
+ border-radius:18px;
+ border:1px solid #332927;
+ background:#171313;
+ color:#fff;
+ outline:none;
+ font-size:16px;
+ margin-bottom:18px;
+}
+
+.search:focus{
+ border-color:#e9aaa5;
+}
+
+/* CATEGORIES */
 
 .categories{
-  display:flex;
-  gap:10px;
-  overflow-x:auto;
-  padding-bottom:5px;
-  margin-bottom:25px;
+ display:flex;
+ gap:10px;
+ overflow-x:auto;
+ margin-bottom:25px;
 }
 
-.categories::-webkit-scrollbar{
-  display:none;
-}
+.categories::-webkit-scrollbar{display:none}
 
 .category{
-  flex-shrink:0;
-  padding:13px 18px;
-  border:0;
-  border-radius:14px;
-  background:#211718;
-  color:#c0b4b4;
+ flex-shrink:0;
+ padding:11px 17px;
+ border:0;
+ border-radius:14px;
+ background:#211918;
+ color:#aaa;
 }
 
 /* SECTION */
 
 .section-head{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  margin:25px 2px 14px;
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ margin:25px 2px 14px;
 }
 
 .section-title{
-  font-size:23px;
-  font-weight:800;
+ font-size:23px;
+ font-weight:800;
 }
 
 .arrow{
-  border:0;
-  background:none;
-  color:#ffb5b5;
-  font-size:30px;
+ background:none;
+ border:0;
+ color:#f0aaa5;
+ font-size:28px;
 }
 
-/* CARDS */
+/* SONG */
 
-.card-row{
-  display:flex;
-  gap:14px;
-  overflow-x:auto;
-  padding-bottom:5px;
+.song{
+ display:flex;
+ align-items:center;
+ gap:13px;
+ padding:11px;
+ margin-bottom:11px;
+ border-radius:18px;
+ background:#171313;
+ border:1px solid #292020;
 }
 
-.card-row::-webkit-scrollbar{
-  display:none;
+.cover{
+ width:58px;
+ height:58px;
+ flex-shrink:0;
+ border-radius:14px;
+ background:linear-gradient(135deg,#a76e69,#34201e);
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ font-size:25px;
 }
 
-.music-card{
-  min-width:175px;
-  max-width:175px;
+.songinfo{
+ flex:1;
+ min-width:0;
 }
 
-.card-cover{
-  width:175px;
-  height:175px;
-  border-radius:15px;
-  background:linear-gradient(135deg,#5d3030,#171112);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:48px;
-  margin-bottom:9px;
-  overflow:hidden;
+.songname{
+ font-size:16px;
+ font-weight:700;
+ white-space:nowrap;
+ overflow:hidden;
+ text-overflow:ellipsis;
 }
 
-.card-cover img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
+.artist{
+ color:#999;
+ font-size:13px;
+ margin-top:5px;
+ white-space:nowrap;
+ overflow:hidden;
+ text-overflow:ellipsis;
 }
 
-.card-title{
-  font-size:15px;
-  font-weight:700;
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
+.play{
+ width:43px;
+ height:43px;
+ flex-shrink:0;
+ border:0;
+ border-radius:50%;
+ background:#f0aaa5;
+ color:#171111;
+ font-size:17px;
+ font-weight:bold;
 }
 
-.card-artist{
-  margin-top:
+.like{
+ width:38px;
+ height:38px;
+ border:0;
+ background:none;
+ color:#aaa;
+ font-size:20px;
+}
+
+.like.active{color:#f0aaa5}
+
+/* UPLOAD */
+
+.upload{
+ display:block;
+ width:100%;
+ padding:16px;
+ border-radius:17px;
+ background:#211918;
+ border:1px solid #382b29;
+ color:#fff;
+ text-align:center;
+ margin-top:15px;
+}
+
+/* EMPTY */
+
+.empty{
+ text-align:center;
+ color:#777;
+ padding:50px 15px;
+ line-height:1.6;
+}
+
+/* PLAYER */
+
+#player{
+ position:fixed;
+ z-index:50;
+ bottom:82px;
+ left:50%;
+ transform:translateX(-50%);
+ width:min(570px,calc(100% - 20px));
+ padding:12px;
+ border-radius:21px;
+ background:#211918;
+ border:1px solid #3b2c2a;
+ box-shadow:0 15px 40px rgba(0,0,0,.55);
+ display:none;
+}
+
+.player-row{
+ display:flex;
+ align-items:center;
+ gap:11px;
+}
+
+.player-cover{
+ width:50px;
+ height:50px;
+ border-radius:13px;
+ background:linear-gradient(135deg,#a76e69,#34201e);
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ font-size:20px;
+}
+
+.player-info{
+ flex:1;
+ min-width:0;
+}
+
+.controls{
+ display:flex;
+ gap:5px;
+ align-items:center;
+}
+
+.controls button{
+ width:38px;
+ height:38px;
+ border:0;
+ border-radius:50%;
+ background:#382b29;
+ color:#fff;
+}
+
+.controls .main{
+ background:#f0aaa5;
+ color:#171111;
+ width:42px;
+ height:42px;
+}
+
+.progress{
+ width:100%;
+ margin-top:10px;
+ accent-color:#f0aaa5;
+}
+
+/* NAV */
+
+nav{
+ position:fixed;
+ z-index:100;
+ bottom:8px;
+ left:50%;
+ transform:translateX(-50%);
+ width:min(570px,calc(100% - 30px));
+ padding:8px;
+ border-radius:30px;
+ background:rgba(28,20,19,.97);
+ border:1px solid #3b2c2a;
+ display:flex;
+ justify-content:space-around;
+ box-shadow:0 10px 35px rgba(0,0,0,.5);
+}
+
+nav button{
+ flex:1;
+ border:0;
+ background:none;
+ color:#888;
+ padding:9px 4px;
+ border-radius:22px;
+ font-size:12px;
+}
+
+nav button.active{
+ background:#46302e;
+ color:#f0aaa5;
+}
+
+nav span{
+ display:block;
+ font-size:21px;
+ margin-bottom:3px;
+}
+
+/* SETTINGS */
+
+.setting{
+ display:flex;
+ align-items:center;
+ justify-content:space-between;
+ padding:17px;
+ margin-bottom:10px;
+ background:#171313;
+ border:1px solid #292020;
+ border-radius:17px;
+}
+
+.setting-title{
+ font-weight:700;
+}
+
+.setting-sub{
+ color:#888;
+ font-size:12px;
+ margin-top:4px;
+}
+
+.back{
+ border:0;
+ background:none;
+ color:#f0aaa5;
+ font-size:32px;
+ margin-bottom:10px;
+}
+</style>
+</head>
+
+<body>
+
+<div id="splash">
+ <div class="splash-logo">Ish<span>yn</span></div>
+ <div class="splash-credit">Developed by Shubham Rawat</div>
+</div>
+
+<div class="app">
+
+<header>
+ <div class="logo">Ish<span>yn</span></div>
+ <button class="icon" onclick="showPage('settings')">⚙</button>
+</header>
+
+<main id="main"></main>
+
+</div>
+
+<!-- PLAYER -->
+
+<div id="player">
+
+ <div class="player-row">
+
+  <div class="player-cover">♫</div>
+
+  <div class="player-info">
+   <div class="songname" id="playerName">Nothing playing</div>
+   <div class="artist" id="playerArtist">Ishyn Music</div>
+  </div>
+
+  <div class="controls">
+   <button onclick="previousSong()">⏮</button>
+   <button class="main" id="playButton" onclick="togglePlay()">▶</button>
+   <button onclick="nextSong()">⏭</button>
+  </div>
+
+ </div>
+
+ <input
+  id="progress"
+  class="progress"
+  type="range"
+  min="0"
+  max="100"
+  value="0"
+ >
+
+</div>
+
+<!-- NAVIGATION -->
+
+<nav>
+
+ <button id="navHome" class="active" onclick="showPage('home',this)">
+  <span>⌂</span>
+  Home
+ </button>
+
+ <button onclick="showPage('search',this)">
+  <span>⌕</span>
+  Search
+ </button>
+
+ <button onclick="showPage('songs',this)">
+  <span>♫</span>
+  Songs
+ </button>
+
+ <button onclick="showPage('liked',this)">
+  <span>♡</span>
+  Liked
+ </button>
+
+ <button onclick="showPage('settings',this)">
+  <span>⚙</span>
+  Settings
+ </button>
+
+</nav>
+
+<input
+ id="fileInput"
+ type="file"
+ accept="audio/*"
+ multiple
+ hidden
+>
+
+<audio id="audio"></audio>
+
+<script>
+
+/* =========================
+   BASIC SETUP
+========================= */
+
+const main = document.getElementById("main");
+const audio = document.getElementById("audio");
+const player = document.getElementById("player");
+const playerName = document.getElementById("playerName");
+const playerArtist = document.getElementById("playerArtist");
+const playButton = document.getElementById("playButton");
+const progress = document.getElementById("progress");
+const fileInput = document.getElementById("fileInput");
+
+let songs = [];
+let currentIndex = -1;
+let objectURL = null;
+
+
+/* =========================
+   STORAGE
+========================= */
+
+function loadSongs(){
+
+ try{
+
+  const saved = localStorage.getItem("ishynSongs");
+
+  if(saved){
+   songs = JSON.parse(saved);
+  }
+
+ }catch(error){
+
+  songs=[];
+
+ }
+
+ renderHome();
+
+}
+
+
+/*
+ LocalStorage cannot store MP3 files directly.
+ So local songs are represented separately.
+ The app UI remains stable.
+*/
+
+function saveSongData(){
+
+ try{
+
+  const data=songs.map(s=>({
+   id:s.id,
+   name:s.name,
+   artist:s.artist,
+   liked:s.liked||false
+  }));
+
+  localStorage.setItem(
+   "ishynSongInfo",
+   JSON.stringify(data)
+  );
+
+ }catch(e){}
+
+}
+
+
+/* =========================
+   PAGE SYSTEM
+========================= */
+
+function showPage(page,button){
+
+ document.querySelectorAll("nav button")
+ .forEach(btn=>btn.classList.remove("active"));
+
+ if(button){
+  button.classList.add("active");
+ }
+
+ if(page==="home"){
+  renderHome();
+ }
+
+ else if(page==="search"){
+  renderSearch();
+ }
+
+ else if(page==="songs"){
+  renderSongs();
+ }
+
+ else if(page==="liked"){
+  renderLiked();
+ }
+
+ else if(page==="settings"){
+  renderSettings();
+ }
+
+}
+
+
+/* =========================
+   HOME
+========================= */
+
+function renderHome(){
+
+ main.innerHTML=`
+
+ <div class="hero">
+
+  <h1>Welcome to Ishyn 🎵</h1>
+
+  <p>
+   Your personal music space
+  </p>
+
+  <label class="upload">
+   ＋ Add songs from phone
+
+   <input
+    type="file"
+    accept="audio/*"
+    multiple
+    hidden
+    onchange="addLocalSongs(this.files)"
+   >
+
+  </label>
+
+ </div>
+
+
+ <div class="categories">
+
+  <button class="category">Romance</button>
+  <button class="category">Relax</button>
+  <button class="category">Feel Good</button>
+  <button class="category">Energize</button>
+  <button class="category">Party</button>
+
+ </div>
+
+
+ <div class="section-head">
+  <div class="section-title">
+   Recently Added
+  </div>
+  <button class="arrow"
+   onclick="showPage('songs')">
+   →
+  </button>
+ </div>
+
+ <div id="homeSongs"></div>
+
+
+ <div class="section-head">
+  <div class="section-title">
+   Ishyn Music
+  </div>
+ </div>
+
+ <div class="hero">
+
+  <h1>🎧 Listen your way</h1>
+
+  <p>
+   Add your music and enjoy it inside Ishyn.
+  </p>
+
+ </div>
+
+ `;
+
+ renderSongList(
+  document.getElementById("homeSongs"),
+  songs.slice().reverse().slice(0,6)
+ );
+
+}
+
+
+/* =========================
+   SONGS
+========================= */
+
+function renderSongs(){
+
+ main.innerHTML=`
+
+ <div class="section-head">
+  <div class="section-title">
+   My Songs 🎵
+  </div>
+ </div>
+
+ <label class="upload">
+
+  ＋ Add MP3 / Audio
+
+  <input
+   type="file"
+   accept="audio/*"
+   multiple
+   hidden
+   onchange="addLocalSongs(this.files)"
+  >
+
+ </label>
+
+ <div id="songsList"></div>
+
+ `;
+
+ renderSongList(
+  document.getElementById("songsList"),
+  songs
+ );
+
+}
+
+
+/* =========================
+   SEARCH
+========================= */
+
+function renderSearch(){
+
+ main.innerHTML=`
+
+ <div class="section-title">
+  Search
+ </div>
+
+ <input
+  id="searchInput"
+  class="search"
+  placeholder="Search singer or song..."
+  oninput="searchSongs(this.value)"
+ >
+
+ <div
+  id="searchResults"
+ ></div>
+
+ `;
+
+ searchSongs("");
+
+}
+
+
+function searchSongs(query){
+
+ const box=document.getElementById("searchResults");
+
+ if(!box)return;
+
+ query=query.toLowerCase().trim();
+
+ if(!query){
+
+  box.innerHTML=`
+   <div class="empty">
+    🔎<br><br>
+    Search your saved songs
+   </div>
+  `;
+
+  return;
+
+ }
+
+ const result=songs.filter(song=>
+  song.name.toLowerCase().includes(query) ||
+  song.artist.toLowerCase().includes(query)
+ );
+
+ renderSongList(box,result);
+
+}
+
+
+/* =========================
+   LIKED
+========================= */
+
+function renderLiked(){
+
+ main.innerHTML=`
+
+ <div class="section-title">
+  ❤️ Liked Songs
+ </div>
+
+ <div id="likedList"></div>
+
+ `;
+
+ const liked=songs.filter(s=>s.liked);
+
+ renderSongList(
+  document.getElementById("likedList"),
+  liked
+ );
+
+}
+
+
+/* =========================
+   SETTINGS
+========================= */
+
+function renderSettings(){
+
+ main.innerHTML=`
+
+ <button
+  class="back"
+  onclick="showPage('home')">
+  ‹
+ </button>
+
+ <div class="hero">
+
+  <h1>Ishyn Music</h1>
+
+  <p>
+   Developed by Shubham Rawat
+  </p>
+
+ </div>
+
+
+ <div class="section-title">
+  Settings
+ </div>
+
+
+ <div class="setting">
+
+  <div>
+   <div class="setting-title">
+    🎵 Music
+   </div>
+
+   <div class="setting-sub">
+    Personal music player
+   </div>
+  </div>
+
+ </div>
+
+
+ <div class="setting">
+
+  <div>
+   <div class="setting-title">
+    💾 Storage
+   </div>
+
+   <div class="setting-sub">
+    ${songs.length} songs
+   </div>
+  </div>
+
+ </div>
+
+
+ <div class="setting">
+
+  <div>
+   <div class="setting-title">
+    🔐 Account
+   </div>
+
+   <div class="setting-sub">
+    Google login will be connected later
+   </div>
+  </div>
+
+ </div>
+
+
+ <div class="setting">
+
+  <div>
+   <div class="setting-title">
+    👥 Listen Together
+   </div>
+
+   <div class="setting-sub">
+    Coming soon
+   </div>
+  </div>
+
+ </div>
+
+
+ <div class="setting">
+
+  <div>
+   <div class="setting-title">
+    ☁ Backup
+   </div>
+
+   <div class="setting-sub">
+    Backup feature coming soon
+   </div>
+  </div>
+
+ </div>
+
+
+ <div class="setting">
+
+  <div>
+   <div class="setting-title">
+    ℹ️ About Ishyn
+   </div>
+
+   <div class="setting-sub">
+    Ishyn Music<br>
+    Developed by Shubham Rawat
+   </div>
+
+  </div>
+
+ </div>
+
+
+ <button
+  class="upload"
+  onclick="clearSongs()">
+
+  🗑 Clear saved song information
+
+ </button>
+
+ `;
+
+}
+
+
+/* =========================
+   SONG LIST
+========================= */
+
+function renderSongList(box,list){
+
+ if(!box)return;
+
+ if(!list.length){
+
+  box.innerHTML=`
+   <div class="empty">
+
+    🎵<br><br>
+
+    No songs found.<br>
+
+    Add an MP3 from your phone.
+
+   </div>
+  `;
+
+  return;
+
+ }
+
+ box.innerHTML="";
+
+ list.forEach(song=>{
+
+  const realIndex=songs.findIndex(
+   s=>s.id===song.id
+  );
+
+  const div=document.createElement("div");
+
+  div.className="song";
+
+  div.innerHTML=`
+
+   <div class="cover">
+    ♫
+   </div>
+
+   <div class="songinfo">
+
+    <div class="songname">
+     ${escapeHTML(song.name)}
+    </div>
+
+    <div class="artist">
+     ${escapeHTML(song.artist)}
+    </div>
+
+   </div>
+
+   <button
+    class="like ${song.liked?"active":""}"
+    onclick="toggleLike(${realIndex})">
+
+    ${song.liked?"♥":"♡"}
+
+   </button>
+
+   <button
+    class="play"
+    onclick="playSong(${realIndex})">
+
+    ▶
+
+   </button>
+
+  `;
+
+  box.appendChild(div);
+
+ });
+
+}
+
+
+/* =========================
+   ADD SONG
+========================= */
+
+function addLocalSongs(files){
+
+ if(!files || !files.length)return;
+
+ [...files].forEach(file=>{
+
+  if(!file.type.startsWith("audio/")){
+   return;
+  }
+
+  const song={
+
+   id:Date.now()+Math.random(),
+
+   name:file.name.replace(
+    /\.[^/.]+$/,
+    ""
+   ),
+
+   artist:"Local Music",
+
+   file:file,
+
+   liked:false
+
+  };
+
+  songs.push(song);
+
+ });
+
+ saveSongData();
+
+ alert("Song added to Ishyn 🎵");
+
+ renderHome();
+
+}
+
+
+/* =========================
+   PLAY SONG
+========================= */
+
+function playSong(index){
+
+ if(index<0 || !songs[index]){
+  return;
+ }
+
+ const song=songs[index];
+
+ if(!song.file){
+
+  alert(
+   "Ye song browser me available nahi hai. Please song dobara add karo."
+  );
+
+  return;
+
+ }
+
+ currentIndex=index;
+
+ if(objectURL){
+  URL.revokeObjectURL(objectURL);
+ }
+
+ objectURL=URL.createObjectURL(song.file);
+
+ audio.src=objectURL;
+
+ playerName.textContent=song.name;
+ playerArtist.textContent=song.artist;
+
+ player.style.display="block";
+
+ audio.play()
+ .then(()=>{
+
+  playButton.textContent="⏸";
+
+ })
+ .catch(error=>{
+
+  console.log(error);
+
+  alert(
+   "Song play nahi ho raha. Dusri MP3 file try karo."
+  );
+
+ });
+
+}
+
+
+/* =========================
+   PLAY / PAUSE
+========================= */
+
+function togglePlay(){
+
+ if(currentIndex<0){
+
+  if(songs.length){
+   playSong(0);
+  }
+
+  return;
+ }
+
+ if(audio.paused){
+
+  audio.play()
+  .then(()=>{
+   playButton.textContent="⏸";
+  });
+
+ }else{
+
+  audio.pause();
+
+  playButton.textContent="▶";
+
+ }
+
+}
+
+
+/* =========================
+   NEXT
+========================= */
+
+function nextSong(){
+
+ if(!songs.length)return;
+
+ let next=currentIndex+1;
+
+ if(next>=songs.length){
+  next=0;
+ }
+
+ playSong(next);
+
+}
+
+
+/* =========================
+   PREVIOUS
+========================= */
+
+function previousSong(){
+
+ if(!songs.length)return;
+
+ let previous=currentIndex-1;
+
+ if(previous<0){
+  previous=songs.length-1;
+ }
+
+ playSong(previous);
+
+}
+
+
+/* =========================
+   AUTO NEXT
+========================= */
+
+audio.addEventListener(
+ "ended",
+ nextSong
+);
+
+
+/* =========================
+   PROGRESS
+========================= */
+
+audio.addEventListener(
+ "timeupdate",
+ ()=>{
+
+  if(!audio.duration)return;
+
+  progress.value=
+   (audio.currentTime/audio.duration)*100;
+
+ }
+);
+
+
+progress.addEventListener(
+ "input",
+ ()=>{
+
+  if(!audio.duration)return;
+
+  audio.currentTime=
+   (progress.value/100)*audio.duration;
+
+ }
+);
+
+
+/* =========================
+   LIKE
+========================= */
+
+function toggleLike(index){
+
+ if(index<0 || !songs[index])return;
+
+ songs[index].liked=
+ !songs[index].liked;
+
+ saveSongData();
+
+ renderHome();
+
+}
+
+
+/* =========================
+   CLEAR
+========================= */
+
+function clearSongs(){
+
+ if(!songs.length){
+
+  alert("No songs saved.");
+
+  return;
+
+ }
+
+ const ok=confirm(
+  "Delete saved song information?"
+ );
+
+ if(!ok)return;
+
+ songs=[];
+
+ currentIndex=-1;
+
+ audio.pause();
+
+ audio.src="";
+
+ player.style.display="none";
+
+ localStorage.removeItem(
+  "ishynSongInfo"
+ );
+
+ renderSettings();
+
+}
+
+
+/* =========================
+   ESCAPE HTML
+========================= */
+
+function escapeHTML(text){
+
+ return String(text).replace(
+  /[&<>"']/g,
+  function(m){
+
+   return {
+    "&":"&amp;",
+    "<":"&lt;",
+    ">":"&gt;",
+    '"':"&quot;",
+    "'":"&#39;"
+   }[m];
+
+  }
+ );
+
+}
+
+
+/* =========================
+   START APP
+========================= */
+
+document.addEventListener(
+ "DOMContentLoaded",
+ ()=>{
+
+  loadSongs();
+
+  setTimeout(
+   ()=>{
+
+    const splash=
+     document.getElementById("splash");
+
+    splash.style.opacity="0";
+
+    splash.style.pointerEvents="none";
+
+    setTimeout(
+     ()=>{
+      splash.style.display="none";
+     },
+     500
+    );
+
+   },
+   2500
+  );
+
+ }
+);
+
+</script>
+
+</body>
+</html>
