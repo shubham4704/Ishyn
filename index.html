@@ -2,522 +2,622 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
-<meta name="theme-color" content="#09090b">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="theme-color" content="#090707">
+<meta name="apple-mobile-web-app-capable" content="yes">
+
 <title>Ishyn Music</title>
 
 <style>
-*{box-sizing:border-box}
+*{
+  box-sizing:border-box;
+  -webkit-tap-highlight-color:transparent;
+}
 
 html,body{
- margin:0;
- min-height:100%;
- background:#09090b;
- color:#fff;
- font-family:Arial,Helvetica,sans-serif;
+  margin:0;
+  padding:0;
+  min-height:100%;
+  background:#090707;
+  color:#fff;
+  font-family:Arial,Helvetica,sans-serif;
 }
 
 body{
- padding-bottom:110px;
- background:
- radial-gradient(circle at 20% 0%,rgba(235,170,167,.10),transparent 32%),
- #09090b;
+  padding-bottom:115px;
 }
 
-button,input{font:inherit}
-button{cursor:pointer}
+button,input{
+  font-family:inherit;
+}
+
+button{
+  cursor:pointer;
+}
 
 .app{
- width:100%;
- max-width:620px;
- margin:auto;
- padding:18px 15px 135px;
+  width:100%;
+  max-width:650px;
+  margin:auto;
+  padding:18px 16px 140px;
 }
 
-/* ================= SPLASH ================= */
+/* =========================
+   SPLASH
+========================= */
 
 #splash{
- position:fixed;
- inset:0;
- z-index:99999;
- display:flex;
- flex-direction:column;
- align-items:center;
- justify-content:center;
- background:#09090b;
- transition:opacity .6s ease;
+  position:fixed;
+  inset:0;
+  z-index:99999;
+  background:#090707;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  opacity:1;
+  visibility:visible;
+  transition:opacity .5s ease,visibility .5s ease;
 }
 
-.splashLogo{
- font-size:64px;
- font-weight:900;
- letter-spacing:-5px;
+.splash-logo{
+  font-size:64px;
+  font-weight:900;
+  letter-spacing:-5px;
 }
 
-.splashLogo span{
- color:#e8aaa6;
+.splash-logo span{
+  color:#f1aaa6;
 }
 
-.splashCredit{
- margin-top:15px;
- color:#999;
- font-size:16px;
+.splash-credit{
+  margin-top:15px;
+  color:#8f8988;
+  font-size:15px;
 }
 
-/* ================= HEADER ================= */
+/* =========================
+   HEADER
+========================= */
 
 header{
- display:flex;
- align-items:center;
- justify-content:space-between;
- margin-bottom:20px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:20px;
 }
 
 .logo{
- font-size:33px;
- font-weight:900;
- letter-spacing:-2px;
+  font-size:34px;
+  font-weight:900;
+  letter-spacing:-3px;
 }
 
 .logo span{
- color:#e8aaa6;
+  color:#f1aaa6;
 }
 
-.iconButton{
- width:45px;
- height:45px;
- border-radius:50%;
- border:1px solid #342a2c;
- background:#171315;
- color:#fff;
- font-size:20px;
+.header-btn{
+  width:46px;
+  height:46px;
+  border-radius:50%;
+  border:1px solid #352927;
+  background:#171211;
+  color:#fff;
+  font-size:20px;
 }
 
-/* ================= HERO ================= */
+/* =========================
+   HERO
+========================= */
 
 .hero{
- position:relative;
- overflow:hidden;
- padding:27px 22px;
- border-radius:27px;
- margin-bottom:22px;
- border:1px solid #3b2d2f;
- background:
- radial-gradient(circle at 90% 5%,rgba(232,170,166,.25),transparent 35%),
- linear-gradient(145deg,#302426,#151113);
- box-shadow:0 18px 45px rgba(0,0,0,.35);
+  position:relative;
+  overflow:hidden;
+  padding:27px 23px;
+  border-radius:27px;
+  background:
+    radial-gradient(circle at 90% 10%,#513532 0,transparent 35%),
+    linear-gradient(145deg,#302321,#14100f);
+  border:1px solid #3b2c2a;
+  margin-bottom:23px;
+  box-shadow:0 20px 50px rgba(0,0,0,.35);
+}
+
+.hero:after{
+  content:"♫";
+  position:absolute;
+  right:18px;
+  bottom:-25px;
+  font-size:110px;
+  color:rgba(241,170,166,.08);
+  transform:rotate(-10deg);
 }
 
 .hero h1{
- margin:0 0 9px;
- font-size:30px;
- letter-spacing:-1px;
+  position:relative;
+  z-index:1;
+  margin:0 0 8px;
+  font-size:29px;
+  line-height:1.15;
 }
 
 .hero p{
- margin:0;
- color:#aaa;
- line-height:1.5;
+  position:relative;
+  z-index:1;
+  margin:0;
+  color:#aaa3a2;
+  font-size:15px;
 }
 
-/* ================= BUTTON ================= */
+/* =========================
+   UPLOAD
+========================= */
 
-.primaryButton{
- display:block;
- width:100%;
- margin-top:18px;
- padding:15px;
- border:0;
- border-radius:17px;
- background:#e8aaa6;
- color:#171112;
- font-weight:800;
- text-align:center;
+.upload{
+  position:relative;
+  z-index:2;
+  display:block;
+  width:100%;
+  margin-top:22px;
+  padding:16px;
+  border-radius:17px;
+  background:#211918;
+  border:1px solid #473432;
+  color:#fff;
+  text-align:center;
+  font-size:16px;
+  font-weight:600;
+  transition:.2s;
 }
 
-.secondaryButton{
- width:100%;
- padding:15px;
- border-radius:17px;
- border:1px solid #403133;
- background:#1b1517;
- color:#fff;
+.upload:active{
+  transform:scale(.98);
 }
 
-/* ================= CHIPS ================= */
-
-.chips{
- display:flex;
- gap:9px;
- overflow-x:auto;
- margin:5px 0 25px;
+.upload input{
+  display:none;
 }
 
-.chips::-webkit-scrollbar{
- display:none;
+/* =========================
+   CATEGORIES
+========================= */
+
+.categories{
+  display:flex;
+  gap:9px;
+  overflow-x:auto;
+  padding:2px 0 8px;
+  margin-bottom:19px;
+  scrollbar-width:none;
 }
 
-.chip{
- flex-shrink:0;
- padding:10px 15px;
- border-radius:14px;
- border:1px solid #302629;
- background:#171315;
- color:#aaa;
+.categories::-webkit-scrollbar{
+  display:none;
 }
 
-.chip.active{
- color:#e8aaa6;
- border-color:#604447;
- background:#39282a;
+.category{
+  flex-shrink:0;
+  padding:11px 17px;
+  border:1px solid #2d2322;
+  border-radius:15px;
+  background:#1d1716;
+  color:#aaa;
+  font-size:14px;
 }
 
-/* ================= SECTION ================= */
-
-.sectionHeader{
- display:flex;
- align-items:center;
- justify-content:space-between;
- margin:25px 2px 14px;
+.category:active{
+  background:#382726;
+  color:#f1aaa6;
 }
 
-.sectionTitle{
- font-size:23px;
- font-weight:800;
+/* =========================
+   SECTION
+========================= */
+
+.section-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin:24px 2px 14px;
 }
 
-.more{
- border:0;
- background:none;
- color:#e8aaa6;
+.section-title{
+  font-size:23px;
+  font-weight:800;
 }
 
-/* ================= SONG ================= */
+.section-sub{
+  color:#777;
+  font-size:13px;
+  margin-top:4px;
+}
+
+.arrow{
+  border:0;
+  background:none;
+  color:#f1aaa6;
+  font-size:30px;
+}
+
+/* =========================
+   SONG CARD
+========================= */
 
 .song{
- display:flex;
- align-items:center;
- gap:11px;
- padding:11px;
- margin-bottom:10px;
- border-radius:18px;
- border:1px solid #292124;
- background:linear-gradient(145deg,#191517,#121012);
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:11px;
+  margin-bottom:10px;
+  border-radius:19px;
+  background:linear-gradient(145deg,#191514,#141111);
+  border:1px solid #292020;
+  transition:.2s;
+}
+
+.song:active{
+  transform:scale(.985);
 }
 
 .cover{
- width:57px;
- height:57px;
- flex-shrink:0;
- display:flex;
- align-items:center;
- justify-content:center;
- border-radius:14px;
- background:linear-gradient(135deg,#aa706d,#382426);
- font-size:24px;
+  width:58px;
+  height:58px;
+  flex-shrink:0;
+  border-radius:15px;
+  background:linear-gradient(135deg,#ae7470,#34201f);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:25px;
+  box-shadow:inset 0 1px rgba(255,255,255,.12);
 }
 
-.songInfo{
- flex:1;
- min-width:0;
+.songinfo{
+  flex:1;
+  min-width:0;
 }
 
-.songName{
- font-weight:700;
- white-space:nowrap;
- overflow:hidden;
- text-overflow:ellipsis;
+.songname{
+  font-size:16px;
+  font-weight:700;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
 }
 
 .artist{
- margin-top:5px;
- color:#8d8788;
- font-size:13px;
- white-space:nowrap;
- overflow:hidden;
- text-overflow:ellipsis;
+  color:#918b89;
+  font-size:13px;
+  margin-top:5px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
 }
 
-.likeButton{
- width:36px;
- height:36px;
- border:0;
- background:none;
- color:#777;
- font-size:21px;
+.like{
+  width:38px;
+  height:38px;
+  flex-shrink:0;
+  border:0;
+  background:none;
+  color:#8d8584;
+  font-size:22px;
 }
 
-.likeButton.active{
- color:#e8aaa6;
+.like.active{
+  color:#f1aaa6;
 }
 
-.playButton{
- width:43px;
- height:43px;
- flex-shrink:0;
- border:0;
- border-radius:50%;
- background:#e8aaa6;
- color:#171112;
- font-weight:900;
+.play{
+  width:43px;
+  height:43px;
+  flex-shrink:0;
+  border:0;
+  border-radius:50%;
+  background:#f1aaa6;
+  color:#171111;
+  font-size:17px;
+  font-weight:bold;
 }
 
-/* ================= SEARCH ================= */
+/* =========================
+   EMPTY
+========================= */
+
+.empty{
+  text-align:center;
+  color:#777;
+  padding:55px 15px;
+  line-height:1.6;
+}
+
+.empty-icon{
+  font-size:42px;
+  margin-bottom:10px;
+}
+
+/* =========================
+   SEARCH
+========================= */
+
+.search-wrap{
+  position:relative;
+  margin:18px 0;
+}
 
 .search{
- width:100%;
- padding:16px 18px;
- margin-bottom:18px;
- border-radius:17px;
- border:1px solid #302629;
- outline:none;
- background:#151214;
- color:#fff;
+  width:100%;
+  padding:16px 18px 16px 48px;
+  border-radius:18px;
+  border:1px solid #332927;
+  background:#171313;
+  color:#fff;
+  outline:none;
+  font-size:16px;
 }
 
 .search:focus{
- border-color:#e8aaa6;
+  border-color:#d89490;
 }
 
-/* ================= EMPTY ================= */
-
-.empty{
- padding:55px 15px;
- text-align:center;
- color:#777;
- line-height:1.6;
+.search-icon{
+  position:absolute;
+  left:18px;
+  top:14px;
+  color:#888;
+  font-size:20px;
 }
 
-/* ================= PLAYER ================= */
+/* =========================
+   PLAYER
+========================= */
 
 #player{
- position:fixed;
- display:none;
- z-index:500;
- left:50%;
- bottom:82px;
- transform:translateX(-50%);
- width:min(590px,calc(100% - 18px));
- padding:12px;
- border-radius:21px;
- border:1px solid #49383a;
- background:rgba(30,23,24,.97);
- box-shadow:0 18px 45px rgba(0,0,0,.65);
- backdrop-filter:blur(18px);
+  position:fixed;
+  z-index:900;
+  bottom:88px;
+  left:50%;
+  transform:translateX(-50%);
+  width:min(620px,calc(100% - 20px));
+  padding:12px;
+  border-radius:23px;
+  background:rgba(31,23,22,.98);
+  border:1px solid #463331;
+  box-shadow:0 18px 50px rgba(0,0,0,.65);
+  display:none;
+  backdrop-filter:blur(15px);
 }
 
-.playerRow{
- display:flex;
- align-items:center;
- gap:10px;
+.player-row{
+  display:flex;
+  align-items:center;
+  gap:11px;
 }
 
-.playerCover{
- width:49px;
- height:49px;
- flex-shrink:0;
- display:flex;
- align-items:center;
- justify-content:center;
- border-radius:13px;
- background:linear-gradient(135deg,#aa706d,#382426);
- font-size:20px;
+.player-cover{
+  width:51px;
+  height:51px;
+  flex-shrink:0;
+  border-radius:14px;
+  background:linear-gradient(135deg,#ae7470,#34201f);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:20px;
 }
 
-.playerInfo{
- flex:1;
- min-width:0;
+.player-info{
+  flex:1;
+  min-width:0;
 }
 
-.playerName{
- font-weight:800;
- white-space:nowrap;
- overflow:hidden;
- text-overflow:ellipsis;
+#playerName{
+  font-size:14px;
+  font-weight:700;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
 }
 
-.playerArtist{
- margin-top:4px;
- color:#8d8788;
- font-size:12px;
+#playerArtist{
+  color:#888;
+  font-size:12px;
+  margin-top:4px;
 }
 
 .controls{
- display:flex;
- align-items:center;
- gap:5px;
+  display:flex;
+  gap:4px;
+  align-items:center;
 }
 
 .controls button{
- width:37px;
- height:37px;
- border:0;
- border-radius:50%;
- background:#382c2e;
- color:#fff;
+  width:37px;
+  height:37px;
+  border:0;
+  border-radius:50%;
+  background:#382b29;
+  color:#fff;
+  font-size:15px;
 }
 
 .controls .main{
- width:42px;
- height:42px;
- background:#e8aaa6;
- color:#171112;
+  width:42px;
+  height:42px;
+  background:#f1aaa6;
+  color:#171111;
 }
 
-#progress{
- width:100%;
- margin-top:9px;
- accent-color:#e8aaa6;
+.progress{
+  width:100%;
+  height:4px;
+  margin-top:10px;
+  accent-color:#f1aaa6;
 }
 
-/* ================= NAV ================= */
+/* =========================
+   NAVIGATION
+========================= */
 
 nav{
- position:fixed;
- z-index:600;
- left:50%;
- bottom:8px;
- transform:translateX(-50%);
- width:min(590px,calc(100% - 24px));
- display:flex;
- padding:7px;
- border-radius:28px;
- border:1px solid #423234;
- background:rgba(25,19,20,.97);
- box-shadow:0 12px 35px rgba(0,0,0,.55);
- backdrop-filter:blur(20px);
+  position:fixed;
+  z-index:1000;
+  bottom:9px;
+  left:50%;
+  transform:translateX(-50%);
+  width:min(620px,calc(100% - 28px));
+  padding:7px;
+  border-radius:30px;
+  background:rgba(28,21,20,.97);
+  border:1px solid #3b2c2a;
+  display:flex;
+  justify-content:space-around;
+  box-shadow:0 12px 40px rgba(0,0,0,.55);
+  backdrop-filter:blur(15px);
 }
 
 nav button{
- flex:1;
- padding:8px 2px;
- border:0;
- border-radius:21px;
- background:none;
- color:#777;
- font-size:11px;
+  flex:1;
+  border:0;
+  background:none;
+  color:#807a79;
+  padding:8px 3px;
+  border-radius:22px;
+  font-size:11px;
 }
 
 nav button.active{
- color:#e8aaa6;
- background:#3b292a;
+  background:#46302e;
+  color:#f1aaa6;
 }
 
 nav span{
- display:block;
- margin-bottom:3px;
- font-size:21px;
+  display:block;
+  font-size:20px;
+  margin-bottom:3px;
 }
 
-/* ================= SETTINGS ================= */
+/* =========================
+   SETTINGS
+========================= */
 
 .back{
- border:0;
- background:none;
- color:#e8aaa6;
- font-size:30px;
- padding:0;
- margin-bottom:12px;
+  border:0;
+  background:none;
+  color:#f1aaa6;
+  font-size:31px;
+  margin-bottom:7px;
 }
 
 .setting{
- display:flex;
- align-items:center;
- gap:13px;
- padding:16px;
- margin-bottom:10px;
- border:1px solid #292124;
- border-radius:17px;
- background:#171315;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:17px;
+  margin-bottom:10px;
+  background:#171313;
+  border:1px solid #292020;
+  border-radius:17px;
 }
 
-.settingIcon{
- width:42px;
- height:42px;
- flex-shrink:0;
- display:flex;
- align-items:center;
- justify-content:center;
- border-radius:13px;
- background:#2a2022;
- font-size:19px;
+.setting-left{
+  display:flex;
+  align-items:center;
+  gap:13px;
 }
 
-.settingText{
- flex:1;
+.setting-icon{
+  width:42px;
+  height:42px;
+  border-radius:13px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:#261d1c;
+  font-size:19px;
 }
 
-.settingTitle{
- font-weight:800;
+.setting-title{
+  font-weight:700;
 }
 
-.settingSub{
- margin-top:4px;
- color:#858081;
- font-size:12px;
+.setting-sub{
+  color:#888;
+  font-size:12px;
+  margin-top:4px;
 }
 
-.chevron{
- color:#777;
- font-size:20px;
+.version{
+  text-align:center;
+  color:#555;
+  font-size:11px;
+  margin-top:25px;
 }
 
-.infoBox{
- padding:16px;
- margin-bottom:15px;
- border-radius:17px;
- border:1px solid #302629;
- background:#151214;
- color:#aaa;
- line-height:1.6;
- font-size:13px;
-}
-
-/* ================= TOAST ================= */
+/* =========================
+   TOAST
+========================= */
 
 #toast{
- position:fixed;
- left:50%;
- bottom:145px;
- transform:translateX(-50%) translateY(20px);
- z-index:9999;
- opacity:0;
- pointer-events:none;
- padding:12px 17px;
- border-radius:14px;
- background:#292022;
- border:1px solid #4b383a;
- color:#fff;
- transition:.3s;
- white-space:nowrap;
+  position:fixed;
+  z-index:9999;
+  left:50%;
+  bottom:175px;
+  transform:translate(-50%,20px);
+  background:#2b211f;
+  border:1px solid #4a3532;
+  color:#fff;
+  padding:12px 17px;
+  border-radius:14px;
+  font-size:13px;
+  opacity:0;
+  pointer-events:none;
+  transition:.25s;
+  white-space:nowrap;
 }
 
 #toast.show{
- opacity:1;
- transform:translateX(-50%) translateY(0);
+  opacity:1;
+  transform:translate(-50%,0);
 }
 </style>
 </head>
 
 <body>
 
-<!-- SPLASH -->
+<!-- =========================
+     SPLASH
+========================= -->
 
 <div id="splash">
- <div class="splashLogo">Ish<span>yn</span></div>
- <div class="splashCredit">Developed by Shubham Rawat</div>
+  <div class="splash-logo">
+    Ish<span>yn</span>
+  </div>
+
+  <div class="splash-credit">
+    Developed by Shubham Rawat
+  </div>
 </div>
+
+
+<!-- =========================
+     APP
+========================= -->
 
 <div class="app">
 
 <header>
- <div class="logo">Ish<span>yn</span></div>
+  <div class="logo">
+    Ish<span>yn</span>
+  </div>
 
- <button
-  class="iconButton"
-  onclick="showPage('settings')">
-  ⚙
- </button>
+  <button
+    class="header-btn"
+    onclick="showPage('settings',this)"
+  >
+    ⚙
+  </button>
 </header>
 
 <main id="main"></main>
@@ -525,90 +625,109 @@ nav span{
 </div>
 
 
-<!-- PLAYER -->
+<!-- =========================
+     PLAYER
+========================= -->
 
 <div id="player">
 
- <div class="playerRow">
+  <div class="player-row">
 
-  <div class="playerCover">♫</div>
+    <div class="player-cover">
+      ♫
+    </div>
 
-  <div class="playerInfo">
+    <div class="player-info">
+      <div id="playerName">
+        Nothing playing
+      </div>
 
-   <div class="playerName" id="playerName">
-    Nothing playing
-   </div>
+      <div id="playerArtist">
+        Ishyn Music
+      </div>
+    </div>
 
-   <div class="playerArtist" id="playerArtist">
-    Ishyn Music
-   </div>
+    <div class="controls">
+
+      <button onclick="previousSong()">
+        ⏮
+      </button>
+
+      <button
+        class="main"
+        id="playButton"
+        onclick="togglePlay()"
+      >
+        ▶
+      </button>
+
+      <button onclick="nextSong()">
+        ⏭
+      </button>
+
+    </div>
 
   </div>
 
-  <div class="controls">
-
-   <button onclick="previousSong()">⏮</button>
-
-   <button
-    id="playButton"
-    class="main"
-    onclick="togglePlay()">
-    ▶
-   </button>
-
-   <button onclick="nextSong()">⏭</button>
-
-  </div>
-
- </div>
-
- <input
-  id="progress"
-  type="range"
-  min="0"
-  max="100"
-  value="0"
- >
+  <input
+    id="progress"
+    class="progress"
+    type="range"
+    min="0"
+    max="100"
+    value="0"
+  >
 
 </div>
 
 
-<!-- NAVIGATION -->
+<!-- =========================
+     NAV
+========================= -->
 
 <nav>
 
- <button
-  id="navHome"
-  class="active"
-  onclick="showPage('home',this)">
+  <button
+    id="navHome"
+    class="active"
+    onclick="showPage('home',this)"
+  >
+    <span>⌂</span>
+    Home
+  </button>
 
-  <span>⌂</span>
-  Home
+  <button onclick="showPage('search',this)">
+    <span>⌕</span>
+    Search
+  </button>
 
- </button>
+  <button onclick="showPage('songs',this)">
+    <span>♫</span>
+    Songs
+  </button>
 
- <button onclick="showPage('search',this)">
-  <span>⌕</span>
-  Search
- </button>
+  <button onclick="showPage('liked',this)">
+    <span>♡</span>
+    Liked
+  </button>
 
- <button onclick="showPage('songs',this)">
-  <span>♫</span>
-  Songs
- </button>
-
- <button onclick="showPage('liked',this)">
-  <span>♡</span>
-  Liked
- </button>
-
- <button onclick="showPage('settings',this)">
-  <span>⚙</span>
-  Settings
- </button>
+  <button onclick="showPage('settings',this)">
+    <span>⚙</span>
+    Settings
+  </button>
 
 </nav>
 
+
+<!-- Hidden audio/file elements -->
+
+<input
+  id="fileInput"
+  type="file"
+  accept="audio/*"
+  multiple
+  hidden
+>
 
 <audio id="audio" preload="metadata"></audio>
 
@@ -617,889 +736,638 @@ nav span{
 
 <script>
 
-/* ==================================================
+/* =========================================================
    ISHYN MUSIC
-   VERSION 2
-   ACTUAL AUDIO FILE STORAGE WITH INDEXEDDB
-================================================== */
+   REAL AUDIO STORAGE USING INDEXEDDB
+========================================================= */
+
+
+/* =========================
+   BASIC ELEMENTS
+========================= */
 
 const main =
- document.getElementById("main");
+  document.getElementById("main");
 
 const audio =
- document.getElementById("audio");
+  document.getElementById("audio");
 
 const player =
- document.getElementById("player");
+  document.getElementById("player");
 
 const playerName =
- document.getElementById("playerName");
+  document.getElementById("playerName");
 
 const playerArtist =
- document.getElementById("playerArtist");
+  document.getElementById("playerArtist");
 
 const playButton =
- document.getElementById("playButton");
+  document.getElementById("playButton");
 
 const progress =
- document.getElementById("progress");
+  document.getElementById("progress");
 
 const toast =
- document.getElementById("toast");
+  document.getElementById("toast");
 
 
-const DB_NAME = "IshynMusicDatabase";
-const DB_VERSION = 1;
-const STORE_NAME = "songs";
+/* =========================
+   APP VARIABLES
+========================= */
+
+let songs = [];
+
+let currentIndex = -1;
+
+let objectURL = null;
 
 let db = null;
-let songs = [];
-let currentIndex = -1;
-let currentURL = null;
+
+const DB_NAME = "IshynMusicDB";
+
+const DB_VERSION = 1;
+
+const STORE_NAME = "songs";
 
 
-/* ==================================================
+/* =========================================================
    TOAST
-================================================== */
+========================================================= */
 
 function showToast(message){
 
- toast.textContent = message;
- toast.classList.add("show");
+  toast.textContent = message;
 
- clearTimeout(window.toastTimer);
+  toast.classList.add("show");
 
- window.toastTimer =
-  setTimeout(()=>{
-   toast.classList.remove("show");
+  setTimeout(function(){
+    toast.classList.remove("show");
   },2200);
 }
 
 
-/* ==================================================
-   DATABASE OPEN
-================================================== */
+/* =========================================================
+   DATABASE
+========================================================= */
 
 function openDatabase(){
 
- return new Promise((resolve,reject)=>{
+  return new Promise(function(resolve,reject){
 
-  const request =
-   indexedDB.open(DB_NAME,DB_VERSION);
+    const request =
+      indexedDB.open(DB_NAME,DB_VERSION);
 
-  request.onupgradeneeded =
-   function(event){
+    request.onupgradeneeded =
+      function(event){
 
-    const database =
-     event.target.result;
+        const database =
+          event.target.result;
 
-    if(
-     !database.objectStoreNames
-     .contains(STORE_NAME)
-    ){
+        if(!database.objectStoreNames.contains(STORE_NAME)){
 
-     database.createObjectStore(
-      STORE_NAME,
-      {
-       keyPath:"id",
-       autoIncrement:true
-      }
-     );
-    }
-   };
+          const store =
+            database.createObjectStore(
+              STORE_NAME,
+              {keyPath:"id"}
+            );
 
-
-  request.onsuccess =
-   function(event){
-
-    db = event.target.result;
-
-    resolve(db);
-   };
+          store.createIndex(
+            "name",
+            "name",
+            {unique:false}
+          );
+        }
+      };
 
 
-  request.onerror =
-   function(){
+    request.onsuccess =
+      function(event){
 
-    reject(request.error);
-   };
+        db = event.target.result;
 
- });
+        resolve(db);
+
+      };
+
+
+    request.onerror =
+      function(){
+
+        reject(request.error);
+
+      };
+
+  });
+
 }
 
 
-/* ==================================================
-   LOAD ALL SONGS
-================================================== */
+/* =========================================================
+   LOAD SONGS FROM DATABASE
+========================================================= */
 
 function loadSongs(){
 
- return new Promise((resolve,reject)=>{
+  if(!db)return;
 
-  if(!db){
-   reject("Database not ready");
-   return;
-  }
+  return new Promise(function(resolve){
+
+    const transaction =
+      db.transaction(
+        STORE_NAME,
+        "readonly"
+      );
+
+    const store =
+      transaction.objectStore(STORE_NAME);
+
+    const request =
+      store.getAll();
+
+    request.onsuccess =
+      function(){
+
+        songs =
+          request.result || [];
+
+        resolve();
+
+      };
+
+    request.onerror =
+      function(){
+
+        songs = [];
+
+        resolve();
+
+      };
+
+  });
+
+}
+
+
+/* =========================================================
+   SAVE SONG
+========================================================= */
+
+function saveSong(song){
+
+  return new Promise(function(resolve,reject){
+
+    if(!db){
+
+      reject("Database not ready");
+
+      return;
+
+    }
+
+    const transaction =
+      db.transaction(
+        STORE_NAME,
+        "readwrite"
+      );
+
+    const store =
+      transaction.objectStore(STORE_NAME);
+
+    const request =
+      store.put(song);
+
+    request.onsuccess =
+      function(){
+        resolve();
+      };
+
+    request.onerror =
+      function(){
+        reject(request.error);
+      };
+
+  });
+
+}
+
+
+/* =========================================================
+   UPDATE SONG
+========================================================= */
+
+function updateSong(song){
+
+  if(!db)return;
 
   const transaction =
-   db.transaction(
-    STORE_NAME,
-    "readonly"
-   );
+    db.transaction(
+      STORE_NAME,
+      "readwrite"
+    );
 
-  const store =
-   transaction.objectStore(STORE_NAME);
+  transaction
+    .objectStore(STORE_NAME)
+    .put(song);
 
-  const request =
-   store.getAll();
-
-
-  request.onsuccess =
-   function(){
-
-    songs =
-     request.result || [];
-
-    resolve(songs);
-   };
-
-
-  request.onerror =
-   function(){
-
-    reject(request.error);
-   };
-
- });
 }
 
 
-/* ==================================================
-   SAVE ONE SONG
-================================================== */
+/* =========================================================
+   DELETE ALL
+========================================================= */
 
-function saveSong(file){
+function deleteAllSongs(){
 
- return new Promise((resolve,reject)=>{
+  return new Promise(function(resolve,reject){
 
-  const transaction =
-   db.transaction(
-    STORE_NAME,
-    "readwrite"
-   );
+    if(!db){
 
-  const store =
-   transaction.objectStore(STORE_NAME);
+      resolve();
 
+      return;
 
-  const song = {
+    }
 
-   name:
-    file.name.replace(
-     /\.[^/.]+$/,
-     ""
-    ),
+    const transaction =
+      db.transaction(
+        STORE_NAME,
+        "readwrite"
+      );
 
-   artist:
-    "Local Music",
+    const request =
+      transaction
+        .objectStore(STORE_NAME)
+        .clear();
 
-   blob:
-    file,
+    request.onsuccess =
+      function(){
+        resolve();
+      };
 
-   liked:
-    false,
+    request.onerror =
+      function(){
+        reject(request.error);
+      };
 
-   added:
-    Date.now()
+  });
 
-  };
-
-
-  const request =
-   store.add(song);
-
-
-  request.onsuccess =
-   function(){
-
-    resolve();
-   };
-
-
-  request.onerror =
-   function(){
-
-    reject(request.error);
-   };
-
- });
 }
 
 
-/* ==================================================
-   ADD LOCAL SONGS
-================================================== */
-
-async function addLocalSongs(files){
-
- if(!files || !files.length){
-  return;
- }
-
- try{
-
-  let added = 0;
-
-  for(
-   const file of Array.from(files)
-  ){
-
-   if(
-    !file.type ||
-    !file.type.startsWith("audio/")
-   ){
-
-    continue;
-   }
-
-   await saveSong(file);
-
-   added++;
-  }
-
-
-  await loadSongs();
-
-  if(added>0){
-
-   showToast(
-    added+
-    " song"+
-    (added===1?"":"s")+
-    " saved 🎵"
-   );
-
-  }else{
-
-   showToast(
-    "Valid audio file nahi mili."
-   );
-  }
-
-
-  renderHome();
-
- }catch(error){
-
-  console.error(error);
-
-  alert(
-   "Song save nahi ho paya. Browser storage allow karo aur dobara try karo."
-  );
-
- }
-}
-
-
-/* ==================================================
+/* =========================================================
    PAGE SYSTEM
-================================================== */
+========================================================= */
 
 function showPage(page,button){
 
- document
-  .querySelectorAll("nav button")
-  .forEach(btn=>{
-   btn.classList.remove("active");
-  });
-
-
- if(button){
-
-  button.classList.add("active");
-
- }else if(page==="home"){
-
   document
-   .getElementById("navHome")
-   .classList.add("active");
+    .querySelectorAll("nav button")
+    .forEach(function(btn){
 
- }
+      btn.classList.remove("active");
+
+    });
 
 
- if(page==="home"){
-  renderHome();
- }
+  if(button){
+    button.classList.add("active");
+  }
 
- else if(page==="search"){
-  renderSearch();
- }
 
- else if(page==="songs"){
-  renderSongs();
- }
+  if(page==="home"){
 
- else if(page==="liked"){
-  renderLiked();
- }
+    renderHome();
 
- else if(page==="settings"){
-  renderSettings();
- }
+  }
+
+  else if(page==="search"){
+
+    renderSearch();
+
+  }
+
+  else if(page==="songs"){
+
+    renderSongs();
+
+  }
+
+  else if(page==="liked"){
+
+    renderLiked();
+
+  }
+
+  else if(page==="settings"){
+
+    renderSettings();
+
+  }
 
 }
 
 
-/* ==================================================
+/* =========================================================
    HOME
-================================================== */
+========================================================= */
 
 function renderHome(){
 
- main.innerHTML = `
+  main.innerHTML = `
 
- <div class="hero">
+    <div class="hero">
 
-  <h1>
-   Welcome to Ishyn 🎧
-  </h1>
+      <h1>
+        Welcome to Ishyn 🎵
+      </h1>
 
-  <p>
-   Your personal music space.
-   Save your favourite music and listen anytime.
-  </p>
+      <p>
+        Your personal music space
+      </p>
 
-  <label class="primaryButton">
+      <label class="upload">
 
-   ＋ Add Songs From Phone
+        ＋ Add songs from phone
 
-   <input
-    type="file"
-    accept="audio/*"
-    multiple
-    hidden
-    onchange="addLocalSongs(this.files)"
-   >
+        <input
+          type="file"
+          accept="audio/*"
+          multiple
+          onchange="addLocalSongs(this.files)"
+        >
 
-  </label>
+      </label>
 
- </div>
+    </div>
 
 
- <div class="chips">
+    <div class="categories">
 
-  <button class="chip active">
-   All Music
-  </button>
+      <button class="category">
+        Romance
+      </button>
 
-  <button class="chip">
-   Romance
-  </button>
+      <button class="category">
+        Relax
+      </button>
 
-  <button class="chip">
-   Relax
-  </button>
+      <button class="category">
+        Feel Good
+      </button>
 
-  <button class="chip">
-   Party
-  </button>
+      <button class="category">
+        Energize
+      </button>
 
-  <button class="chip">
-   Feel Good
-  </button>
+      <button class="category">
+        Party
+      </button>
 
- </div>
-
-
- <div class="sectionHeader">
-
-  <div class="sectionTitle">
-   Recently Added
-  </div>
-
-  <button
-   class="more"
-   onclick="showPage('songs')">
-
-   See All →
-
-  </button>
-
- </div>
+    </div>
 
 
- <div id="homeSongs"></div>
+    <div class="section-head">
+
+      <div>
+        <div class="section-title">
+          Recently Added
+        </div>
+
+        <div class="section-sub">
+          ${songs.length} saved song${songs.length===1?"":"s"}
+        </div>
+      </div>
+
+      <button
+        class="arrow"
+        onclick="showPage('songs')"
+      >
+        →
+      </button>
+
+    </div>
 
 
- <div class="sectionHeader">
-
-  <div class="sectionTitle">
-   Ishyn
-  </div>
-
- </div>
+    <div id="homeSongs"></div>
 
 
- <div class="infoBox">
+    <div class="section-head">
 
-  🎵 <b>Your music. Your space.</b><br><br>
+      <div class="section-title">
+        Ishyn Music
+      </div>
 
-  Songs added from your phone are stored
-  inside this browser's local database.
-  Refresh karne par saved audio files
-  automatically remain available.
-
- </div>
-
- `;
+    </div>
 
 
- renderSongList(
-  document.getElementById("homeSongs"),
-  songs
-   .slice()
-   .sort((a,b)=>
-    (b.added||0)-(a.added||0)
-   )
-   .slice(0,7)
- );
+    <div class="hero">
+
+      <h1>
+        🎧 Listen your way
+      </h1>
+
+      <p>
+        Your music stays saved on this device.
+      </p>
+
+    </div>
+
+  `;
+
+
+  const box =
+    document.getElementById("homeSongs");
+
+
+  const recent =
+    songs
+      .slice()
+      .sort(function(a,b){
+        return (b.addedAt||0) -
+               (a.addedAt||0);
+      })
+      .slice(0,8);
+
+
+  renderSongList(
+    box,
+    recent
+  );
+
 }
 
 
-/* ==================================================
+/* =========================================================
    SONGS PAGE
-================================================== */
+========================================================= */
 
 function renderSongs(){
 
- main.innerHTML = `
+  main.innerHTML = `
 
- <button
-  class="back"
-  onclick="showPage('home')">
-  ‹ Back
- </button>
+    <div class="section-head">
 
- <div class="sectionTitle">
-  My Songs 🎵
- </div>
+      <div>
 
- <div class="status infoBox">
+        <div class="section-title">
+          My Songs 🎵
+        </div>
 
-  ${songs.length}
-  song${songs.length===1?"":"s"}
-  saved on this device.
+        <div class="section-sub">
+          Your saved music
+        </div>
 
- </div>
+      </div>
+
+    </div>
 
 
- <label class="primaryButton">
+    <label class="upload">
 
-  ＋ Add MP3 / Audio
+      ＋ Add MP3 / Audio
 
-  <input
-   type="file"
-   accept="audio/*"
-   multiple
-   hidden
-   onchange="addLocalSongs(this.files)"
-  >
+      <input
+        type="file"
+        accept="audio/*"
+        multiple
+        onchange="addLocalSongs(this.files)"
+      >
 
- </label>
-
-
- <div
-  id="songsList"
-  style="margin-top:20px">
- </div>
-
- `;
+    </label>
 
 
- renderSongList(
-  document.getElementById("songsList"),
-  songs
- );
+    <div
+      id="songsList"
+      style="margin-top:18px"
+    ></div>
+
+  `;
+
+
+  renderSongList(
+    document.getElementById("songsList"),
+    songs
+  );
+
 }
 
 
-/* ==================================================
+/* =========================================================
    SEARCH
-================================================== */
+========================================================= */
 
 function renderSearch(){
 
- main.innerHTML = `
+  main.innerHTML = `
 
- <button
-  class="back"
-  onclick="showPage('home')">
-  ‹ Back
- </button>
+    <div class="section-title">
+      Search
+    </div>
 
- <div class="sectionTitle"
-  style="margin-bottom:15px">
+    <div class="search-wrap">
 
-  Search Music
+      <span class="search-icon">
+        ⌕
+      </span>
 
- </div>
+      <input
+        id="searchInput"
+        class="search"
+        placeholder="Search your songs..."
+        oninput="searchSongs(this.value)"
+      >
 
-
- <input
-  id="searchInput"
-  class="search"
-  placeholder="Search your saved songs..."
-  oninput="searchSongs(this.value)"
- >
+    </div>
 
 
- <div id="searchResults"></div>
+    <div id="searchResults"></div>
 
- `;
+  `;
 
 
- searchSongs("");
+  searchSongs("");
+
 }
 
 
 function searchSongs(query){
 
- const box =
-  document.getElementById(
-   "searchResults"
-  );
+  const box =
+    document.getElementById("searchResults");
 
- if(!box)return;
+  if(!box)return;
 
 
- query =
-  String(query)
-  .toLowerCase()
-  .trim();
+  query =
+    query
+      .toLowerCase()
+      .trim();
 
 
- if(!query){
+  if(!query){
 
-  box.innerHTML = `
+    box.innerHTML = `
 
-   <div class="empty">
+      <div class="empty">
 
-    🔎<br><br>
+        <div class="empty-icon">
+          🔎
+        </div>
 
-    Search your saved songs<br>
-    by song name or artist.
+        Search your saved songs
 
-   </div>
+      </div>
 
-  `;
+    `;
 
-  return;
- }
-
-
- const result =
-  songs.filter(song=>{
-
-   const name =
-    String(song.name||"")
-    .toLowerCase();
-
-   const artist =
-    String(song.artist||"")
-    .toLowerCase();
-
-   return(
-    name.includes(query) ||
-    artist.includes(query)
-   );
-
-  });
-
-
- renderSongList(box,result);
-}
-
-
-/* ==================================================
-   LIKED
-================================================== */
-
-function renderLiked(){
-
- main.innerHTML = `
-
- <button
-  class="back"
-  onclick="showPage('home')">
-  ‹ Back
- </button>
-
- <div class="sectionTitle">
-  ❤️ Liked Songs
- </div>
-
- <div
-  id="likedList"
-  style="margin-top:18px">
- </div>
-
- `;
-
-
- const liked =
-  songs.filter(song=>song.liked);
-
-
- renderSongList(
-  document.getElementById(
-   "likedList"
-  ),
-  liked
- );
-}
-
-
-/* ==================================================
-   SONG LIST
-================================================== */
-
-function renderSongList(box,list){
-
- if(!box)return;
-
-
- if(!list.length){
-
-  box.innerHTML = `
-
-   <div class="empty">
-
-    🎵<br><br>
-
-    No songs here yet.<br><br>
-
-    Add an MP3 from your phone.
-
-   </div>
-
-  `;
-
-  return;
- }
-
-
- box.innerHTML="";
-
-
- list.forEach(song=>{
-
-  const realIndex =
-   songs.findIndex(
-    item=>item.id===song.id
-   );
-
-
-  const div =
-   document.createElement("div");
-
-  div.className="song";
-
-
-  div.innerHTML = `
-
-   <div class="cover">
-    ♫
-   </div>
-
-
-   <div class="songInfo">
-
-    <div class="songName">
-     ${escapeHTML(song.name)}
-    </div>
-
-    <div class="artist">
-     ${escapeHTML(
-      song.artist||"Local Music"
-     )}
-    </div>
-
-   </div>
-
-
-   <button
-    class="likeButton ${
-     song.liked?"active":""
-    }"
-    onclick="toggleLike(${realIndex})">
-
-    ${song.liked?"♥":"♡"}
-
-   </button>
-
-
-   <button
-    class="playButton"
-    onclick="playSong(${realIndex})">
-
-    ▶
-
-   </button>
-
-  `;
-
-
-  box.appendChild(div);
-
- });
-}
-
-
-/* ==================================================
-   PLAY SONG
-================================================== */
-
-function playSong(index){
-
- if(
-  index<0 ||
-  index>=songs.length
- ){
-
-  return;
- }
-
-
- const song =
-  songs[index];
-
-
- if(!song.blob){
-
-  alert(
-   "Audio file available nahi hai."
-  );
-
-  return;
- }
-
-
- currentIndex=index;
-
-
- if(currentURL){
-
-  URL.revokeObjectURL(
-   currentURL
-  );
-
-  currentURL=null;
- }
-
-
- currentURL =
-  URL.createObjectURL(
-   song.blob
-  );
-
-
- audio.pause();
-
- audio.currentTime=0;
-
- audio.src=currentURL;
-
- playerName.textContent =
-  song.name;
-
- playerArtist.textContent =
-  song.artist||"Local Music";
-
- player.style.display="block";
-
- progress.value=0;
-
-
- audio.play()
- .then(()=>{
-
-  playButton.textContent="⏸";
-
- })
- .catch(error=>{
-
-  console.error(error);
-
-  playButton.textContent="▶";
-
-  alert(
-   "Song play nahi ho raha. Dusri audio file try karo."
-  );
-
- });
-}
-
-
-/* ==================================================
-   PLAY / PAUSE
-================================================== */
-
-function togglePlay(){
-
- if(currentIndex<0){
-
-  if(songs.length){
-
-   playSong(0);
+    return;
 
   }
 
-  return;
- }
+
+  const result =
+    songs.filter(function(song){
+
+      return (
+        song.name
+          .toLowerCase()
+          .includes(query)
+        ||
+        song.artist
+          .toLowerCase()
+          .includes(query)
+      );
+
+    });
 
 
- if(audio.paused){
+  renderSongList(
+    box,
+    result
+  );
 
-  audio.play()
-  .then(()=>{
-
-   playButton.textContent="⏸";
-
-  })
-  .catch(error=>{
-
-   console.error(error);
-
-  });
-
- }else{
-
-  audio.pause();
-
-  playButton.textContent="▶";
-
- }
 }
 
 
-/* ==================================================
-   NEXT
-================================================== */
+/* =========================================================
+   LIKED
+========================================================= */
 
-function nextSong(){
+function renderLiked(){
 
- if(!songs.length)return;
+  main.innerHTML = `
+
+    <div class="section-head">
+
+      <div class="section-title">
+        ❤️ Liked Songs
+      </div>
+
+    </div>
+
+    <div id="likedList"></div>
+
+  `;
 
 
- let next =
-  currentIndex+1;
-
-
- if(next>=songs.length){
-
-  next=0;
-
- }
-
-
- playSo
+  co
