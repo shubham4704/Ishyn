@@ -944,6 +944,15 @@ window.addEventListener("load",()=>{
   if(db)loadSongs();
  },500);
 });
+ window.handleCredentialResponse = function(response) {
+  const loginBox = document.getElementById("googleLogin");
+
+  if (loginBox) {
+    loginBox.style.display = "none";
+  }
+
+  localStorage.setItem("ishynLoggedIn", "true");
+}; 
 </script>
 
 </body>
