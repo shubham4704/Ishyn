@@ -3,287 +3,210 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>ishyn - Music Player</title>
+  <title>ishyn - Premium Music</title>
+  <!-- Google Auth SDK -->
   <script src="https://accounts.google.com/gsi/client" async defer></script>
   <style>
+    :root {
+      --bg-color: #0d0d0d;
+      --card-bg: #181818;
+      --accent: #ff4b2b;
+      --text-main: #ffffff;
+      --text-sub: #aaaaaa;
+    }
+
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      user-select: none;
     }
 
     body {
-      background-color: #121212;
-      color: #ffffff;
+      background-color: var(--bg-color);
+      color: var(--text-main);
       min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      padding-bottom: 90px;
+      padding-bottom: 110px;
     }
 
-    /* --- Splash Screen --- */
+    /* --- 1. SPLASH SCREEN --- */
     #splash-screen {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      background-color: #0d0d0d;
+      top: 0; left: 0; width: 100vw; height: 100vh;
+      background-color: #050505;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      z-index: 9999;
-      transition: opacity 0.5s ease;
+      z-index: 99999;
+      transition: opacity 0.6s ease, visibility 0.6s;
     }
 
     .app-logo {
-      width: 90px;
-      height: 90px;
+      width: 85px; height: 85px;
       background: linear-gradient(135deg, #ff416c, #ff4b2b);
       border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 40px;
-      font-weight: bold;
-      margin-bottom: 20px;
-      box-shadow: 0 4px 15px rgba(255, 65, 108, 0.4);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 36px; font-weight: 900;
+      box-shadow: 0 0 25px rgba(255, 65, 108, 0.5);
+      margin-bottom: 16px;
     }
 
-    .splash-title {
-      font-size: 28px;
-      font-weight: 700;
-      letter-spacing: 1px;
-    }
+    .splash-title { font-size: 32px; font-weight: 800; letter-spacing: 2px; }
+    .developer-tag { margin-top: 12px; font-size: 13px; color: var(--text-sub); }
 
-    .developer-tag {
-      margin-top: 15px;
-      font-size: 14px;
-      color: #aaaaaa;
-    }
-
-    /* --- Header --- */
+    /* --- 2. HEADER & TOOLBAR --- */
     header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 16px;
-      background-color: #181818;
-      position: sticky;
-      top: 0;
-      z-index: 100;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 14px 18px;
+      background: rgba(24, 24, 24, 0.95);
+      backdrop-filter: blur(10px);
+      position: sticky; top: 0; z-index: 100;
+      border-bottom: 1px solid #222;
     }
 
-    .brand-title {
-      font-size: 22px;
-      font-weight: bold;
-      color: #ff4b2b;
+    .brand-container { display: flex; align-items: center; gap: 10px; }
+    .brand-logo-small {
+      width: 32px; height: 32px; background: var(--accent);
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      font-weight: bold; font-size: 16px;
     }
+    .brand-title { font-size: 22px; font-weight: 800; color: #fff; }
 
-    .header-actions {
-      display: flex;
-      gap: 10px;
-      align-items: center;
+    .header-actions { display: flex; gap: 8px; align-items: center; }
+    .btn-action {
+      background: #252525; border: 1px solid #333; color: #fff;
+      padding: 6px 12px; border-radius: 20px; font-size: 12px;
+      cursor: pointer; transition: 0.2s;
     }
+    .btn-action:hover { background: var(--accent); border-color: var(--accent); }
 
-    .btn-icon {
-      background: #282828;
-      border: none;
-      color: #fff;
-      padding: 8px 12px;
-      border-radius: 20px;
-      cursor: pointer;
-      font-size: 13px;
-    }
-
-    /* --- Category Chips --- */
+    /* --- 3. CATEGORIES (CHIPS) --- */
     .chips-container {
-      display: flex;
-      gap: 10px;
-      padding: 12px 16px;
-      overflow-x: auto;
-      white-space: nowrap;
+      display: flex; gap: 10px; padding: 14px 18px;
+      overflow-x: auto; scrollbar-width: none;
     }
-
+    .chips-container::-webkit-scrollbar { display: none; }
     .chip {
-      background: #282828;
-      padding: 8px 16px;
-      border-radius: 18px;
-      font-size: 14px;
-      cursor: pointer;
+      background: #222; padding: 8px 18px; border-radius: 20px;
+      font-size: 13px; font-weight: 500; cursor: pointer; white-space: nowrap;
+      border: 1px solid #2a2a2a;
+    }
+    .chip.active { background: var(--text-main); color: #000; font-weight: 700; }
+
+    /* --- 4. FORM TO ADD SONGS --- */
+    .add-song-box {
+      margin: 10px 18px; background: var(--card-bg);
+      padding: 16px; border-radius: 12px; border: 1px solid #282828;
+    }
+    .add-song-box h3 { font-size: 15px; margin-bottom: 12px; color: var(--accent); }
+    .input-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    @media (max-width: 600px) { .input-grid { grid-template-columns: 1fr; } }
+    
+    .add-song-box input {
+      width: 100%; padding: 10px; background: #101010;
+      border: 1px solid #333; color: #fff; border-radius: 6px; font-size: 13px;
+    }
+    .file-input-label {
+      font-size: 12px; color: var(--text-sub); display: block; margin-top: 5px;
+    }
+    .btn-submit {
+      margin-top: 12px; background: var(--accent); border: none;
+      color: white; padding: 10px 20px; border-radius: 6px;
+      cursor: pointer; font-weight: bold; width: 100%; font-size: 14px;
     }
 
-    /* --- Content Layout --- */
-    .section-title {
-      font-size: 18px;
-      font-weight: bold;
-      margin: 16px;
-    }
-
+    /* --- 5. MUSIC GRID CONTAINER --- */
+    .section-title { font-size: 18px; font-weight: 700; margin: 16px 18px 10px; }
     .music-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
-      gap: 16px;
-      padding: 0 16px;
+      gap: 14px; padding: 0 18px;
     }
-
     .card {
-      background: #181818;
-      border-radius: 8px;
-      padding: 10px;
-      display: flex;
-      flex-direction: column;
+      background: var(--card-bg); border-radius: 10px; padding: 10px;
+      cursor: pointer; transition: transform 0.2s, background 0.2s; position: relative;
     }
-
+    .card:hover { transform: translateY(-4px); background: #222; }
     .card-img {
-      width: 100%;
-      aspect-ratio: 1;
-      border-radius: 6px;
-      background-color: #333;
-      object-fit: cover;
+      width: 100%; aspect-ratio: 1; border-radius: 8px;
+      object-fit: cover; background: #333;
     }
-
-    .card-title {
-      font-size: 14px;
-      font-weight: 600;
-      margin-top: 8px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+    .card-title { font-size: 13px; font-weight: 700; margin-top: 8px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .card-sub { font-size: 11px; color: var(--text-sub); margin-top: 2px; }
+    .delete-btn {
+      position: absolute; top: 14px; right: 14px; background: rgba(0,0,0,0.7);
+      color: #ff4444; border: none; width: 24px; height: 24px; border-radius: 50%;
+      cursor: pointer; display: none; font-size: 12px;
     }
+    .card:hover .delete-btn { display: flex; align-items: center; justify-content: center; }
 
-    .card-sub {
-      font-size: 12px;
-      color: #aaaaaa;
-      margin-top: 4px;
-    }
-
-    /* --- Admin Add Song Form --- */
-    .add-song-box {
-      margin: 16px;
-      background: #181818;
-      padding: 16px;
-      border-radius: 8px;
-    }
-
-    .add-song-box input {
-      width: 100%;
-      padding: 8px;
-      margin-bottom: 8px;
-      background: #282828;
-      border: 1px solid #333;
-      color: white;
-      border-radius: 4px;
-    }
-
-    .btn-submit {
-      background: #ff4b2b;
-      border: none;
-      color: white;
-      padding: 10px 16px;
-      border-radius: 4px;
-      cursor: pointer;
-      font-weight: bold;
-    }
-
-    /* --- Mini Player --- */
+    /* --- 6. MINI PLAYER BAR --- */
     .player-bar {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      height: 70px;
-      background-color: #282828;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 16px;
-      border-top: 1px solid #333;
+      position: fixed; bottom: 0; left: 0; right: 0; height: 75px;
+      background: #151515; display: flex; align-items: center;
+      justify-content: space-between; padding: 0 18px;
+      border-top: 1px solid #252525; z-index: 500;
+    }
+    .player-info { display: flex; align-items: center; gap: 12px; width: 60%; }
+    .player-info img { width: 48px; height: 48px; border-radius: 6px; object-fit: cover; }
+    .player-text { overflow: hidden; }
+    .player-text .title { font-size: 14px; font-weight: 700; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .player-text .artist { font-size: 12px; color: var(--text-sub); }
+
+    .player-controls { display: flex; align-items: center; gap: 12px; }
+    .control-btn {
+      background: var(--accent); border: none; color: #fff;
+      width: 44px; height: 44px; border-radius: 50%; cursor: pointer;
+      font-size: 18px; display: flex; align-items: center; justify-content: center;
     }
 
-    .player-info {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .player-info img {
-      width: 48px;
-      height: 48px;
-      border-radius: 4px;
-    }
-
-    .player-controls button {
-      background: #ff4b2b;
-      border: none;
-      color: #fff;
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      cursor: pointer;
-      font-weight: bold;
-    }
-
-    /* --- Modals --- */
+    /* --- 7. MODALS --- */
     .modal {
-      display: none;
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: rgba(0,0,0,0.8);
-      justify-content: center;
-      align-items: center;
-      z-index: 1000;
+      display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.85); justify-content: center; align-items: center;
+      z-index: 10000; backdrop-filter: blur(4px);
     }
-
     .modal-content {
-      background: #181818;
-      padding: 24px;
-      border-radius: 12px;
-      width: 90%;
-      max-width: 400px;
-      text-align: center;
+      background: #1c1c1c; padding: 24px; border-radius: 14px;
+      width: 90%; max-width: 380px; text-align: center; border: 1px solid #333;
     }
-
+    .modal-content h3 { font-size: 18px; margin-bottom: 10px; color: var(--accent); }
     .close-btn {
-      margin-top: 16px;
-      background: #333;
-      color: white;
-      border: none;
-      padding: 8px 16px;
-      border-radius: 4px;
-      cursor: pointer;
+      margin-top: 18px; background: #333; color: white; border: none;
+      padding: 8px 20px; border-radius: 20px; cursor: pointer; font-size: 13px;
     }
   </style>
 </head>
 <body>
 
-  <!-- 1. Splash Screen -->
+  <!-- SPLASH SCREEN (Exact 2 Secs Gap) -->
   <div id="splash-screen">
     <div class="app-logo">iS</div>
     <div class="splash-title">ishyn</div>
     <div class="developer-tag">Developed by Shubham Rawat</div>
   </div>
 
-  <!-- 2. Application Header -->
+  <!-- APP HEADER -->
   <header>
-    <div class="brand-title">ishyn</div>
+    <div class="brand-container">
+      <div class="brand-logo-small">iS</div>
+      <div class="brand-title">ishyn</div>
+    </div>
     <div class="header-actions">
-      <div id="g_id_onload"
-           data-client_id="YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com"
-           data-callback="handleCredentialResponse">
-      </div>
-      <div class="g_id_signin" data-type="icon" data-shape="circle"></div>
-      <button class="btn-icon" onclick="openModal('listenModal')">Listen Together</button>
-      <button class="btn-icon" onclick="openModal('aboutModal')">About</button>
-      <button class="btn-icon" onclick="backupData()">Backup</button>
+      <!-- Google Auth Button Slot -->
+      <div id="g_id_onload" data-client_id="YOUR_GOOGLE_CLIENT_ID" data-callback="handleGoogleLogin"></div>
+      <button class="btn-action" onclick="triggerGoogleSignIn()">Login</button>
+      <button class="btn-action" onclick="openModal('listenModal')">Listen Together</button>
+      <button class="btn-action" onclick="openModal('aboutModal')">About</button>
+      <button class="btn-action" onclick="exportBackup()">Backup</button>
     </div>
   </header>
 
-  <!-- Categories -->
+  <!-- CATEGORY CHIPS -->
   <div class="chips-container">
+    <div class="chip active">All</div>
     <div class="chip">Romance</div>
     <div class="chip">Relax</div>
     <div class="chip">Feel good</div>
@@ -291,153 +214,206 @@
     <div class="chip">Party</div>
   </div>
 
-  <!-- Add Song Form (Persistent Storage) -->
+  <!-- ADD NEW SONG CONTAINER -->
   <div class="add-song-box">
-    <h3>Add New Song</h3>
-    <input type="text" id="songTitle" placeholder="Song Title" />
-    <input type="text" id="songArtist" placeholder="Artist Name" />
-    <input type="text" id="songCover" placeholder="Cover Image URL" />
-    <input type="text" id="songAudio" placeholder="Audio File URL (MP3)" />
-    <button class="btn-submit" onclick="addSong()">Save Song</button>
+    <h3>Add Song To Playlist</h3>
+    <div class="input-grid">
+      <input type="text" id="songTitle" placeholder="Song Name" />
+      <input type="text" id="songArtist" placeholder="Artist Name" />
+      <input type="text" id="songCover" placeholder="Cover Image URL (Optional)" />
+      <div>
+        <input type="file" id="songFile" accept="audio/*" />
+        <span class="file-input-label">Select MP3 file from Device or paste URL below</span>
+      </div>
+    </div>
+    <input type="text" id="songUrl" placeholder="Audio URL (if no file chosen)" style="margin-top: 10px;" />
+    <button class="btn-submit" onclick="addSong()">Add & Save Song</button>
   </div>
 
-  <!-- Music Grid -->
+  <!-- MUSIC LIST -->
   <div class="section-title">New Releases</div>
   <div class="music-grid" id="musicGrid"></div>
 
-  <!-- Player Controls Bar -->
+  <!-- PLAYER FOOTER -->
   <div class="player-bar">
     <div class="player-info">
-      <img id="currentCover" src="https://via.placeholder.com/48" alt="Cover" />
-      <div>
-        <div id="currentTitle" style="font-weight: bold; font-size: 14px;">Select a Song</div>
-        <div id="currentArtist" style="font-size: 12px; color: #aaa;">-</div>
+      <img id="currentCover" src="https://via.placeholder.com/150/282828/ffffff?text=ishyn" alt="Cover" />
+      <div class="player-text">
+        <div class="title" id="currentTitle">Select a song</div>
+        <div class="artist" id="currentArtist">ishyn player</div>
       </div>
     </div>
     <div class="player-controls">
-      <button id="playBtn" onclick="togglePlay()">▶</button>
+      <button class="control-btn" id="playBtn" onclick="togglePlay()">▶</button>
     </div>
   </div>
 
-  <audio id="audioPlayer"></audio>
+  <audio id="audioEngine"></audio>
 
-  <!-- 3. Modals -->
-  <!-- Listen Together Modal -->
+  <!-- MODAL: LISTEN TOGETHER -->
   <div class="modal" id="listenModal">
     <div class="modal-content">
       <h3>Listen Together</h3>
-      <p style="margin-top: 10px; font-size: 14px; color: #ccc;">
-        Share this Room Code with your friends to listen synchronized:
-      </p>
-      <h2 style="margin: 15px 0; color: #ff4b2b;">ISHYN-9823</h2>
+      <p style="font-size: 13px; color: #ccc; margin-top: 8px;">Share room code to sync playback real-time with your friends:</p>
+      <div style="background: #111; padding: 12px; margin: 15px 0; border-radius: 8px; font-weight: bold; font-size: 20px; color: var(--accent); letter-spacing: 3px;">
+        ISHYN-7792
+      </div>
       <button class="close-btn" onclick="closeModal('listenModal')">Close</button>
     </div>
   </div>
 
-  <!-- About Modal -->
+  <!-- MODAL: ABOUT -->
   <div class="modal" id="aboutModal">
     <div class="modal-content">
-      <h3>About ishyn</h3>
-      <p style="margin-top: 10px; font-size: 14px; color: #ccc;">
-        ishyn is a premium music platform designed for dynamic audio experiences.
+      <h3>About ishyn App</h3>
+      <p style="font-size: 13px; color: #ccc; margin-top: 8px;">
+        High-performance minimal web music engine built for seamless playback and local media backups.
       </p>
-      <p style="margin-top: 8px; font-size: 12px; color: #888;">
+      <div style="margin-top: 15px; font-size: 12px; color: var(--accent); font-weight: bold;">
         Developed by Shubham Rawat
-      </p>
+      </div>
       <button class="close-btn" onclick="closeModal('aboutModal')">Close</button>
     </div>
   </div>
 
   <script>
-    // --- 1. Splash Screen Timer (2 Seconds Delay) ---
-    window.addEventListener('DOMContentLoaded', () => {
+    // 1. SPLASH SCREEN SETUP (Exactly 2 Seconds Delay)
+    window.addEventListener('load', () => {
       setTimeout(() => {
         const splash = document.getElementById('splash-screen');
         splash.style.opacity = '0';
-        setTimeout(() => {
-          splash.style.display = 'none';
-        }, 500);
+        splash.style.visibility = 'hidden';
       }, 2000);
-      
-      loadSongs();
+
+      renderPlaylist();
     });
 
-    // --- 2. Initial Data & LocalStorage Setup ---
-    const defaultSongs = [
+    // 2. DEFAULT PLAYLIST & LOCAL STORAGE ENGINE
+    const defaultData = [
       {
-        title: "Raat Ke Shikari",
-        artist: "Masoom Sharma",
-        cover: "https://via.placeholder.com/150",
+        id: 1,
+        title: "Waade Saare",
+        artist: "Shubham Rawat / Jubin",
+        cover: "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=300&auto=format&fit=crop",
         src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"
+      },
+      {
+        id: 2,
+        title: "Rain Therapy",
+        artist: "Arijit Singh",
+        cover: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=300&auto=format&fit=crop",
+        src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3"
       }
     ];
 
-    function getStoredSongs() {
-      const stored = localStorage.getItem('ishyn_songs');
-      return stored ? JSON.parse(stored) : defaultSongs;
+    function getStorage() {
+      const data = localStorage.getItem('ishyn_db_songs');
+      return data ? JSON.parse(data) : defaultData;
     }
 
-    function loadSongs() {
-      const songs = getStoredSongs();
+    function saveStorage(data) {
+      localStorage.setItem('ishyn_db_songs', JSON.stringify(data));
+    }
+
+    // 3. RENDER MUSIC GRID
+    function renderPlaylist() {
+      const songs = getStorage();
       const grid = document.getElementById('musicGrid');
       grid.innerHTML = '';
 
-      songs.forEach((song, index) => {
+      songs.forEach((song, idx) => {
         const card = document.createElement('div');
         card.className = 'card';
-        card.onclick = () => playSong(index);
         card.innerHTML = `
-          <img class="card-img" src="${song.cover}" alt="Cover">
+          <button class="delete-btn" onclick="deleteSong(event, ${idx})">✕</button>
+          <img class="card-img" src="${song.cover}" alt="cover" onerror="this.src='https://via.placeholder.com/150/282828/ffffff?text=ishyn'">
           <div class="card-title">${song.title}</div>
           <div class="card-sub">${song.artist}</div>
         `;
+        card.onclick = (e) => {
+          if(!e.target.classList.contains('delete-btn')) playTrack(idx);
+        };
         grid.appendChild(card);
       });
     }
 
+    // 4. ADD SONG (Supports local File upload & Web URL)
     function addSong() {
-      const title = document.getElementById('songTitle').value;
-      const artist = document.getElementById('songArtist').value;
-      const cover = document.getElementById('songCover').value || 'https://via.placeholder.com/150';
-      const src = document.getElementById('songAudio').value;
+      const title = document.getElementById('songTitle').value.trim();
+      const artist = document.getElementById('songArtist').value.trim() || 'Unknown Artist';
+      let cover = document.getElementById('songCover').value.trim();
+      const fileInput = document.getElementById('songFile');
+      const urlInput = document.getElementById('songUrl').value.trim();
 
-      if (!title || !src) {
-        alert('Song Title and Audio URL are required!');
-        return;
+      if (!title) { alert('Enter Song Title'); return; }
+
+      if (!cover) {
+        cover = 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=300&auto=format&fit=crop';
       }
 
-      const songs = getStoredSongs();
-      songs.push({ title, artist, cover, src });
-      localStorage.setItem('ishyn_songs', JSON.stringify(songs));
+      const songs = getStorage();
 
+      if (fileInput.files.length > 0) {
+        const file = fileInput.files[0];
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          songs.push({ id: Date.now(), title, artist, cover, src: e.target.result });
+          saveStorage(songs);
+          finishAdd();
+        };
+        reader.readAsDataURL(file);
+      } else if (urlInput) {
+        songs.push({ id: Date.now(), title, artist, cover, src: urlInput });
+        saveStorage(songs);
+        finishAdd();
+      } else {
+        alert('Please choose an Audio file or paste an Audio URL!');
+      }
+    }
+
+    function finishAdd() {
       document.getElementById('songTitle').value = '';
       document.getElementById('songArtist').value = '';
       document.getElementById('songCover').value = '';
-      document.getElementById('songAudio').value = '';
-
-      loadSongs();
-      alert('Song added successfully!');
+      document.getElementById('songUrl').value = '';
+      document.getElementById('songFile').value = '';
+      renderPlaylist();
+      alert('Song added! Refresh par delete nahi hoga.');
     }
 
-    // --- 3. Audio Player Controls ---
-    const audio = document.getElementById('audioPlayer');
+    function deleteSong(event, index) {
+      event.stopPropagation();
+      const songs = getStorage();
+      songs.splice(index, 1);
+      saveStorage(songs);
+      renderPlaylist();
+    }
+
+    // 5. AUDIO PLAYER CORE LOGIC
+    const audio = document.getElementById('audioEngine');
     const playBtn = document.getElementById('playBtn');
+    let currentIndex = -1;
 
-    function playSong(index) {
-      const songs = getStoredSongs();
-      const song = songs[index];
+    function playTrack(index) {
+      const songs = getStorage();
+      currentIndex = index;
+      const track = songs[index];
 
-      document.getElementById('currentTitle').innerText = song.title;
-      document.getElementById('currentArtist').innerText = song.artist;
-      document.getElementById('currentCover').src = song.cover;
+      document.getElementById('currentTitle').innerText = track.title;
+      document.getElementById('currentArtist').innerText = track.artist;
+      document.getElementById('currentCover').src = track.cover;
 
-      audio.src = song.src;
+      audio.src = track.src;
       audio.play();
       playBtn.innerText = '⏸';
     }
 
     function togglePlay() {
-      if (!audio.src) return;
+      if (currentIndex === -1) {
+        const songs = getStorage();
+        if(songs.length > 0) playTrack(0);
+        return;
+      }
       if (audio.paused) {
         audio.play();
         playBtn.innerText = '⏸';
@@ -447,32 +423,26 @@
       }
     }
 
-    // --- 4. Backup Functionality ---
-    function backupData() {
-      const songs = localStorage.getItem('ishyn_songs') || JSON.stringify(defaultSongs);
-      const blob = new Blob([songs], { type: 'application/json' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'ishyn_backup.json';
-      a.click();
-      URL.revokeObjectURL(url);
+    // 6. BACKUP ENGINE
+    function exportBackup() {
+      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(getStorage()));
+      const downloadAnchor = document.createElement('a');
+      downloadAnchor.setAttribute("href", dataStr);
+      downloadAnchor.setAttribute("download", "ishyn_music_backup.json");
+      document.body.appendChild(downloadAnchor);
+      downloadAnchor.click();
+      downloadAnchor.remove();
     }
 
-    // --- 5. Modal Helpers ---
-    function openModal(id) {
-      document.getElementById(id).style.display = 'flex';
+    // 7. GOOGLE AUTH & MODALS
+    function triggerGoogleSignIn() {
+      alert("Google Login Activated! Google API Key Add karke Live Host karein.");
     }
-
-    function closeModal(id) {
-      document.getElementById(id).style.display = 'none';
+    function handleGoogleLogin(response) {
+      console.log("Logged in:", response);
     }
-
-    // --- 6. Google Sign-In Callback ---
-    function handleCredentialResponse(response) {
-      console.log("Encoded JWT ID token: " + response.credential);
-      alert("Google Sign-In Successful!");
-    }
+    function openModal(id) { document.getElementById(id).style.display = 'flex'; }
+    function closeModal(id) { document.getElementById(id).style.display = 'none'; }
   </script>
 </body>
 </html>
