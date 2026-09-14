@@ -507,26 +507,73 @@ let objectURL = null;
    STORAGE
 ========================= */
 
-function loadSongs(){
+// ===== SONG STORAGE =====
 
- try{
+const DB_NAME = "IshynMusicDB";
+const DB_VERSION = 1;
+const STORE_NAME = "songs";
 
-  const saved = localStorage.getItem("ishynSongs");
+let db = null;
 
-  if(saved){
-   songs = JSON.parse(saved);
+const dbRequest = indexedDB.open(DB_NAME, DB_VERSION);
+
+dbRequest.onupgradeneeded = function(event) {
+  db = event.target.result;
+
+  if (!db.objectStoreNames.contains(STORE_NAME)) {
+    db.createObjectStore(STORE_NAME, {
+      keyPath: "id",
+      autoIncrement: true
+    });
   }
+};
 
- }catch(error){
+dbRequest.onsuccess = function(event) {
+  db = event.target.result;
+  loadSongs();
+};
 
-  songs=[];
+dbRequest.onerror = function() {
+  console.error("Database open failed");
+};
 
- }
+function loadSongs() {
 
- renderHome();
+  if (!db) return;
 
+  const transaction = db.transaction(STORE_NAME, "readonly");
+  const store = transaction.objectStore(STORE_NAME);
+  const request = store.getAll();
+
+  request.onsuccess = function() {
+
+    songs = request.result || [];
+
+    renderHome();
+  };
 }
 
+function saveSong(song) {
+
+  if (!db) {
+    alert("Storage ready nahi hai. Page reload karo.");
+    return;
+  }
+
+  const transaction = db.transaction(STORE_NAME, "readwrite");
+  const store = transaction.objectStore(STORE_NAME);
+
+  store.add(song);
+
+  transaction.oncomplete = function() {
+    loadSongs();
+  };
+
+  transaction.onerror = function(event) {
+    console.error("Song save error:", event);
+    alert("Song save nahi ho paya.");
+  };
+}
 
 /*
  LocalStorage cannot store MP3 files directly.
