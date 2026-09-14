@@ -766,29 +766,40 @@ function addFiles(files){
 }
 
 function play(index){
+  if(index < 0 || !songs[index]) return;
 
- if(index<0 || !songs[index])return;
+  current = index;
 
- current=index;
+  const song = songs[index];
 
- const song=songs[index];
+  try{
+    const url = URL.createObjectURL(song.blob);
 
- const url=URL.createObjectURL(song.blob);
+    audio.pause();
+    audio.src = "";
+    audio.load();
 
- audio.src=url;
+    audio.src = url;
+    audio.load();
 
- pname.textContent=song.name;
- partist.textContent=song.artist||"Local song";
+    pname.textContent = song.name;
+    partist.textContent = song.artist || "Local song";
 
- document.getElementById("player").style.display="block";
+    document.getElementById("player").style.display = "block";
 
- audio.play()
-  .then(()=>{
-   playbtn.textContent="⏸";
-  })
-  .catch(()=>{
-   alert("Song play nahi ho raha. Please try again.");
-  });
+    audio.play()
+      .then(()=>{
+        playbtn.textContent = "⏸";
+      })
+      .catch((err)=>{
+        console.log(err);
+        alert("Song play nahi ho raha. MP3 file check karo.");
+      });
+
+  }catch(err){
+    console.log(err);
+    alert("Audio load nahi ho raha.");
+  }
 }
 
 function togglePlay(){
