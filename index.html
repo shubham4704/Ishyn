@@ -3,75 +3,41 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
-<meta name="theme-color" content="#100b0b">
+
 <title>Ishyn Music</title>
+<meta name="theme-color" content="#0b0809">
 
 <style>
-*{box-sizing:border-box}
+*{
+  box-sizing:border-box;
+}
 
-:root{
-  --bg:#0d0909;
-  --card:#191211;
-  --card2:#211817;
-  --text:#fff4f1;
-  --muted:#b9aaa7;
-  --pink:#f2b2aa;
-  --pink2:#d98d85;
-  --line:#332522;
+html,body{
+  margin:0;
+  padding:0;
+  min-height:100%;
+  background:#0b0809;
+  color:#fff;
+  font-family:Arial,sans-serif;
 }
 
 body{
-  margin:0;
-  background:var(--bg);
-  color:var(--text);
-  font-family:Arial,sans-serif;
-  padding-bottom:120px;
+  padding-bottom:100px;
 }
 
-button,input{font:inherit}
+button,input{
+  font:inherit;
+}
+
+button{
+  cursor:pointer;
+}
 
 .app{
+  width:100%;
   max-width:700px;
   margin:auto;
-  padding:18px 16px 130px;
-}
-
-/* SPLASH */
-
-#splash{
-  position:fixed;
-  inset:0;
-  z-index:99999;
-  background:#0d0909;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  animation:splashOut .8s ease 3.2s forwards;
-}
-
-.splash-logo{
-  font-size:58px;
-  font-weight:900;
-  letter-spacing:-3px;
-}
-
-.splash-logo span{color:var(--pink)}
-
-.splash-credit{
-  margin-top:18px;
-  color:#c2b4b1;
-  font-size:16px;
-  animation:creditIn 1s ease 1s both;
-}
-
-@keyframes creditIn{
-  from{opacity:0;transform:translateY(15px)}
-  to{opacity:1;transform:translateY(0)}
-}
-
-@keyframes splashOut{
-  to{opacity:0;visibility:hidden}
+  padding:18px 18px 125px;
 }
 
 /* HEADER */
@@ -80,58 +46,108 @@ header{
   display:flex;
   align-items:center;
   justify-content:space-between;
-  margin-bottom:20px;
+  margin-bottom:18px;
 }
 
 .logo{
-  font-size:28px;
-  font-weight:900;
+  font-size:34px;
+  font-weight:800;
+  letter-spacing:-1.5px;
 }
 
-.logo span{color:var(--pink)}
+.logo span{
+  color:#ffb5b5;
+}
 
-.header-icons{
+.header-actions{
   display:flex;
-  gap:9px;
+  gap:10px;
 }
 
 .icon{
-  width:42px;
-  height:42px;
+  width:48px;
+  height:48px;
   border-radius:50%;
-  border:1px solid var(--line);
-  background:#181211;
-  color:#eee;
+  border:1px solid #3b2929;
+  background:#171112;
+  color:#fff;
   display:flex;
   align-items:center;
   justify-content:center;
-  font-size:19px;
+  font-size:21px;
 }
 
-/* CATEGORY */
+.icon:active{
+  transform:scale(.92);
+}
 
-.chips{
+/* SEARCH */
+
+.search{
+  width:100%;
+  padding:16px 18px;
+  border-radius:18px;
+  border:1px solid #38292a;
+  outline:none;
+  background:#171112;
+  color:white;
+  margin-bottom:18px;
+}
+
+.search::placeholder{
+  color:#8e8585;
+}
+
+.search:focus{
+  border-color:#d99393;
+}
+
+/* HERO */
+
+.hero{
+  padding:25px 21px;
+  border-radius:24px;
+  margin-bottom:25px;
+
+  background:
+    radial-gradient(circle at 90% 10%,rgba(255,170,170,.18),transparent 40%),
+    linear-gradient(145deg,#24191a,#120e0f);
+
+  border:1px solid #38292a;
+  box-shadow:0 15px 35px rgba(0,0,0,.35);
+}
+
+.hero h1{
+  margin:0 0 8px;
+  font-size:29px;
+}
+
+.hero p{
+  margin:0;
+  color:#aaa0a0;
+}
+
+/* CATEGORY BUTTONS */
+
+.categories{
   display:flex;
   gap:10px;
   overflow-x:auto;
-  scrollbar-width:none;
+  padding-bottom:5px;
   margin-bottom:25px;
 }
 
-.chips::-webkit-scrollbar{display:none}
-
-.chip{
-  flex-shrink:0;
-  border:0;
-  border-radius:13px;
-  padding:13px 19px;
-  background:#211817;
-  color:#bdaead;
+.categories::-webkit-scrollbar{
+  display:none;
 }
 
-.chip.active{
-  background:#332321;
-  color:#fff;
+.category{
+  flex-shrink:0;
+  padding:13px 18px;
+  border:0;
+  border-radius:14px;
+  background:#211718;
+  color:#c0b4b4;
 }
 
 /* SECTION */
@@ -140,7 +156,7 @@ header{
   display:flex;
   align-items:center;
   justify-content:space-between;
-  margin:22px 0 13px;
+  margin:25px 2px 14px;
 }
 
 .section-title{
@@ -148,70 +164,51 @@ header{
   font-weight:800;
 }
 
-.section-sub{
-  font-size:13px;
-  color:var(--muted);
-  margin-bottom:4px;
-}
-
 .arrow{
   border:0;
   background:none;
-  color:var(--pink);
-  font-size:32px;
+  color:#ffb5b5;
+  font-size:30px;
 }
 
-/* HORIZONTAL CARDS */
+/* CARDS */
 
-.horizontal{
+.card-row{
   display:flex;
   gap:14px;
   overflow-x:auto;
-  scrollbar-width:none;
+  padding-bottom:5px;
 }
 
-.horizontal::-webkit-scrollbar{display:none}
-
-.album{
-  min-width:190px;
-  max-width:190px;
+.card-row::-webkit-scrollbar{
+  display:none;
 }
 
-.album-cover{
-  width:190px;
-  height:190px;
+.music-card{
+  min-width:175px;
+  max-width:175px;
+}
+
+.card-cover{
+  width:175px;
+  height:175px;
   border-radius:15px;
-  background:
-    linear-gradient(135deg,#57352f,#201313);
+  background:linear-gradient(135deg,#5d3030,#171112);
   display:flex;
-  align-items:flex-end;
-  padding:14px;
-  position:relative;
+  align-items:center;
+  justify-content:center;
+  font-size:48px;
+  margin-bottom:9px;
   overflow:hidden;
-  box-shadow:0 8px 20px rgba(0,0,0,.35);
 }
 
-.album-cover:before{
-  content:"♫";
-  position:absolute;
-  right:-8px;
-  top:-28px;
-  font-size:130px;
-  color:rgba(255,255,255,.08);
+.card-cover img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
 }
 
-.album-title{
-  position:relative;
-  z-index:1;
-  font-size:18px;
-  font-weight:800;
-}
-
-.album-info{
-  padding:8px 2px;
-}
-
-.album-name{
+.card-title{
   font-size:15px;
   font-weight:700;
   white-space:nowrap;
@@ -219,1060 +216,5 @@ header{
   text-overflow:ellipsis;
 }
 
-.album-artist{
-  margin-top:5px;
-  color:var(--muted);
-  font-size:13px;
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
-}
-
-/* HERO */
-
-.hero{
-  padding:24px;
-  border-radius:24px;
-  background:
-    radial-gradient(circle at 90% 10%,rgba(242,178,170,.2),transparent 38%),
-    linear-gradient(145deg,#30201e,#171010);
-  border:1px solid var(--line);
-  margin-bottom:25px;
-}
-
-.hero h1{
-  margin:0;
-  font-size:29px;
-}
-
-.hero p{
-  color:var(--muted);
-  margin:9px 0 18px;
-}
-
-.hero-btn{
-  border:0;
-  border-radius:14px;
-  padding:13px 17px;
-  background:var(--pink);
-  color:#211313;
-  font-weight:800;
-}
-
-/* SEARCH */
-
-.search{
-  width:100%;
-  padding:15px 18px;
-  border-radius:16px;
-  border:1px solid var(--line);
-  outline:none;
-  background:#181211;
-  color:white;
-  margin-bottom:18px;
-}
-
-.search:focus{
-  border-color:var(--pink2);
-}
-
-/* SONG LIST */
-
-.song{
-  display:flex;
-  align-items:center;
-  gap:12px;
-  padding:11px;
-  margin-bottom:10px;
-  border-radius:17px;
-  background:linear-gradient(145deg,#1b1413,#151010);
-  border:1px solid var(--line);
-}
-
-.cover{
-  width:57px;
-  height:57px;
-  flex-shrink:0;
-  border-radius:13px;
-  background:linear-gradient(135deg,#75483f,#2a1715);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:25px;
-}
-
-.songinfo{
-  flex:1;
-  min-width:0;
-}
-
-.songname{
-  font-weight:700;
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
-}
-
-.artist{
-  color:var(--muted);
-  font-size:13px;
-  margin-top:5px;
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
-}
-
-.song-actions{
-  display:flex;
-  align-items:center;
-  gap:5px;
-}
-
-.like{
-  border:0;
-  background:none;
-  color:#887b79;
-  font-size:20px;
-}
-
-.like.liked{
-  color:#ff8f9a;
-}
-
-.play{
-  width:43px;
-  height:43px;
-  border:0;
-  border-radius:50%;
-  background:var(--pink);
-  color:#241313;
-  font-weight:bold;
-}
-
-/* BUTTON */
-
-.full-btn{
-  width:100%;
-  padding:15px;
-  border-radius:16px;
-  border:1px solid var(--line);
-  background:#191312;
-  color:white;
-  margin-top:10px;
-}
-
-.full-btn:active,
-.icon:active,
-.play:active{
-  transform:scale(.94);
-}
-
-/* SETTINGS */
-
-.setting{
-  display:flex;
-  align-items:center;
-  gap:13px;
-  padding:16px;
-  margin-bottom:10px;
-  border-radius:17px;
-  background:#181211;
-  border:1px solid var(--line);
-}
-
-.setting-icon{
-  width:40px;
-  height:40px;
-  border-radius:12px;
-  background:#2b1d1b;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-}
-
-.setting-text{
-  flex:1;
-}
-
-.setting-title{
-  font-weight:700;
-}
-
-.setting-desc{
-  color:var(--muted);
-  font-size:12px;
-  margin-top:4px;
-}
-
-.setting-arrow{
-  color:#8f7e7a;
-}
-
-/* PLAYER */
-
-#player{
-  position:fixed;
-  z-index:50;
-  left:50%;
-  bottom:72px;
-  transform:translateX(-50%);
-  width:min(680px,calc(100% - 18px));
-  background:rgba(31,22,21,.98);
-  border:1px solid #49332f;
-  border-radius:21px;
-  padding:11px;
-  box-shadow:0 15px 45px rgba(0,0,0,.65);
-  backdrop-filter:blur(18px);
-}
-
-.player-row{
-  display:flex;
-  align-items:center;
-  gap:10px;
-}
-
-.player-cover{
-  width:49px;
-  height:49px;
-  border-radius:12px;
-  background:linear-gradient(135deg,#75483f,#2a1715);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:20px;
-}
-
-.player-text{
-  flex:1;
-  min-width:0;
-}
-
-.player-name{
-  font-weight:700;
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
-}
-
-.player-artist{
-  color:var(--muted);
-  font-size:12px;
-  margin-top:4px;
-}
-
-.controls{
-  display:flex;
-  align-items:center;
-  gap:5px;
-}
-
-.controls button{
-  width:38px;
-  height:38px;
-  border-radius:50%;
-  border:0;
-  background:#352623;
-  color:white;
-}
-
-.controls .mainplay{
-  background:var(--pink);
-  color:#241313;
-}
-
-.progress{
-  width:100%;
-  margin-top:8px;
-  accent-color:var(--pink);
-}
-
-/* NAV */
-
-nav{
-  position:fixed;
-  z-index:60;
-  bottom:8px;
-  left:50%;
-  transform:translateX(-50%);
-  width:min(650px,calc(100% - 20px));
-  background:rgba(25,17,16,.98);
-  border:1px solid #3a2926;
-  border-radius:25px;
-  display:flex;
-  justify-content:space-around;
-  padding:8px 4px;
-  box-shadow:0 10px 35px rgba(0,0,0,.5);
-}
-
-nav button{
-  border:0;
-  background:none;
-  color:#887b79;
-  padding:8px 13px;
-  border-radius:17px;
-  font-size:11px;
-}
-
-nav button.active{
-  background:#3a2926;
-  color:var(--pink);
-}
-
-nav span{
-  display:block;
-  font-size:21px;
-  margin-bottom:3px;
-}
-
-/* LOGIN */
-
-.login-box{
-  text-align:center;
-  padding:22px;
-  margin-bottom:22px;
-  border-radius:20px;
-  background:#181211;
-  border:1px solid var(--line);
-}
-
-.google-btn{
-  border:1px solid #4a3834;
-  background:#fff;
-  color:#222;
-  padding:13px 22px;
-  border-radius:12px;
-  font-weight:bold;
-}
-
-/* MODAL */
-
-.modal{
-  position:fixed;
-  inset:0;
-  z-index:100;
-  background:rgba(0,0,0,.7);
-  display:none;
-  align-items:flex-end;
-  justify-content:center;
-}
-
-.modal-box{
-  width:min(700px,100%);
-  background:#191211;
-  border:1px solid #3b2926;
-  border-radius:25px 25px 0 0;
-  padding:22px;
-}
-
-.modal-title{
-  font-size:22px;
-  font-weight:800;
-  margin-bottom:15px;
-}
-
-.room-code{
-  font-size:32px;
-  letter-spacing:6px;
-  text-align:center;
-  padding:20px;
-  background:#2a1b19;
-  border-radius:18px;
-  margin:15px 0;
-}
-
-.close{
-  width:100%;
-  padding:14px;
-  border-radius:15px;
-  border:0;
-  background:#332320;
-  color:white;
-}
-
-/* EMPTY */
-
-.empty{
-  text-align:center;
-  color:#837673;
-  padding:40px 15px;
-}
-
-/* HIDE */
-
-.hidden{display:none!important}
-
-@media(max-width:400px){
-  .album{min-width:165px}
-  .album-cover{width:165px;height:165px}
-  .controls button{width:34px;height:34px}
-}
-</style>
-</head>
-
-<body>
-
-<!-- SPLASH -->
-<div id="splash">
-  <div class="splash-logo">Ish<span>yn</span></div>
-  <div class="splash-credit">Developed by Shubham Rawat</div>
-</div>
-
-<div class="app">
-
-<header>
-  <div class="logo">Ish<span>yn</span></div>
-
-  <div class="header-icons">
-    <button class="icon" onclick="show('together')">♬</button>
-    <button class="icon" onclick="show('settings')">⚙</button>
-  </div>
-</header>
-
-<main id="main"></main>
-
-</div>
-
-<!-- PLAYER -->
-<div id="player" class="hidden">
-  <div class="player-row">
-
-    <div class="player-cover">♫</div>
-
-    <div class="player-text">
-      <div class="player-name" id="playerName">Nothing playing</div>
-      <div class="player-artist" id="playerArtist">Ishyn Music</div>
-    </div>
-
-    <div class="controls">
-      <button onclick="prev()">⏮</button>
-      <button class="mainplay" id="playBtn" onclick="togglePlay()">▶</button>
-      <button onclick="next()">⏭</button>
-    </div>
-
-  </div>
-
-  <input
-    id="progress"
-    class="progress"
-    type="range"
-    min="0"
-    max="100"
-    value="0"
-  >
-</div>
-
-<!-- NAVIGATION -->
-<nav>
-
-  <button id="navHome" class="active" onclick="show('home',this)">
-    <span>⌂</span>Home
-  </button>
-
-  <button onclick="show('search',this)">
-    <span>⌕</span>Search
-  </button>
-
-  <button onclick="show('library',this)">
-    <span>♫</span>Songs
-  </button>
-
-  <button onclick="show('liked',this)">
-    <span>♡</span>Liked
-  </button>
-
-  <button onclick="show('settings',this)">
-    <span>⚙</span>Settings
-  </button>
-
-</nav>
-
-<audio id="audio" preload="metadata"></audio>
-
-<!-- LISTEN TOGETHER MODAL -->
-<div id="togetherModal" class="modal">
-
-  <div class="modal-box">
-
-    <div class="modal-title">🎧 Listen Together</div>
-
-    <p style="color:#aaa">
-      Create a room and share the room code with another person.
-    </p>
-
-    <div id="roomCode" class="room-code">----</div>
-
-    <button class="full-btn" onclick="createRoom()">
-      ＋ Create Room
-    </button>
-
-    <button class="full-btn" onclick="joinRoom()">
-      🔗 Join Room
-    </button>
-
-    <button class="close" onclick="closeTogether()">
-      Close
-    </button>
-
-  </div>
-
-</div>
-
-<script>
-
-/* =========================
-   BASIC ELEMENTS
-========================= */
-
-const main = document.getElementById("main");
-const audio = document.getElementById("audio");
-const player = document.getElementById("player");
-const playerName = document.getElementById("playerName");
-const playerArtist = document.getElementById("playerArtist");
-const playBtn = document.getElementById("playBtn");
-const progress = document.getElementById("progress");
-
-let songs = [];
-let current = -1;
-let db = null;
-let currentURL = null;
-
-
-/* =========================
-   DATABASE
-========================= */
-
-const request = indexedDB.open("IshynMusicDB",2);
-
-request.onupgradeneeded = function(e){
-
-  db = e.target.result;
-
-  if(!db.objectStoreNames.contains("songs")){
-
-    const store = db.createObjectStore(
-      "songs",
-      {keyPath:"id",autoIncrement:true}
-    );
-
-    store.createIndex("added","added");
-  }
-};
-
-request.onsuccess = function(e){
-
-  db = e.target.result;
-
-  loadSongs();
-};
-
-request.onerror = function(){
-
-  console.log("Database error");
-};
-
-
-/* =========================
-   LOAD SONGS
-========================= */
-
-function loadSongs(){
-
-  if(!db)return;
-
-  const tx = db.transaction("songs","readonly");
-  const store = tx.objectStore("songs");
-  const req = store.getAll();
-
-  req.onsuccess = function(){
-
-    songs = req.result || [];
-
-    renderHome();
-  };
-}
-
-
-/* =========================
-   SAVE SONG
-========================= */
-
-function saveSong(song){
-
-  if(!db)return;
-
-  const tx = db.transaction("songs","readwrite");
-
-  tx.objectStore("songs").add(song);
-
-  tx.oncomplete = function(){
-
-    loadSongs();
-  };
-}
-
-
-/* =========================
-   ADD PHONE SONGS
-========================= */
-
-function addFiles(files){
-
-  if(!files || !files.length)return;
-
-  let count = 0;
-
-  Array.from(files).forEach(file=>{
-
-    if(!file.type.startsWith("audio/"))return;
-
-    saveSong({
-
-      name:file.name.replace(/\.[^/.]+$/,""),
-
-      artist:"Local song",
-
-      blob:file,
-
-      liked:false,
-
-      added:Date.now()+count
-
-    });
-
-    count++;
-  });
-
-  alert(count+" song(s) added to Ishyn 🎵");
-}
-
-
-/* =========================
-   NAVIGATION
-========================= */
-
-function show(page,btn){
-
-  if(btn){
-
-    document.querySelectorAll("nav button")
-      .forEach(x=>x.classList.remove("active"));
-
-    btn.classList.add("active");
-  }
-
-  if(page==="home")renderHome();
-  else if(page==="search")renderSearch();
-  else if(page==="library")renderLibrary();
-  else if(page==="liked")renderLiked();
-  else if(page==="together")renderTogether();
-  else renderSettings();
-}
-
-
-/* =========================
-   HOME
-========================= */
-
-function renderHome(){
-
-  main.innerHTML = `
-
-    <div class="hero">
-
-      <h1>Welcome to Ishyn 🎵</h1>
-
-      <p>
-        Music that feels like you.
-      </p>
-
-      <label>
-        <input
-          type="file"
-          accept="audio/*"
-          multiple
-          hidden
-          onchange="addFiles(this.files)"
-        >
-
-        <div class="hero-btn">
-          ＋ Add Music
-        </div>
-      </label>
-
-    </div>
-
-    <div class="chips">
-
-      <button class="chip active">Romance</button>
-      <button class="chip">Relax</button>
-      <button class="chip">Feel good</button>
-      <button class="chip">Energize</button>
-      <button class="chip">Party</button>
-
-    </div>
-
-    <div class="section-head">
-      <div>
-        <div class="section-title">New releases</div>
-      </div>
-      <button class="arrow">›</button>
-    </div>
-
-    <div class="horizontal">
-
-      ${albumCard("Midnight Vibes","Ishyn Originals")}
-      ${albumCard("Love Again","Romantic Collection")}
-      ${albumCard("Peaceful Nights","Relax Collection")}
-
-    </div>
-
-    <div class="section-head">
-
-      <div>
-        <div class="section-sub">
-          FOR COZY DAYS AND ENDLESS CUPS OF TEA ☘️
-        </div>
-        <div class="section-title">Rain Therapy 🌧️</div>
-      </div>
-
-      <button class="arrow">›</button>
-
-    </div>
-
-    <div class="horizontal">
-
-      ${albumCard("Romantic Moments","Ishyn")}
-      ${albumCard("80s Romance","Classic Collection")}
-      ${albumCard("00s Romance","Love Hits")}
-
-    </div>
-
-    <div class="section-head">
-
-      <div>
-        <div class="section-sub">
-          MUSIC THAT'S HOT AND HAPPENING!
-        </div>
-        <div class="section-title">India's biggest hits</div>
-      </div>
-
-      <button class="arrow">›</button>
-
-    </div>
-
-    <div class="horizontal">
-
-      ${albumCard("Bollywood Hits","Ishyn Music")}
-      ${albumCard("Hits 2026","Trending")}
-      ${albumCard("Bollywood Hitlist","Popular Now")}
-
-    </div>
-
-    <div class="section-head">
-      <div class="section-title">Recently played</div>
-    </div>
-
-    <div id="recentList"></div>
-  `;
-
-  renderList(
-    document.getElementById("recentList"),
-    songs.slice().reverse().slice(0,5)
-  );
-}
-
-
-/* =========================
-   ALBUM CARD
-========================= */
-
-function albumCard(title,artist){
-
-  return `
-
-    <div class="album">
-
-      <div class="album-cover">
-
-        <div class="album-title">
-          ${esc(title)}
-        </div>
-
-      </div>
-
-      <div class="album-info">
-
-        <div class="album-name">
-          ${esc(title)}
-        </div>
-
-        <div class="album-artist">
-          ${esc(artist)}
-        </div>
-
-      </div>
-
-    </div>
-
-  `;
-}
-
-
-/* =========================
-   LIBRARY
-========================= */
-
-function renderLibrary(){
-
-  main.innerHTML = `
-
-    <div class="section-head">
-
-      <div class="section-title">
-        My Songs
-      </div>
-
-    </div>
-
-    <label>
-
-      <input
-        type="file"
-        accept="audio/*"
-        multiple
-        hidden
-        onchange="addFiles(this.files)"
-      >
-
-      <div class="full-btn">
-        ＋ Add MP3 / Audio
-      </div>
-
-    </label>
-
-    <div style="height:15px"></div>
-
-    <div id="libraryList"></div>
-
-  `;
-
-  renderList(
-    document.getElementById("libraryList"),
-    songs
-  );
-}
-
-
-/* =========================
-   SEARCH
-========================= */
-
-function renderSearch(){
-
-  main.innerHTML = `
-
-    <div class="section-title">
-      Search Music
-    </div>
-
-    <input
-      id="searchBox"
-      class="search"
-      placeholder="Search your saved songs..."
-      oninput="doSearch(this.value)"
-    >
-
-    <div id="results"></div>
-
-  `;
-
-  doSearch("");
-}
-
-
-function doSearch(q){
-
-  const box = document.getElementById("results");
-
-  if(!box)return;
-
-  q = String(q).toLowerCase().trim();
-
-  const found = songs.filter(song=>{
-
-    return song.name.toLowerCase().includes(q) ||
-           String(song.artist||"").toLowerCase().includes(q);
-
-  });
-
-  renderList(box,found);
-}
-
-
-/* =========================
-   LIKED
-========================= */
-
-function renderLiked(){
-
-  main.innerHTML = `
-
-    <div class="section-title">
-      ❤️ Liked Songs
-    </div>
-
-    <div id="likedList"></div>
-
-  `;
-
-  renderList(
-    document.getElementById("likedList"),
-    songs.filter(s=>s.liked)
-  );
-}
-
-
-/* =========================
-   SONG LIST
-========================= */
-
-function renderList(box,list){
-
-  if(!box)return;
-
-  if(!list.length){
-
-    box.innerHTML = `
-
-      <div class="empty">
-
-        No songs here yet 🎵
-
-        <br><br>
-
-        Add music from your phone.
-
-      </div>
-
-    `;
-
-    return;
-  }
-
-  box.innerHTML = "";
-
-  list.forEach(song=>{
-
-    const realIndex =
-      songs.findIndex(x=>x.id===song.id);
-
-    const el =
-      document.createElement("div");
-
-    el.className = "song";
-
-    el.innerHTML = `
-
-      <div class="cover">♫</div>
-
-      <div class="songinfo">
-
-        <div class="songname">
-          ${esc(song.name)}
-        </div>
-
-        <div class="artist">
-          ${esc(song.artist || "Unknown artist")}
-        </div>
-
-      </div>
-
-      <div class="song-actions">
-
-        <button
-          class="like ${song.liked?"liked":""}"
-          onclick="toggleLike(${song.id})"
-        >
-          ${song.liked?"♥":"♡"}
-        </button>
-
-        <button
-          class="play"
-          onclick="play(${realIndex})"
-        >
-          ▶
-        </button>
-
-      </div>
-
-    `;
-
-    box.appendChild(el);
-
-  });
-}
-
-
-/* =========================
-   ESCAPE HTML
-========================= */
-
-function esc(x){
-
-  return String(x).replace(
-    /[&<>"']/g,
-    m=>({
-      "&":"&amp;",
-      "<":"&lt;",
-      ">":"&gt;",
-      '"':"&quot;",
-      "'":"&#39;"
-    }[m])
-  );
-}
-
-
-/* =========================
-   LIKE
-========================= */
-
-function toggleLike(id){
-
-  const song =
-    songs.find(s=>s.id===id);
-
-  if(!song)return;
-
-  song.liked = !song.liked;
-
-  const tx =
-    db.transaction("songs","readwrite");
-
-  tx.objectStore("songs").put(song);
-
-  tx.oncomplete = ()=>{
-
-    loadSongs();
-
-    setTimeout(()=>{
-      renderLiked();
-    },100);
-  };
-}
-
-
-/* =========================
-   PLAY
-========================= */
-
-function play(index){
-
-  if(index<0 || !songs[index])return;
-
-  current=index;
-
-  const song=songs[index];
-
-  if(currentURL){
-
-    UR
+.card-artist{
+  margin-top:
