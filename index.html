@@ -806,135 +806,100 @@ function renderLiked(){
 
 function renderSettings(){
 
- main.innerHTML=`
-
- <button
-  class="back"
-  onclick="showPage('home')">
-  ‹
- </button>
+ main.innerHTML = `
+ <button class="back" onclick="show('home')">‹ Back</button>
 
  <div class="hero">
-
-  <h1>Ishyn Music</h1>
-
-  <p>
-   Developed by Shubham Rawat
-  </p>
-
+   <h1>Ishyn Music</h1>
+   <p>Developed by Shubham Rawat</p>
  </div>
 
+ <div class="section-title">Settings</div>
 
- <div class="section-title">
-  Settings
+ <div class="setting" onclick="alert('Music player settings coming soon')">
+   <div class="setting-title">🎵 Music</div>
+   <div class="setting-sub">Personal music player</div>
  </div>
 
+ <div class="setting" onclick="alert('${songs.length} songs are saved on this device')">
+   <div class="setting-title">💾 Storage</div>
+   <div class="setting-sub">${songs.length} songs saved</div>
+ </div>
 
- <div class="setting">
+ <div class="setting" onclick="googleLogin()">
+   <div class="setting-title">🔐 Account</div>
+   <div class="setting-sub">Google Login</div>
+ </div>
 
-  <div>
-   <div class="setting-title">
-    🎵 Music
-   </div>
+ <div class="setting" onclick="listenTogether()">
+   <div class="setting-title">👥 Listen Together</div>
+   <div class="setting-sub">Connect with another person</div>
+ </div>
 
+ <div class="setting" onclick="backupSongs()">
+   <div class="setting-title">☁️ Backup</div>
+   <div class="setting-sub">Backup your saved songs</div>
+ </div>
+
+ <div class="setting" onclick="aboutIshyn()">
+   <div class="setting-title">ℹ️ About Ishyn</div>
    <div class="setting-sub">
-    Personal music player
+     Ishyn Music<br>
+     Developed by Shubham Rawat
    </div>
-  </div>
-
  </div>
 
-
- <div class="setting">
-
-  <div>
-   <div class="setting-title">
-    💾 Storage
-   </div>
-
-   <div class="setting-sub">
-    ${songs.length} songs
-   </div>
-  </div>
-
- </div>
-
-
- <div class="setting">
-
-  <div>
-   <div class="setting-title">
-    🔐 Account
-   </div>
-
-   <div class="setting-sub">
-    Google login will be connected later
-   </div>
-  </div>
-
- </div>
-
-
- <div class="setting">
-
-  <div>
-   <div class="setting-title">
-    👥 Listen Together
-   </div>
-
-   <div class="setting-sub">
-    Coming soon
-   </div>
-  </div>
-
- </div>
-
-
- <div class="setting">
-
-  <div>
-   <div class="setting-title">
-    ☁ Backup
-   </div>
-
-   <div class="setting-sub">
-    Backup feature coming soon
-   </div>
-  </div>
-
- </div>
-
-
- <div class="setting">
-
-  <div>
-   <div class="setting-title">
-    ℹ️ About Ishyn
-   </div>
-
-   <div class="setting-sub">
-    Ishyn Music<br>
-    Developed by Shubham Rawat
-   </div>
-
-  </div>
-
- </div>
-
-
- <button
-  class="upload"
-  onclick="clearSongs()">
-
-  🗑 Clear saved song information
-
+ <button class="upload" onclick="clearSongs()">
+   🗑 Clear saved song information
  </button>
-
  `;
-
 }
 
+function googleLogin(){
+ alert("Google Login option is available on the Ishyn account screen.");
+}
 
+function listenTogether(){
+ alert("Listen Together: connection feature will be added here.");
+}
+
+function backupSongs(){
+ alert("Backup: your saved songs are stored on this browser.");
+}
+
+function aboutIshyn(){
+ alert(
+   "Ishyn Music\\n\\n" +
+   "Developed by Shubham Rawat\\n\\n" +
+   "Version 1.0"
+ );
+}
+
+function clearSongs(){
+
+ if(!songs.length){
+   alert("No saved songs.");
+   return;
+ }
+
+ if(!confirm("Delete all saved songs?")) return;
+
+ const tx = db.transaction("songs","readwrite");
+
+ tx.objectStore("songs").clear();
+
+ tx.oncomplete = () => {
+   songs = [];
+   current = -1;
+
+   audio.pause();
+   audio.src = "";
+
+   document.getElementById("player").style.display = "none";
+
+   renderSettings();
+ };
+}
 /* =========================
    SONG LIST
 ========================= */
