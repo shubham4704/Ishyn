@@ -14,14 +14,14 @@ body{
 }
 .app{max-width:520px;margin:auto;padding:16px}
 header{
- display:flex;align-items:center;justify-content:space-between;
- padding:8px 0 18px
+.fav{
+  width:38px;height:38px;border:0;border-radius:50%;
+  background:#292929;color:#aaa;font-size:20px;
+  flex-shrink:0
 }
-.logo{font-size:29px;font-weight:800}
-.logo span{color:#1db954}
-.icon{
- background:#171717;border:0;color:white;border-radius:50%;
- width:42px;height:42px;font-size:20px
+.fav.active{
+  color:#1db954;
+}
 }
 .search{
  width:100%;padding:15px;border:0;border-radius:15px;
