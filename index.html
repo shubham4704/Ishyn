@@ -457,11 +457,52 @@ nav button:active{
   border:1px solid #30343a !important;
   color:#fff !important;
   font-size:20px !important;
- } 
+ }
+  #splash{
+  position:fixed;
+  inset:0;
+  z-index:99999;
+  background:#08090b;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  color:white;
+  animation:splashOut .8s ease 3.5s forwards;
+}
+
+.splash-logo{
+  font-size:52px;
+  font-weight:800;
+  margin-bottom:20px;
+}
+
+.splash-logo span{
+  color:#1db954;
+}
+
+.splash-credit{
+  font-size:18px;
+  color:#aaa;
+  animation:creditIn 1s ease 1.5s both;
+}
+
+@keyframes creditIn{
+  from{opacity:0;transform:translateY(15px)}
+  to{opacity:1;transform:translateY(0)}
+}
+
+@keyframes splashOut{
+  to{opacity:0;visibility:hidden}
+}
 </style>
 </head>
 
 <body>
+  <div id="splash">
+  <div class="splash-logo">Ish<span>yn</span></div>
+  <div class="splash-credit">Developed by Shubham Rawat</div>
+  </div>
 <div class="app">
 
 <header>
