@@ -1310,48 +1310,78 @@ setTimeout(function(){
 /* =========================================
    VIEW SWITCH
 ========================================= */
+function showView(viewName, fromBack){
 
-function showView(viewName){
+  // Back button se aaye hain to history me dobara entry mat banao
+  if(!fromBack){
+    history.pushState(
+      { view: viewName },
+      "",
+      "#" + viewName
+    );
+  }
 
-  document
-    .querySelectorAll(".view")
-    .forEach(function(v){
+  // Sabhi screens hide
+  document.querySelectorAll(".view").forEach(function(v){
+    v.classList.remove("active");
+  });
 
-      v.classList.remove("active");
+  // Sabhi navigation buttons inactive
+  document.querySelectorAll(".nav-btn").forEach(function(b){
+    b.classList.remove("active");
+  });
 
-    });
+  // Selected screen show
+  const selectedView = document.getElementById("view-" + viewName);
+
+  if(selectedView){
+    selectedView.classList.add("active");
+  }
+
+  // Home
+  if(viewName === "home"){
+    const nav = document.getElementById("nav-home");
+    if(nav) nav.classList.add("active");
+  }
+
+  // Listen Together
+  if(viewName === "together"){
+    const nav = document.getElementById("nav-together");
+    if(nav) nav.classList.add("active");
+  }
+
+  // Settings
+  if(viewName === "settings"){
+    const nav = document.getElementById("nav-settings");
+    if(nav) nav.classList.add("active");
+  }
+}
 
 
-  document
-    .querySelectorAll(".nav-btn")
-    .forEach(function(b){
+/* ANDROID / BROWSER BACK BUTTON */
 
-      b.classList.remove("active");
+window.addEventListener("popstate", function(event){
 
-    });
+  let view = "home";
 
+  if(event.state && event.state.view){
+    view = event.state.view;
+  }
 
-  document
-    .getElementById("view-"+viewName)
-    .classList.add("active");
+  showView(view, true);
 
-
-  if(viewName==="home")
-    document
-      .getElementById("nav-home")
-      .classList.add("active");
+});
 
 
-  if(viewName==="together")
-    document
-      .getElementById("nav-together")
-      .classList.add("active");
+/* INITIAL HISTORY */
 
+if(!location.hash){
 
-  if(viewName==="settings")
-    document
-      .getElementById("nav-settings")
-      .classList.add("active");
+  history.replaceState(
+    { view: "home" },
+    "",
+    "#home"
+  );
 
 }
 
