@@ -1,696 +1,351 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hi">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ishyn - Music Player</title>
+  <title>ishyn Music</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     :root {
-      --bg-dark: #120b0b;
+      --bg: #120b0b;
       --card-bg: #231616;
-      --accent-color: #e06d63;
-      --accent-light: #f7a89e;
-      --text-main: #fbeee8;
-      --text-sub: #a8948f;
-      --nav-bg: #1c1111;
-      --border-radius: 20px;
+      --accent: #f88c7d;
+      --accent-dim: #5c2f29;
+      --text: #f7e0dc;
+      --text-dim: #a68c87;
+      --radius: 24px;
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      user-select: none;
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; user-select: none; }
+    body { background: #000; color: var(--text); display: flex; justify-content: center; min-height: 100vh; }
+    
+    .app {
+      width: 100%; max-width: 412px; height: 100vh; background: var(--bg);
+      position: relative; overflow: hidden; display: flex; flex-direction: column;
     }
 
-    body {
-      background-color: var(--bg-dark);
-      color: var(--text-main);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      overflow: hidden;
+    /* PREMIUM SPLASH SCREEN STYLES */
+    #splash {
+      position: absolute; inset: 0; background: #0d0606; z-index: 1000;
+      display: flex; flex-direction: column; align-items: center; justify-content: space-between;
+      padding: 60px 24px; overflow: hidden;
+      transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.8s;
     }
+    .ambient-glow { position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.35; pointer-events: none; }
+    .glow-1 { width: 260px; height: 260px; background: #f88c7d; top: 15%; left: 50%; transform: translateX(-50%); animation: pulseGlow 4s infinite alternate ease-in-out; }
+    .glow-2 { width: 180px; height: 180px; background: #8a2d28; bottom: 20%; right: 10%; }
+    .splash-content { display: flex; flex-direction: column; align-items: center; margin-top: auto; margin-bottom: auto; z-index: 2; animation: splashScale 1.2s cubic-bezier(0.16, 1, 0.3, 1); }
+    .logo-wrapper { position: relative; display: flex; align-items: center; justify-content: center; margin-bottom: 24px; }
+    .logo-ring { position: absolute; width: 105px; height: 105px; border-radius: 50%; border: 1.5px solid rgba(248, 140, 125, 0.3); animation: rotateRing 8s linear infinite; }
+    .logo-box { width: 88px; height: 88px; background: linear-gradient(145deg, #f88c7d 0%, #8a2d28 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2.4rem; font-weight: 800; color: #ffffff; letter-spacing: -1px; box-shadow: 0 12px 35px rgba(248, 140, 125, 0.35), inset 0 2px 4px rgba(255, 255, 255, 0.4); }
+    .splash-title { font-size: 3rem; font-weight: 900; letter-spacing: 3px; background: linear-gradient(180deg, #ffffff 30%, #f88c7d 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 6px; }
+    .splash-subtitle { font-size: 0.8rem; letter-spacing: 2px; color: #a68c87; text-transform: uppercase; font-weight: 500; opacity: 0.8; }
+    .splash-dev { display: flex; flex-direction: column; align-items: center; gap: 3px; z-index: 2; animation: fadeInUp 1s ease-out 0.4s backwards; }
+    .dev-label { font-size: 0.65rem; letter-spacing: 2px; color: rgba(247, 224, 220, 0.4); text-transform: uppercase; }
+    .dev-name { font-size: 0.9rem; font-weight: 700; letter-spacing: 1.5px; color: #f7e0dc; text-transform: uppercase; background: linear-gradient(90deg, #f7e0dc, #f88c7d, #f7e0dc); background-size: 200% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent; animation: shine 3s linear infinite; }
 
-    .app-container {
-      width: 100%;
-      max-width: 430px;
-      height: 100vh;
-      max-height: 900px;
-      background: var(--bg-dark);
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-      box-shadow: 0 0 50px rgba(0,0,0,0.8);
-    }
+    @keyframes splashScale { 0% { transform: scale(0.85); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+    @keyframes pulseGlow { 0% { transform: translateX(-50%) scale(0.9); opacity: 0.25; } 100% { transform: translateX(-50%) scale(1.2); opacity: 0.45; } }
+    @keyframes rotateRing { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    @keyframes fadeInUp { 0% { transform: translateY(15px); opacity: 0; } 100% { transform: translateY(0); opacity: 1; } }
+    @keyframes shine { to { background-position: 200% center; } }
 
-    /* SPLASH SCREEN (INTRO ANIMATION) */
-    #splash-screen {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: #0d0606;
-      z-index: 1000;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      transition: opacity 0.8s ease, visibility 0.8s;
-    }
+    /* HEADER & CHIPS */
+    header { padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; }
+    .header-left { display: flex; align-items: center; gap: 10px; font-weight: bold; font-size: 1.2rem; cursor: pointer; }
+    .mini-logo { width: 28px; height: 28px; background: var(--accent); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; color: #000; }
+    .header-icons { display: flex; gap: 16px; color: var(--accent); font-size: 1.1rem; }
+    .header-icons i { cursor: pointer; }
 
-    .logo-container {
-      position: relative;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 20px;
-    }
+    .chips { display: flex; gap: 8px; padding: 4px 16px 12px; overflow-x: auto; scrollbar-width: none; }
+    .chip { background: var(--card-bg); padding: 8px 16px; border-radius: 16px; font-size: 0.85rem; color: var(--text); white-space: nowrap; cursor: pointer; transition: 0.2s; }
+    .chip.active { background: var(--accent); color: #261614; font-weight: 600; }
 
-    .logo-glow {
-      position: absolute;
-      width: 120px;
-      height: 120px;
-      background: radial-gradient(circle, var(--accent-color) 0%, transparent 70%);
-      border-radius: 50%;
-      animation: pulse 2s infinite ease-in-out;
-      opacity: 0.6;
-    }
+    /* CONTENT VIEWS */
+    .view-container { flex: 1; overflow-y: auto; padding: 0 16px 140px; scrollbar-width: none; }
+    .view { display: none; }
+    .view.active { display: block; }
 
-    .logo-badge {
-      width: 80px;
-      height: 80px;
-      background: linear-gradient(135deg, #e06d63, #8a2d28);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 2.2rem;
-      font-weight: bold;
-      color: #fff;
-      box-shadow: 0 10px 25px rgba(224, 109, 99, 0.4);
-      position: relative;
-      z-index: 2;
-    }
+    .sec-head { font-size: 1.1rem; font-weight: 700; margin: 16px 0 10px; display: flex; justify-content: space-between; align-items: center; }
+    .card-block { background: var(--card-bg); border-radius: var(--radius); padding: 8px; }
+    .song-row { display: flex; align-items: center; gap: 12px; padding: 8px; border-radius: 12px; cursor: pointer; }
+    .song-row:hover { background: rgba(255,255,255,0.05); }
+    .song-row img { width: 44px; height: 44px; border-radius: 8px; object-fit: cover; }
+    .song-info { flex: 1; }
+    .song-info h4 { font-size: 0.9rem; font-weight: 600; }
+    .song-info p { font-size: 0.75rem; color: var(--text-dim); }
 
-    .brand-title {
-      font-size: 2.5rem;
-      font-weight: 800;
-      letter-spacing: 2px;
-      background: linear-gradient(180deg, #ffffff, #e06d63);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      margin-top: 10px;
-    }
+    .circle-grid { display: flex; gap: 14px; overflow-x: auto; scrollbar-width: none; }
+    .circle-item { text-align: center; width: 85px; flex-shrink: 0; cursor: pointer; }
+    .circle-item img { width: 80px; height: 80px; border-radius: 50%; object-fit: cover; margin-bottom: 4px; }
 
-    .developer-tag {
-      position: absolute;
-      bottom: 40px;
-      font-size: 0.85rem;
-      letter-spacing: 1.5px;
-      color: var(--text-sub);
-      text-transform: uppercase;
-      animation: fadeIn 2s ease-in-out;
-    }
-
-    .developer-tag span {
-      color: var(--accent-light);
-      font-weight: 600;
-    }
-
-    @keyframes pulse {
-      0% { transform: scale(0.9); opacity: 0.4; }
-      50% { transform: scale(1.3); opacity: 0.8; }
-      100% { transform: scale(0.9); opacity: 0.4; }
-    }
-
-    /* HEADER */
-    header {
-      padding: 16px 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .header-left {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .app-icon-mini {
-      width: 32px;
-      height: 32px;
-      background: var(--accent-color);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.9rem;
-      font-weight: bold;
-    }
-
-    .header-icons {
-      display: flex;
-      gap: 16px;
-      color: var(--text-sub);
-      font-size: 1.2rem;
-    }
-
-    /* TAB CHIPS */
-    .chips-wrapper {
-      display: flex;
-      gap: 10px;
-      padding: 0 20px 16px 20px;
-      overflow-x: auto;
-      scrollbar-width: none;
-    }
-
-    .chip {
-      background: var(--card-bg);
-      padding: 8px 16px;
-      border-radius: 20px;
-      font-size: 0.85rem;
-      color: var(--text-main);
-      white-space: nowrap;
-      cursor: pointer;
-    }
-
-    .chip.active {
-      background: var(--text-main);
-      color: var(--bg-dark);
-      font-weight: 600;
-    }
-
-    /* MAIN VIEW CONTAINER */
-    .view-content {
-      flex: 1;
-      overflow-y: auto;
-      padding: 0 20px 140px 20px;
-      scrollbar-width: none;
-    }
-
-    .view-section {
-      display: none;
-    }
-
-    .view-section.active {
-      display: block;
-    }
-
-    .section-title {
-      font-size: 1.2rem;
-      font-weight: 700;
-      margin: 16px 0 12px 0;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    /* LIST CARDS */
-    .song-list {
-      background: var(--card-bg);
-      border-radius: var(--border-radius);
-      padding: 8px;
-    }
-
-    .song-item {
-      display: flex;
-      align-items: center;
-      padding: 10px;
-      border-radius: 12px;
-      gap: 12px;
-      cursor: pointer;
-    }
-
-    .song-item:hover {
-      background: rgba(255,255,255,0.05);
-    }
-
-    .song-img {
-      width: 48px;
-      height: 48px;
-      border-radius: 8px;
-      object-fit: cover;
-    }
-
-    .song-details {
-      flex: 1;
-    }
-
-    .song-title {
-      font-size: 0.95rem;
-      font-weight: 600;
-      margin-bottom: 2px;
-    }
-
-    .song-artist {
-      font-size: 0.8rem;
-      color: var(--text-sub);
-    }
-
-    /* CIRCLE ARTISTS */
-    .artists-grid {
-      display: flex;
-      gap: 16px;
-      overflow-x: auto;
-      scrollbar-width: none;
-      padding: 8px 0;
-    }
-
-    .artist-card {
-      text-align: center;
-      width: 90px;
-      flex-shrink: 0;
-    }
-
-    .artist-img {
-      width: 80px;
-      height: 80px;
-      border-radius: 50%;
-      object-fit: cover;
-      margin-bottom: 8px;
-    }
-
-    .artist-name {
-      font-size: 0.8rem;
-      font-weight: 500;
-    }
-
-    /* MINI PLAYER BAR */
-    .mini-player {
-      position: absolute;
-      bottom: 75px;
-      left: 16px;
-      right: 16px;
-      background: var(--card-bg);
-      border-radius: 30px;
-      padding: 8px 16px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
-      cursor: pointer;
-    }
-
-    .mini-img-wrapper {
-      position: relative;
-    }
-
-    .mini-img {
-      width: 42px;
-      height: 42px;
-      border-radius: 50%;
-      object-fit: cover;
-    }
-
-    .mini-info {
-      flex: 1;
-    }
-
-    .mini-title {
-      font-size: 0.85rem;
-      font-weight: 600;
-    }
-
-    .mini-artist {
-      font-size: 0.75rem;
-      color: var(--text-sub);
-    }
-
-    .mini-controls {
-      display: flex;
-      gap: 12px;
-      align-items: center;
-      color: var(--text-main);
-    }
-
-    /* FULL PLAYER MODAL */
-    #player-modal {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: #190c0a;
-      z-index: 500;
-      display: flex;
-      flex-direction: column;
-      padding: 24px;
-      transform: translateY(100%);
-      transition: transform 0.4s cubic-bezier(0.1, 1, 0.1, 1);
-    }
-
-    #player-modal.open {
-      transform: translateY(0);
-    }
-
-    .modal-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 30px;
-    }
-
-    .cover-art-container {
-      width: 100%;
-      aspect-ratio: 1;
-      border-radius: 20px;
-      overflow: hidden;
-      box-shadow: 0 15px 35px rgba(0,0,0,0.6);
-      margin-bottom: 30px;
-    }
-
-    .cover-art-container img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    .progress-container {
-      margin: 20px 0;
-    }
-
-    .progress-bar {
-      width: 100%;
-      height: 4px;
-      background: rgba(255,255,255,0.2);
-      border-radius: 2px;
-      position: relative;
-    }
-
-    .progress-fill {
-      width: 45%;
-      height: 100%;
-      background: var(--text-main);
-      border-radius: 2px;
-    }
-
-    .time-stamps {
-      display: flex;
-      justify-content: space-between;
-      font-size: 0.75rem;
-      color: var(--text-sub);
-      margin-top: 8px;
-    }
-
-    .player-actions {
-      display: flex;
-      justify-content: space-around;
-      align-items: center;
-      margin-top: 20px;
-      font-size: 1.5rem;
-    }
-
-    .play-circle {
-      width: 64px;
-      height: 64px;
-      background: var(--text-main);
-      color: var(--bg-dark);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.5rem;
-    }
-
-    /* BOTTOM NAV BAR */
-    .bottom-nav {
-      position: absolute;
-      bottom: 0;
-      width: 100%;
-      height: 65px;
-      background: var(--nav-bg);
-      display: flex;
-      justify-content: space-around;
-      align-items: center;
-    }
-
-    .nav-item {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      color: var(--text-sub);
-      font-size: 1.1rem;
-      cursor: pointer;
-      gap: 4px;
-    }
-
-    .nav-item span {
-      font-size: 0.7rem;
-    }
-
-    .nav-item.active {
-      color: var(--accent-light);
-    }
+    /* LISTEN TOGETHER */
+    .lt-card { background: var(--card-bg); border-radius: var(--radius); padding: 16px; margin-bottom: 12px; }
+    .code-inputs { display: flex; gap: 6px; margin: 12px 0; }
+    .code-inputs input { width: 100%; height: 45px; background: rgba(0,0,0,0.2); border: 1px solid var(--accent-dim); border-radius: 10px; text-align: center; color: #fff; font-weight: bold; font-size: 1.1rem; }
+    .btn { width: 100%; padding: 12px; background: var(--accent); color: var(--card-bg); border: none; border-radius: 20px; font-weight: bold; cursor: pointer; transition: 0.2s; }
+    .btn:active { transform: scale(0.98); }
 
     /* SETTINGS LIST */
-    .setting-card {
-      background: var(--card-bg);
-      border-radius: 16px;
-      padding: 16px;
-      margin-bottom: 12px;
-      display: flex;
-      align-items: center;
-      gap: 16px;
+    .set-row { background: var(--card-bg); padding: 16px; border-radius: 16px; margin-bottom: 8px; display: flex; align-items: center; gap: 14px; cursor: pointer; }
+    .set-row i { color: var(--accent); font-size: 1.1rem; }
+
+    /* PLAYER BAR */
+    .mini-player {
+      position: absolute; bottom: 70px; left: 12px; right: 12px; background: var(--card-bg);
+      border-radius: 30px; padding: 6px 14px; display: flex; align-items: center; gap: 10px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.5); cursor: pointer;
     }
+    .mini-player img { width: 40px; height: 40px; border-radius: 50%; }
+
+    /* FULL PLAYER */
+    #full-player {
+      position: absolute; inset: 0; background: var(--bg); z-index: 80;
+      transform: translateY(100%); transition: transform 0.35s ease; padding: 20px;
+      display: flex; flex-direction: column; justify-content: space-between;
+    }
+    #full-player.active { transform: translateY(0); }
+
+    /* OVERLAY MODAL FOR BACKUP / ABOUT / EQUALIZER */
+    .overlay-modal {
+      position: absolute; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(10px);
+      z-index: 500; display: none; align-items: center; justify-content: center; padding: 20px;
+    }
+    .modal-box { background: var(--card-bg); border-radius: var(--radius); padding: 24px; width: 100%; max-width: 320px; text-align: center; border: 1px solid var(--accent-dim); }
+    .modal-box h3 { margin-bottom: 10px; color: var(--accent); }
+    .modal-box p { font-size: 0.85rem; color: var(--text-dim); margin-bottom: 20px; line-height: 1.4; }
+
+    /* BOTTOM NAV */
+    .nav { position: absolute; bottom: 0; width: 100%; height: 60px; background: #190e0d; display: flex; justify-content: space-around; align-items: center; }
+    .nav-btn { display: flex; flex-direction: column; align-items: center; color: var(--text-dim); font-size: 0.75rem; gap: 3px; cursor: pointer; }
+    .nav-btn.active { color: var(--accent); }
+    .nav-btn i { font-size: 1.1rem; }
   </style>
 </head>
 <body>
 
-  <div class="app-container">
+<div class="app">
+  <!-- 1. INTRO SPLASH SCREEN -->
+  <div id="splash">
+    <div class="ambient-glow glow-1"></div>
+    <div class="ambient-glow glow-2"></div>
     
-    <!-- 1. INTRO/SPLASH SCREEN -->
-    <div id="splash-screen">
-      <div class="logo-container">
-        <div class="logo-glow"></div>
-        <div class="logo-badge">is</div>
+    <div class="splash-content">
+      <div class="logo-wrapper">
+        <div class="logo-ring"></div>
+        <div class="logo-box">is</div>
       </div>
-      <div class="brand-title">ishyn</div>
-      <div class="developer-tag">Developed by <span>Shubham Rawat</span></div>
+      
+      <h1 class="splash-title">ishyn</h1>
+      <p class="splash-subtitle">Premium Audio Experience</p>
     </div>
 
-    <!-- 2. HEADER -->
-    <header>
-      <div class="header-left">
-        <div class="app-icon-mini">is</div>
-        <h2 style="font-size: 1.4rem;">Music</h2>
-      </div>
-      <div class="header-icons">
-        <i class="fa-solid fa-clock-rotate-left"></i>
-        <i class="fa-solid fa-sliders"></i>
-        <i class="fa-solid fa-gear" onclick="switchTab('settings')"></i>
-      </div>
-    </header>
-
-    <!-- CHIPS -->
-    <div class="chips-wrapper">
-      <div class="chip active">Workout</div>
-      <div class="chip">Energize</div>
-      <div class="chip">Romance</div>
-      <div class="chip">Feel good</div>
-      <div class="chip">Sleep</div>
+    <div class="splash-dev">
+      <span class="dev-label">Designed & Developed by</span>
+      <span class="dev-name">Shubham Rawat</span>
     </div>
+  </div>
 
-    <!-- 3. VIEWS CONTAINER -->
-    <div class="view-content">
-
-      <!-- HOME TAB -->
-      <div id="home-view" class="view-section active">
-        <div class="section-title">
-          <span>Covers and remixes</span>
-          <span style="font-size: 0.8rem; color: var(--accent-light);">Play all</span>
-        </div>
-
-        <div class="song-list">
-          <div class="song-item" onclick="openPlayer('Raat Ke Shikari', 'Masoom Sharma', 'https://picsum.photos/300?random=1')">
-            <img src="https://picsum.photos/300?random=1" class="song-img">
-            <div class="song-details">
-              <div class="song-title">Raat Ke Shikari</div>
-              <div class="song-artist">Masoom Sharma • 1.2M plays</div>
-            </div>
-            <i class="fa-solid fa-ellipsis-vertical" style="color: var(--text-sub);"></i>
-          </div>
-
-          <div class="song-item" onclick="openPlayer('Save Your Tears', 'The Weeknd', 'https://picsum.photos/300?random=2')">
-            <img src="https://picsum.photos/300?random=2" class="song-img">
-            <div class="song-details">
-              <div class="song-title">Save Your Tears</div>
-              <div class="song-artist">The Weeknd • 769M plays</div>
-            </div>
-            <i class="fa-solid fa-ellipsis-vertical" style="color: var(--text-sub);"></i>
-          </div>
-
-          <div class="song-item" onclick="openPlayer('Laal Pari Remix', 'Yo Yo Honey Singh', 'https://picsum.photos/300?random=3')">
-            <img src="https://picsum.photos/300?random=3" class="song-img">
-            <div class="song-details">
-              <div class="song-title">Laal Pari Remix</div>
-              <div class="song-artist">Yo Yo Honey Singh • 1.6M plays</div>
-            </div>
-            <i class="fa-solid fa-ellipsis-vertical" style="color: var(--text-sub);"></i>
-          </div>
-        </div>
-
-        <div class="section-title">Top Artists</div>
-        <div class="artists-grid">
-          <div class="artist-card">
-            <img src="https://picsum.photos/200?random=10" class="artist-img">
-            <div class="artist-name">Arijit Singh</div>
-          </div>
-          <div class="artist-card">
-            <img src="https://picsum.photos/200?random=11" class="artist-img">
-            <div class="artist-name">Jubin Nautiyal</div>
-          </div>
-          <div class="artist-card">
-            <img src="https://picsum.photos/200?random=12" class="artist-img">
-            <div class="artist-name">Vikram Malik</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- SEARCH TAB -->
-      <div id="search-view" class="view-section">
-        <div style="background: var(--card-bg); padding: 12px 16px; border-radius: 30px; display: flex; gap: 10px; align-items: center; margin-bottom: 20px;">
-          <i class="fa-solid fa-magnifying-glass" style="color: var(--text-sub);"></i>
-          <input type="text" placeholder="Search Songs, Artists..." style="background: transparent; border: none; outline: none; color: white; width: 100%;">
-        </div>
-        <div class="section-title">Suggestions</div>
-        <div class="song-list">
-          <div class="song-item"><div class="song-details"><div class="song-title">Choosin' Texas</div><div class="song-artist">Ella Langley</div></div></div>
-          <div class="song-item"><div class="song-details"><div class="song-title">He Belongs</div><div class="song-artist">Jhené Aiko</div></div></div>
-        </div>
-      </div>
-
-      <!-- SETTINGS TAB -->
-      <div id="settings-view" class="view-section">
-        <div class="section-title">Settings</div>
-        <div class="setting-card"><i class="fa-solid fa-user"></i><div><div class="song-title">Account</div><div class="song-artist">Manage profiles</div></div></div>
-        <div class="setting-card"><i class="fa-solid fa-users"></i><div><div class="song-title">Listen Together</div><div class="song-artist">Listen with friends</div></div></div>
-        <div class="setting-card"><i class="fa-solid fa-shield-halved"></i><div><div class="song-title">Privacy</div><div class="song-artist">Security and data</div></div></div>
-      </div>
-
+  <!-- HEADER -->
+  <header>
+    <div class="header-left" onclick="showView('home')"><div class="mini-logo">is</div> Music</div>
+    <div class="header-icons">
+      <i class="fa-solid fa-clock-rotate-left" title="History" onclick="showModal('Recently Played', 'No recent history found. Start playing music!')"></i>
+      <i class="fa-solid fa-sliders" title="Equalizer" onclick="showModal('Equalizer', 'Bass Boost & 3D Audio enabled for Shubham Rawat.')"></i>
+      <i class="fa-solid fa-users" title="Listen Together" onclick="showView('together')"></i>
+      <i class="fa-solid fa-gear" title="Settings" onclick="showView('settings')"></i>
     </div>
+  </header>
 
-    <!-- 4. FLOATING MINI PLAYER -->
-    <div class="mini-player" onclick="togglePlayerModal(true)">
-      <div class="mini-img-wrapper">
-        <img id="mini-cover" src="https://picsum.photos/300?random=1" class="mini-img">
+  <!-- CHIPS -->
+  <div class="chips">
+    <div class="chip active" onclick="filterCategory(this, 'Workout')">Workout</div>
+    <div class="chip" onclick="filterCategory(this, 'Energize')">Energize</div>
+    <div class="chip" onclick="filterCategory(this, 'Romance')">Romance</div>
+    <div class="chip" onclick="filterCategory(this, 'Feel good')">Feel good</div>
+    <div class="chip" onclick="filterCategory(this, 'Sleep')">Sleep</div>
+  </div>
+
+  <!-- VIEWS CONTAINER -->
+  <div class="view-container">
+    
+    <!-- HOME VIEW -->
+    <div id="view-home" class="view active">
+      <div class="sec-head">Covers and remixes <span style="font-size: 0.8rem; color: var(--accent); cursor: pointer;" onclick="showModal('Play All', 'Playing top remix songs queued.')">Play all</span></div>
+      <div class="card-block">
+        <div class="song-row" onclick="playSong('Raat Ke Shikari', 'Masoom Sharma', 'https://picsum.photos/300?random=1')">
+          <img src="https://picsum.photos/300?random=1">
+          <div class="song-info"><h4>Raat Ke Shikari</h4><p>Masoom Sharma</p></div>
+          <i class="fa-solid fa-ellipsis-vertical"></i>
+        </div>
+        <div class="song-row" onclick="playSong('Save Your Tears', 'The Weeknd', 'https://picsum.photos/300?random=2')">
+          <img src="https://picsum.photos/300?random=2">
+          <div class="song-info"><h4>Save Your Tears</h4><p>The Weeknd • 769M plays</p></div>
+          <i class="fa-solid fa-ellipsis-vertical"></i>
+        </div>
       </div>
-      <div class="mini-info">
-        <div id="mini-title" class="mini-title">Raat Ke Shikari</div>
-        <div id="mini-artist" class="mini-artist">Masoom Sharma</div>
-      </div>
-      <div class="mini-controls" onclick="event.stopPropagation();">
-        <i class="fa-solid fa-play"></i>
-        <i class="fa-solid fa-heart" style="color: var(--accent-color);"></i>
+
+      <div class="sec-head">Top Artists</div>
+      <div class="circle-grid">
+        <div class="circle-item" onclick="showModal('Vikram Malik', 'Loading artist top tracks...')"><img src="https://picsum.photos/200?random=10"><div>Vikram Malik</div></div>
+        <div class="circle-item" onclick="showModal('Haryanvi Hits', 'Loading top Haryanvi playlist...')"><img src="https://picsum.photos/200?random=11"><div>Haryanvi Hits</div></div>
+        <div class="circle-item" onclick="showModal('Shiqaari', 'Loading Shiqaari tracks...')"><img src="https://picsum.photos/200?random=12"><div>Shiqaari</div></div>
       </div>
     </div>
 
-    <!-- 5. FULL PLAYER MODAL -->
-    <div id="player-modal">
-      <div class="modal-header">
-        <i class="fa-solid fa-chevron-down" style="font-size: 1.2rem;" onclick="togglePlayerModal(false)"></i>
-        <div style="text-align: center;">
-          <div style="font-size: 0.75rem; color: var(--text-sub);">PLAYING FROM PLAYLIST</div>
-          <div style="font-size: 0.85rem; font-weight: 600;">ishyn Recommendations</div>
+    <!-- LISTEN TOGETHER VIEW -->
+    <div id="view-together" class="view">
+      <div class="sec-head">Listen Together</div>
+      <div class="lt-card">
+        <p style="font-size:0.85rem; color:var(--text-dim)">Listen to music with your friends in real-time. Create a room or join one.</p>
+        <div style="margin-top:12px;"><button class="btn" onclick="showModal('Listen Together', 'Connecting to real-time server... Room created successfully!')">Connect Room</button></div>
+      </div>
+      <div class="lt-card">
+        <div style="font-size:0.85rem; font-weight:bold;">Enter 6-Digit Code</div>
+        <div class="code-inputs">
+          <input type="text" maxlength="1"><input type="text" maxlength="1"><input type="text" maxlength="1">
+          <input type="text" maxlength="1"><input type="text" maxlength="1"><input type="text" maxlength="1">
         </div>
-        <i class="fa-solid fa-ellipsis-vertical"></i>
-      </div>
-
-      <div class="cover-art-container">
-        <img id="modal-cover" src="https://picsum.photos/300?random=1">
-      </div>
-
-      <div style="display: flex; justify-content: space-between; align-items: center;">
-        <div>
-          <h2 id="modal-title" style="font-size: 1.3rem;">Raat Ke Shikari</h2>
-          <p id="modal-artist" style="color: var(--text-sub); margin-top: 4px;">Masoom Sharma</p>
-        </div>
-        <i class="fa-regular fa-heart" style="font-size: 1.3rem;"></i>
-      </div>
-
-      <div class="progress-container">
-        <div class="progress-bar"><div class="progress-fill"></div></div>
-        <div class="time-stamps"><span>1:05</span><span>2:28</span></div>
-      </div>
-
-      <div class="player-actions">
-        <i class="fa-solid fa-shuffle" style="font-size: 1rem; color: var(--text-sub);"></i>
-        <i class="fa-solid fa-backward-step"></i>
-        <div class="play-circle"><i class="fa-solid fa-pause"></i></div>
-        <i class="fa-solid fa-forward-step"></i>
-        <i class="fa-solid fa-repeat" style="font-size: 1rem; color: var(--text-sub);"></i>
+        <button class="btn" onclick="showModal('Join Room', 'Joining room code... Please wait!')">+ Create Room</button>
       </div>
     </div>
 
-    <!-- 6. BOTTOM NAVIGATION -->
-    <div class="bottom-nav">
-      <div class="nav-item active" onclick="switchTab('home')">
-        <i class="fa-solid fa-house"></i>
-        <span>Home</span>
+    <!-- SETTINGS VIEW -->
+    <div id="view-settings" class="view">
+      <div class="sec-head">Settings</div>
+      <div class="set-row" onclick="showModal('System Update', 'ishyn app v2.4 is up to date!')">
+        <i class="fa-solid fa-arrows-rotate"></i>
+        <div><b>System update</b><br><small style="color:var(--text-dim)">Up to date</small></div>
       </div>
-      <div class="nav-item" onclick="switchTab('search')">
-        <i class="fa-solid fa-magnifying-glass"></i>
-        <span>Search</span>
+      <div class="set-row" onclick="showModal('Backup & Restore', 'Playlist backup created! Storage synchronized safely.')">
+        <i class="fa-solid fa-cloud-arrow-up"></i>
+        <div><b>Backup & Restore</b><br><small style="color:var(--text-dim)">Backup playlists & downloads</small></div>
       </div>
-      <div class="nav-item" onclick="switchTab('settings')">
-        <i class="fa-solid fa-gear"></i>
-        <span>Settings</span>
+      <div class="set-row" onclick="showModal('About App', 'ishyn Player v2.4<br>Designed & Developed by <b>Shubham Rawat</b>')">
+        <i class="fa-solid fa-circle-info"></i>
+        <div><b>About ishyn</b><br><small style="color:var(--text-dim)">App version & developer info</small></div>
       </div>
     </div>
 
   </div>
 
-  <script>
-    // Splash Screen Timer (Display Intro for 2.8 Seconds)
-    window.addEventListener('DOMContentLoaded', () => {
-      setTimeout(() => {
-        const splash = document.getElementById('splash-screen');
-        splash.style.opacity = '0';
-        setTimeout(() => splash.style.visibility = 'hidden', 800);
-      }, 2800);
-    });
+  <!-- MINI PLAYER -->
+  <div class="mini-player" onclick="toggleFullPlayer(true)">
+    <img id="m-img" src="https://picsum.photos/300?random=1">
+    <div class="song-info">
+      <h4 id="m-title" style="font-size:0.8rem;">Raat Ke Shikari</h4>
+      <p id="m-artist" style="font-size:0.7rem;">Masoom Sharma</p>
+    </div>
+    <i class="fa-solid fa-play" id="mini-play-btn" onclick="event.stopPropagation(); toggleAudioPlay();" style="color:var(--accent); font-size:1.1rem; padding: 6px;"></i>
+  </div>
 
-    // Tab Switcher
-    function switchTab(tabName) {
-      document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
-      document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+  <!-- FULL PLAYER MODAL -->
+  <div id="full-player">
+    <div style="display:flex; justify-content:space-between; align-items:center;">
+      <i class="fa-solid fa-chevron-down" style="cursor:pointer;" onclick="toggleFullPlayer(false)"></i>
+      <span style="font-size:0.8rem;">Now Playing</span>
+      <i class="fa-solid fa-ellipsis-vertical"></i>
+    </div>
+    <img id="f-img" src="https://picsum.photos/300?random=1" style="width:100%; aspect-ratio:1; border-radius:20px; object-fit:cover;">
+    <div>
+      <h2 id="f-title">Raat Ke Shikari</h2>
+      <p id="f-artist" style="color:var(--text-dim);">Masoom Sharma</p>
+    </div>
+    <div style="display:flex; justify-content:space-around; align-items:center; font-size:1.6rem; color:var(--text);">
+      <i class="fa-solid fa-backward-step" onclick="showModal('Previous', 'Playing previous track')" style="cursor:pointer;"></i>
+      <i class="fa-solid fa-circle-play" id="full-play-btn" onclick="toggleAudioPlay()" style="font-size:3rem; color:var(--accent); cursor:pointer;"></i>
+      <i class="fa-solid fa-forward-step" onclick="showModal('Next', 'Playing next track')" style="cursor:pointer;"></i>
+    </div>
+  </div>
 
-      if(tabName === 'home') {
-        document.getElementById('home-view').classList.add('active');
-        document.querySelectorAll('.nav-item')[0].classList.add('active');
-      } else if(tabName === 'search') {
-        document.getElementById('search-view').classList.add('active');
-        document.querySelectorAll('.nav-item')[1].classList.add('active');
-      } else if(tabName === 'settings') {
-        document.getElementById('settings-view').classList.add('active');
-        document.querySelectorAll('.nav-item')[2].classList.add('active');
-      }
+  <!-- COMMON FUNCTIONAL MODAL -->
+  <div id="dialog-modal" class="overlay-modal">
+    <div class="modal-box">
+      <h3 id="modal-title">Title</h3>
+      <p id="modal-msg">Message details go here.</p>
+      <button class="btn" onclick="closeModal()">Close</button>
+    </div>
+  </div>
+
+  <!-- BOTTOM NAVBAR -->
+  <div class="nav">
+    <div class="nav-btn active" id="nav-home" onclick="showView('home')"><i class="fa-solid fa-house"></i>Home</div>
+    <div class="nav-btn" id="nav-together" onclick="showView('together')"><i class="fa-solid fa-users"></i>Together</div>
+    <div class="nav-btn" id="nav-settings" onclick="showView('settings')"><i class="fa-solid fa-gear"></i>Settings</div>
+  </div>
+</div>
+
+<script>
+  let isPlaying = false;
+
+  // Splash Screen Delay
+  setTimeout(() => {
+    const splash = document.getElementById('splash');
+    splash.style.opacity = '0';
+    setTimeout(() => splash.style.visibility = 'hidden', 800);
+  }, 2600);
+
+  // View Switching Logic
+  function showView(viewName) {
+    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+
+    document.getElementById(`view-${viewName}`).classList.add('active');
+    
+    if(viewName === 'home') document.getElementById('nav-home').classList.add('active');
+    if(viewName === 'together') document.getElementById('nav-together').classList.add('active');
+    if(viewName === 'settings') document.getElementById('nav-settings').classList.add('active');
+  }
+
+  // Functional Modal Handler for Buttons
+  function showModal(title, msg) {
+    document.getElementById('modal-title').innerHTML = title;
+    document.getElementById('modal-msg').innerHTML = msg;
+    document.getElementById('dialog-modal').style.display = 'flex';
+  }
+
+  function closeModal() {
+    document.getElementById('dialog-modal').style.display = 'none';
+  }
+
+  // Play/Pause Song Toggle
+  function toggleAudioPlay() {
+    isPlaying = !isPlaying;
+    const miniBtn = document.getElementById('mini-play-btn');
+    const fullBtn = document.getElementById('full-play-btn');
+
+    if(isPlaying) {
+      miniBtn.className = 'fa-solid fa-pause';
+      fullBtn.className = 'fa-solid fa-circle-pause';
+    } else {
+      miniBtn.className = 'fa-solid fa-play';
+      fullBtn.className = 'fa-solid fa-circle-play';
     }
+  }
 
-    // Open Player View
-    function openPlayer(title, artist, coverImg) {
-      document.getElementById('mini-title').innerText = title;
-      document.getElementById('mini-artist').innerText = artist;
-      document.getElementById('mini-cover').src = coverImg;
+  // Change Track Logic
+  function playSong(title, artist, img) {
+    document.getElementById('m-title').innerText = title;
+    document.getElementById('m-artist').innerText = artist;
+    document.getElementById('m-img').src = img;
 
-      document.getElementById('modal-title').innerText = title;
-      document.getElementById('modal-artist').innerText = artist;
-      document.getElementById('modal-cover').src = coverImg;
+    document.getElementById('f-title').innerText = title;
+    document.getElementById('f-artist').innerText = artist;
+    document.getElementById('f-img').src = img;
 
-      togglePlayerModal(true);
-    }
+    isPlaying = false;
+    toggleAudioPlay();
+  }
 
-    function togglePlayerModal(show) {
-      const modal = document.getElementById('player-modal');
-      if (show) modal.classList.add('open');
-      else modal.classList.remove('open');
-    }
-  </script>
+  function toggleFullPlayer(open) {
+    document.getElementById('full-player').classList.toggle('active', open);
+  }
+
+  // Chip Filters
+  function filterCategory(element, name) {
+    document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+    element.classList.add('active');
+  }
+</script>
 </body>
 </html>
