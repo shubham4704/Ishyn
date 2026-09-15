@@ -1,18 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>ishyn - Premium Music</title>
-  <!-- Google Auth SDK -->
-  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ishyn - Music Player</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     :root {
-      --bg-color: #0d0d0d;
-      --card-bg: #181818;
-      --accent: #ff4b2b;
-      --text-main: #ffffff;
-      --text-sub: #aaaaaa;
+      --bg-dark: #120b0b;
+      --card-bg: #231616;
+      --accent-color: #e06d63;
+      --accent-light: #f7a89e;
+      --text-main: #fbeee8;
+      --text-sub: #a8948f;
+      --nav-bg: #1c1111;
+      --border-radius: 20px;
     }
 
     * {
@@ -24,425 +26,671 @@
     }
 
     body {
-      background-color: var(--bg-color);
+      background-color: var(--bg-dark);
       color: var(--text-main);
+      display: flex;
+      justify-content: center;
+      align-items: center;
       min-height: 100vh;
-      padding-bottom: 110px;
+      overflow: hidden;
     }
 
-    /* --- 1. SPLASH SCREEN --- */
+    .app-container {
+      width: 100%;
+      max-width: 430px;
+      height: 100vh;
+      max-height: 900px;
+      background: var(--bg-dark);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      box-shadow: 0 0 50px rgba(0,0,0,0.8);
+    }
+
+    /* SPLASH SCREEN (INTRO ANIMATION) */
     #splash-screen {
-      position: fixed;
-      top: 0; left: 0; width: 100vw; height: 100vh;
-      background-color: #050505;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #0d0606;
+      z-index: 1000;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      z-index: 99999;
-      transition: opacity 0.6s ease, visibility 0.6s;
+      transition: opacity 0.8s ease, visibility 0.8s;
     }
 
-    .app-logo {
-      width: 85px; height: 85px;
-      background: linear-gradient(135deg, #ff416c, #ff4b2b);
+    .logo-container {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+
+    .logo-glow {
+      position: absolute;
+      width: 120px;
+      height: 120px;
+      background: radial-gradient(circle, var(--accent-color) 0%, transparent 70%);
       border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 36px; font-weight: 900;
-      box-shadow: 0 0 25px rgba(255, 65, 108, 0.5);
-      margin-bottom: 16px;
+      animation: pulse 2s infinite ease-in-out;
+      opacity: 0.6;
     }
 
-    .splash-title { font-size: 32px; font-weight: 800; letter-spacing: 2px; }
-    .developer-tag { margin-top: 12px; font-size: 13px; color: var(--text-sub); }
+    .logo-badge {
+      width: 80px;
+      height: 80px;
+      background: linear-gradient(135deg, #e06d63, #8a2d28);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.2rem;
+      font-weight: bold;
+      color: #fff;
+      box-shadow: 0 10px 25px rgba(224, 109, 99, 0.4);
+      position: relative;
+      z-index: 2;
+    }
 
-    /* --- 2. HEADER & TOOLBAR --- */
+    .brand-title {
+      font-size: 2.5rem;
+      font-weight: 800;
+      letter-spacing: 2px;
+      background: linear-gradient(180deg, #ffffff, #e06d63);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-top: 10px;
+    }
+
+    .developer-tag {
+      position: absolute;
+      bottom: 40px;
+      font-size: 0.85rem;
+      letter-spacing: 1.5px;
+      color: var(--text-sub);
+      text-transform: uppercase;
+      animation: fadeIn 2s ease-in-out;
+    }
+
+    .developer-tag span {
+      color: var(--accent-light);
+      font-weight: 600;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(0.9); opacity: 0.4; }
+      50% { transform: scale(1.3); opacity: 0.8; }
+      100% { transform: scale(0.9); opacity: 0.4; }
+    }
+
+    /* HEADER */
     header {
-      display: flex; justify-content: space-between; align-items: center;
-      padding: 14px 18px;
-      background: rgba(24, 24, 24, 0.95);
-      backdrop-filter: blur(10px);
-      position: sticky; top: 0; z-index: 100;
-      border-bottom: 1px solid #222;
+      padding: 16px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
 
-    .brand-container { display: flex; align-items: center; gap: 10px; }
-    .brand-logo-small {
-      width: 32px; height: 32px; background: var(--accent);
-      border-radius: 50%; display: flex; align-items: center; justify-content: center;
-      font-weight: bold; font-size: 16px;
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
     }
-    .brand-title { font-size: 22px; font-weight: 800; color: #fff; }
 
-    .header-actions { display: flex; gap: 8px; align-items: center; }
-    .btn-action {
-      background: #252525; border: 1px solid #333; color: #fff;
-      padding: 6px 12px; border-radius: 20px; font-size: 12px;
-      cursor: pointer; transition: 0.2s;
+    .app-icon-mini {
+      width: 32px;
+      height: 32px;
+      background: var(--accent-color);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.9rem;
+      font-weight: bold;
     }
-    .btn-action:hover { background: var(--accent); border-color: var(--accent); }
 
-    /* --- 3. CATEGORIES (CHIPS) --- */
-    .chips-container {
-      display: flex; gap: 10px; padding: 14px 18px;
-      overflow-x: auto; scrollbar-width: none;
+    .header-icons {
+      display: flex;
+      gap: 16px;
+      color: var(--text-sub);
+      font-size: 1.2rem;
     }
-    .chips-container::-webkit-scrollbar { display: none; }
+
+    /* TAB CHIPS */
+    .chips-wrapper {
+      display: flex;
+      gap: 10px;
+      padding: 0 20px 16px 20px;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+
     .chip {
-      background: #222; padding: 8px 18px; border-radius: 20px;
-      font-size: 13px; font-weight: 500; cursor: pointer; white-space: nowrap;
-      border: 1px solid #2a2a2a;
-    }
-    .chip.active { background: var(--text-main); color: #000; font-weight: 700; }
-
-    /* --- 4. FORM TO ADD SONGS --- */
-    .add-song-box {
-      margin: 10px 18px; background: var(--card-bg);
-      padding: 16px; border-radius: 12px; border: 1px solid #282828;
-    }
-    .add-song-box h3 { font-size: 15px; margin-bottom: 12px; color: var(--accent); }
-    .input-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-    @media (max-width: 600px) { .input-grid { grid-template-columns: 1fr; } }
-    
-    .add-song-box input {
-      width: 100%; padding: 10px; background: #101010;
-      border: 1px solid #333; color: #fff; border-radius: 6px; font-size: 13px;
-    }
-    .file-input-label {
-      font-size: 12px; color: var(--text-sub); display: block; margin-top: 5px;
-    }
-    .btn-submit {
-      margin-top: 12px; background: var(--accent); border: none;
-      color: white; padding: 10px 20px; border-radius: 6px;
-      cursor: pointer; font-weight: bold; width: 100%; font-size: 14px;
+      background: var(--card-bg);
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      color: var(--text-main);
+      white-space: nowrap;
+      cursor: pointer;
     }
 
-    /* --- 5. MUSIC GRID CONTAINER --- */
-    .section-title { font-size: 18px; font-weight: 700; margin: 16px 18px 10px; }
-    .music-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
-      gap: 14px; padding: 0 18px;
-    }
-    .card {
-      background: var(--card-bg); border-radius: 10px; padding: 10px;
-      cursor: pointer; transition: transform 0.2s, background 0.2s; position: relative;
-    }
-    .card:hover { transform: translateY(-4px); background: #222; }
-    .card-img {
-      width: 100%; aspect-ratio: 1; border-radius: 8px;
-      object-fit: cover; background: #333;
-    }
-    .card-title { font-size: 13px; font-weight: 700; margin-top: 8px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-    .card-sub { font-size: 11px; color: var(--text-sub); margin-top: 2px; }
-    .delete-btn {
-      position: absolute; top: 14px; right: 14px; background: rgba(0,0,0,0.7);
-      color: #ff4444; border: none; width: 24px; height: 24px; border-radius: 50%;
-      cursor: pointer; display: none; font-size: 12px;
-    }
-    .card:hover .delete-btn { display: flex; align-items: center; justify-content: center; }
-
-    /* --- 6. MINI PLAYER BAR --- */
-    .player-bar {
-      position: fixed; bottom: 0; left: 0; right: 0; height: 75px;
-      background: #151515; display: flex; align-items: center;
-      justify-content: space-between; padding: 0 18px;
-      border-top: 1px solid #252525; z-index: 500;
-    }
-    .player-info { display: flex; align-items: center; gap: 12px; width: 60%; }
-    .player-info img { width: 48px; height: 48px; border-radius: 6px; object-fit: cover; }
-    .player-text { overflow: hidden; }
-    .player-text .title { font-size: 14px; font-weight: 700; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-    .player-text .artist { font-size: 12px; color: var(--text-sub); }
-
-    .player-controls { display: flex; align-items: center; gap: 12px; }
-    .control-btn {
-      background: var(--accent); border: none; color: #fff;
-      width: 44px; height: 44px; border-radius: 50%; cursor: pointer;
-      font-size: 18px; display: flex; align-items: center; justify-content: center;
+    .chip.active {
+      background: var(--text-main);
+      color: var(--bg-dark);
+      font-weight: 600;
     }
 
-    /* --- 7. MODALS --- */
-    .modal {
-      display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(0,0,0,0.85); justify-content: center; align-items: center;
-      z-index: 10000; backdrop-filter: blur(4px);
+    /* MAIN VIEW CONTAINER */
+    .view-content {
+      flex: 1;
+      overflow-y: auto;
+      padding: 0 20px 140px 20px;
+      scrollbar-width: none;
     }
-    .modal-content {
-      background: #1c1c1c; padding: 24px; border-radius: 14px;
-      width: 90%; max-width: 380px; text-align: center; border: 1px solid #333;
+
+    .view-section {
+      display: none;
     }
-    .modal-content h3 { font-size: 18px; margin-bottom: 10px; color: var(--accent); }
-    .close-btn {
-      margin-top: 18px; background: #333; color: white; border: none;
-      padding: 8px 20px; border-radius: 20px; cursor: pointer; font-size: 13px;
+
+    .view-section.active {
+      display: block;
+    }
+
+    .section-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin: 16px 0 12px 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    /* LIST CARDS */
+    .song-list {
+      background: var(--card-bg);
+      border-radius: var(--border-radius);
+      padding: 8px;
+    }
+
+    .song-item {
+      display: flex;
+      align-items: center;
+      padding: 10px;
+      border-radius: 12px;
+      gap: 12px;
+      cursor: pointer;
+    }
+
+    .song-item:hover {
+      background: rgba(255,255,255,0.05);
+    }
+
+    .song-img {
+      width: 48px;
+      height: 48px;
+      border-radius: 8px;
+      object-fit: cover;
+    }
+
+    .song-details {
+      flex: 1;
+    }
+
+    .song-title {
+      font-size: 0.95rem;
+      font-weight: 600;
+      margin-bottom: 2px;
+    }
+
+    .song-artist {
+      font-size: 0.8rem;
+      color: var(--text-sub);
+    }
+
+    /* CIRCLE ARTISTS */
+    .artists-grid {
+      display: flex;
+      gap: 16px;
+      overflow-x: auto;
+      scrollbar-width: none;
+      padding: 8px 0;
+    }
+
+    .artist-card {
+      text-align: center;
+      width: 90px;
+      flex-shrink: 0;
+    }
+
+    .artist-img {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 8px;
+    }
+
+    .artist-name {
+      font-size: 0.8rem;
+      font-weight: 500;
+    }
+
+    /* MINI PLAYER BAR */
+    .mini-player {
+      position: absolute;
+      bottom: 75px;
+      left: 16px;
+      right: 16px;
+      background: var(--card-bg);
+      border-radius: 30px;
+      padding: 8px 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+      cursor: pointer;
+    }
+
+    .mini-img-wrapper {
+      position: relative;
+    }
+
+    .mini-img {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .mini-info {
+      flex: 1;
+    }
+
+    .mini-title {
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+
+    .mini-artist {
+      font-size: 0.75rem;
+      color: var(--text-sub);
+    }
+
+    .mini-controls {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      color: var(--text-main);
+    }
+
+    /* FULL PLAYER MODAL */
+    #player-modal {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #190c0a;
+      z-index: 500;
+      display: flex;
+      flex-direction: column;
+      padding: 24px;
+      transform: translateY(100%);
+      transition: transform 0.4s cubic-bezier(0.1, 1, 0.1, 1);
+    }
+
+    #player-modal.open {
+      transform: translateY(0);
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+    }
+
+    .cover-art-container {
+      width: 100%;
+      aspect-ratio: 1;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.6);
+      margin-bottom: 30px;
+    }
+
+    .cover-art-container img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .progress-container {
+      margin: 20px 0;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 4px;
+      background: rgba(255,255,255,0.2);
+      border-radius: 2px;
+      position: relative;
+    }
+
+    .progress-fill {
+      width: 45%;
+      height: 100%;
+      background: var(--text-main);
+      border-radius: 2px;
+    }
+
+    .time-stamps {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.75rem;
+      color: var(--text-sub);
+      margin-top: 8px;
+    }
+
+    .player-actions {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      margin-top: 20px;
+      font-size: 1.5rem;
+    }
+
+    .play-circle {
+      width: 64px;
+      height: 64px;
+      background: var(--text-main);
+      color: var(--bg-dark);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+    }
+
+    /* BOTTOM NAV BAR */
+    .bottom-nav {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      height: 65px;
+      background: var(--nav-bg);
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+    }
+
+    .nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      color: var(--text-sub);
+      font-size: 1.1rem;
+      cursor: pointer;
+      gap: 4px;
+    }
+
+    .nav-item span {
+      font-size: 0.7rem;
+    }
+
+    .nav-item.active {
+      color: var(--accent-light);
+    }
+
+    /* SETTINGS LIST */
+    .setting-card {
+      background: var(--card-bg);
+      border-radius: 16px;
+      padding: 16px;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
     }
   </style>
 </head>
 <body>
 
-  <!-- SPLASH SCREEN (Exact 2 Secs Gap) -->
-  <div id="splash-screen">
-    <div class="app-logo">iS</div>
-    <div class="splash-title">ishyn</div>
-    <div class="developer-tag">Developed by Shubham Rawat</div>
-  </div>
-
-  <!-- APP HEADER -->
-  <header>
-    <div class="brand-container">
-      <div class="brand-logo-small">iS</div>
+  <div class="app-container">
+    
+    <!-- 1. INTRO/SPLASH SCREEN -->
+    <div id="splash-screen">
+      <div class="logo-container">
+        <div class="logo-glow"></div>
+        <div class="logo-badge">is</div>
+      </div>
       <div class="brand-title">ishyn</div>
+      <div class="developer-tag">Developed by <span>Shubham Rawat</span></div>
     </div>
-    <div class="header-actions">
-      <!-- Google Auth Button Slot -->
-      <div id="g_id_onload" data-client_id="YOUR_GOOGLE_CLIENT_ID" data-callback="handleGoogleLogin"></div>
-      <button class="btn-action" onclick="triggerGoogleSignIn()">Login</button>
-      <button class="btn-action" onclick="openModal('listenModal')">Listen Together</button>
-      <button class="btn-action" onclick="openModal('aboutModal')">About</button>
-      <button class="btn-action" onclick="exportBackup()">Backup</button>
+
+    <!-- 2. HEADER -->
+    <header>
+      <div class="header-left">
+        <div class="app-icon-mini">is</div>
+        <h2 style="font-size: 1.4rem;">Music</h2>
+      </div>
+      <div class="header-icons">
+        <i class="fa-solid fa-clock-rotate-left"></i>
+        <i class="fa-solid fa-sliders"></i>
+        <i class="fa-solid fa-gear" onclick="switchTab('settings')"></i>
+      </div>
+    </header>
+
+    <!-- CHIPS -->
+    <div class="chips-wrapper">
+      <div class="chip active">Workout</div>
+      <div class="chip">Energize</div>
+      <div class="chip">Romance</div>
+      <div class="chip">Feel good</div>
+      <div class="chip">Sleep</div>
     </div>
-  </header>
 
-  <!-- CATEGORY CHIPS -->
-  <div class="chips-container">
-    <div class="chip active">All</div>
-    <div class="chip">Romance</div>
-    <div class="chip">Relax</div>
-    <div class="chip">Feel good</div>
-    <div class="chip">Energize</div>
-    <div class="chip">Party</div>
-  </div>
+    <!-- 3. VIEWS CONTAINER -->
+    <div class="view-content">
 
-  <!-- ADD NEW SONG CONTAINER -->
-  <div class="add-song-box">
-    <h3>Add Song To Playlist</h3>
-    <div class="input-grid">
-      <input type="text" id="songTitle" placeholder="Song Name" />
-      <input type="text" id="songArtist" placeholder="Artist Name" />
-      <input type="text" id="songCover" placeholder="Cover Image URL (Optional)" />
-      <div>
-        <input type="file" id="songFile" accept="audio/*" />
-        <span class="file-input-label">Select MP3 file from Device or paste URL below</span>
+      <!-- HOME TAB -->
+      <div id="home-view" class="view-section active">
+        <div class="section-title">
+          <span>Covers and remixes</span>
+          <span style="font-size: 0.8rem; color: var(--accent-light);">Play all</span>
+        </div>
+
+        <div class="song-list">
+          <div class="song-item" onclick="openPlayer('Raat Ke Shikari', 'Masoom Sharma', 'https://picsum.photos/300?random=1')">
+            <img src="https://picsum.photos/300?random=1" class="song-img">
+            <div class="song-details">
+              <div class="song-title">Raat Ke Shikari</div>
+              <div class="song-artist">Masoom Sharma • 1.2M plays</div>
+            </div>
+            <i class="fa-solid fa-ellipsis-vertical" style="color: var(--text-sub);"></i>
+          </div>
+
+          <div class="song-item" onclick="openPlayer('Save Your Tears', 'The Weeknd', 'https://picsum.photos/300?random=2')">
+            <img src="https://picsum.photos/300?random=2" class="song-img">
+            <div class="song-details">
+              <div class="song-title">Save Your Tears</div>
+              <div class="song-artist">The Weeknd • 769M plays</div>
+            </div>
+            <i class="fa-solid fa-ellipsis-vertical" style="color: var(--text-sub);"></i>
+          </div>
+
+          <div class="song-item" onclick="openPlayer('Laal Pari Remix', 'Yo Yo Honey Singh', 'https://picsum.photos/300?random=3')">
+            <img src="https://picsum.photos/300?random=3" class="song-img">
+            <div class="song-details">
+              <div class="song-title">Laal Pari Remix</div>
+              <div class="song-artist">Yo Yo Honey Singh • 1.6M plays</div>
+            </div>
+            <i class="fa-solid fa-ellipsis-vertical" style="color: var(--text-sub);"></i>
+          </div>
+        </div>
+
+        <div class="section-title">Top Artists</div>
+        <div class="artists-grid">
+          <div class="artist-card">
+            <img src="https://picsum.photos/200?random=10" class="artist-img">
+            <div class="artist-name">Arijit Singh</div>
+          </div>
+          <div class="artist-card">
+            <img src="https://picsum.photos/200?random=11" class="artist-img">
+            <div class="artist-name">Jubin Nautiyal</div>
+          </div>
+          <div class="artist-card">
+            <img src="https://picsum.photos/200?random=12" class="artist-img">
+            <div class="artist-name">Vikram Malik</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SEARCH TAB -->
+      <div id="search-view" class="view-section">
+        <div style="background: var(--card-bg); padding: 12px 16px; border-radius: 30px; display: flex; gap: 10px; align-items: center; margin-bottom: 20px;">
+          <i class="fa-solid fa-magnifying-glass" style="color: var(--text-sub);"></i>
+          <input type="text" placeholder="Search Songs, Artists..." style="background: transparent; border: none; outline: none; color: white; width: 100%;">
+        </div>
+        <div class="section-title">Suggestions</div>
+        <div class="song-list">
+          <div class="song-item"><div class="song-details"><div class="song-title">Choosin' Texas</div><div class="song-artist">Ella Langley</div></div></div>
+          <div class="song-item"><div class="song-details"><div class="song-title">He Belongs</div><div class="song-artist">Jhené Aiko</div></div></div>
+        </div>
+      </div>
+
+      <!-- SETTINGS TAB -->
+      <div id="settings-view" class="view-section">
+        <div class="section-title">Settings</div>
+        <div class="setting-card"><i class="fa-solid fa-user"></i><div><div class="song-title">Account</div><div class="song-artist">Manage profiles</div></div></div>
+        <div class="setting-card"><i class="fa-solid fa-users"></i><div><div class="song-title">Listen Together</div><div class="song-artist">Listen with friends</div></div></div>
+        <div class="setting-card"><i class="fa-solid fa-shield-halved"></i><div><div class="song-title">Privacy</div><div class="song-artist">Security and data</div></div></div>
+      </div>
+
+    </div>
+
+    <!-- 4. FLOATING MINI PLAYER -->
+    <div class="mini-player" onclick="togglePlayerModal(true)">
+      <div class="mini-img-wrapper">
+        <img id="mini-cover" src="https://picsum.photos/300?random=1" class="mini-img">
+      </div>
+      <div class="mini-info">
+        <div id="mini-title" class="mini-title">Raat Ke Shikari</div>
+        <div id="mini-artist" class="mini-artist">Masoom Sharma</div>
+      </div>
+      <div class="mini-controls" onclick="event.stopPropagation();">
+        <i class="fa-solid fa-play"></i>
+        <i class="fa-solid fa-heart" style="color: var(--accent-color);"></i>
       </div>
     </div>
-    <input type="text" id="songUrl" placeholder="Audio URL (if no file chosen)" style="margin-top: 10px;" />
-    <button class="btn-submit" onclick="addSong()">Add & Save Song</button>
-  </div>
 
-  <!-- MUSIC LIST -->
-  <div class="section-title">New Releases</div>
-  <div class="music-grid" id="musicGrid"></div>
+    <!-- 5. FULL PLAYER MODAL -->
+    <div id="player-modal">
+      <div class="modal-header">
+        <i class="fa-solid fa-chevron-down" style="font-size: 1.2rem;" onclick="togglePlayerModal(false)"></i>
+        <div style="text-align: center;">
+          <div style="font-size: 0.75rem; color: var(--text-sub);">PLAYING FROM PLAYLIST</div>
+          <div style="font-size: 0.85rem; font-weight: 600;">ishyn Recommendations</div>
+        </div>
+        <i class="fa-solid fa-ellipsis-vertical"></i>
+      </div>
 
-  <!-- PLAYER FOOTER -->
-  <div class="player-bar">
-    <div class="player-info">
-      <img id="currentCover" src="https://via.placeholder.com/150/282828/ffffff?text=ishyn" alt="Cover" />
-      <div class="player-text">
-        <div class="title" id="currentTitle">Select a song</div>
-        <div class="artist" id="currentArtist">ishyn player</div>
+      <div class="cover-art-container">
+        <img id="modal-cover" src="https://picsum.photos/300?random=1">
+      </div>
+
+      <div style="display: flex; justify-content: space-between; align-items: center;">
+        <div>
+          <h2 id="modal-title" style="font-size: 1.3rem;">Raat Ke Shikari</h2>
+          <p id="modal-artist" style="color: var(--text-sub); margin-top: 4px;">Masoom Sharma</p>
+        </div>
+        <i class="fa-regular fa-heart" style="font-size: 1.3rem;"></i>
+      </div>
+
+      <div class="progress-container">
+        <div class="progress-bar"><div class="progress-fill"></div></div>
+        <div class="time-stamps"><span>1:05</span><span>2:28</span></div>
+      </div>
+
+      <div class="player-actions">
+        <i class="fa-solid fa-shuffle" style="font-size: 1rem; color: var(--text-sub);"></i>
+        <i class="fa-solid fa-backward-step"></i>
+        <div class="play-circle"><i class="fa-solid fa-pause"></i></div>
+        <i class="fa-solid fa-forward-step"></i>
+        <i class="fa-solid fa-repeat" style="font-size: 1rem; color: var(--text-sub);"></i>
       </div>
     </div>
-    <div class="player-controls">
-      <button class="control-btn" id="playBtn" onclick="togglePlay()">▶</button>
-    </div>
-  </div>
 
-  <audio id="audioEngine"></audio>
-
-  <!-- MODAL: LISTEN TOGETHER -->
-  <div class="modal" id="listenModal">
-    <div class="modal-content">
-      <h3>Listen Together</h3>
-      <p style="font-size: 13px; color: #ccc; margin-top: 8px;">Share room code to sync playback real-time with your friends:</p>
-      <div style="background: #111; padding: 12px; margin: 15px 0; border-radius: 8px; font-weight: bold; font-size: 20px; color: var(--accent); letter-spacing: 3px;">
-        ISHYN-7792
+    <!-- 6. BOTTOM NAVIGATION -->
+    <div class="bottom-nav">
+      <div class="nav-item active" onclick="switchTab('home')">
+        <i class="fa-solid fa-house"></i>
+        <span>Home</span>
       </div>
-      <button class="close-btn" onclick="closeModal('listenModal')">Close</button>
-    </div>
-  </div>
-
-  <!-- MODAL: ABOUT -->
-  <div class="modal" id="aboutModal">
-    <div class="modal-content">
-      <h3>About ishyn App</h3>
-      <p style="font-size: 13px; color: #ccc; margin-top: 8px;">
-        High-performance minimal web music engine built for seamless playback and local media backups.
-      </p>
-      <div style="margin-top: 15px; font-size: 12px; color: var(--accent); font-weight: bold;">
-        Developed by Shubham Rawat
+      <div class="nav-item" onclick="switchTab('search')">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <span>Search</span>
       </div>
-      <button class="close-btn" onclick="closeModal('aboutModal')">Close</button>
+      <div class="nav-item" onclick="switchTab('settings')">
+        <i class="fa-solid fa-gear"></i>
+        <span>Settings</span>
+      </div>
     </div>
+
   </div>
 
   <script>
-    // 1. SPLASH SCREEN SETUP (Exactly 2 Seconds Delay)
-    window.addEventListener('load', () => {
+    // Splash Screen Timer (Display Intro for 2.8 Seconds)
+    window.addEventListener('DOMContentLoaded', () => {
       setTimeout(() => {
         const splash = document.getElementById('splash-screen');
         splash.style.opacity = '0';
-        splash.style.visibility = 'hidden';
-      }, 2000);
-
-      renderPlaylist();
+        setTimeout(() => splash.style.visibility = 'hidden', 800);
+      }, 2800);
     });
 
-    // 2. DEFAULT PLAYLIST & LOCAL STORAGE ENGINE
-    const defaultData = [
-      {
-        id: 1,
-        title: "Waade Saare",
-        artist: "Shubham Rawat / Jubin",
-        cover: "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=300&auto=format&fit=crop",
-        src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"
-      },
-      {
-        id: 2,
-        title: "Rain Therapy",
-        artist: "Arijit Singh",
-        cover: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=300&auto=format&fit=crop",
-        src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3"
-      }
-    ];
+    // Tab Switcher
+    function switchTab(tabName) {
+      document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
 
-    function getStorage() {
-      const data = localStorage.getItem('ishyn_db_songs');
-      return data ? JSON.parse(data) : defaultData;
-    }
-
-    function saveStorage(data) {
-      localStorage.setItem('ishyn_db_songs', JSON.stringify(data));
-    }
-
-    // 3. RENDER MUSIC GRID
-    function renderPlaylist() {
-      const songs = getStorage();
-      const grid = document.getElementById('musicGrid');
-      grid.innerHTML = '';
-
-      songs.forEach((song, idx) => {
-        const card = document.createElement('div');
-        card.className = 'card';
-        card.innerHTML = `
-          <button class="delete-btn" onclick="deleteSong(event, ${idx})">✕</button>
-          <img class="card-img" src="${song.cover}" alt="cover" onerror="this.src='https://via.placeholder.com/150/282828/ffffff?text=ishyn'">
-          <div class="card-title">${song.title}</div>
-          <div class="card-sub">${song.artist}</div>
-        `;
-        card.onclick = (e) => {
-          if(!e.target.classList.contains('delete-btn')) playTrack(idx);
-        };
-        grid.appendChild(card);
-      });
-    }
-
-    // 4. ADD SONG (Supports local File upload & Web URL)
-    function addSong() {
-      const title = document.getElementById('songTitle').value.trim();
-      const artist = document.getElementById('songArtist').value.trim() || 'Unknown Artist';
-      let cover = document.getElementById('songCover').value.trim();
-      const fileInput = document.getElementById('songFile');
-      const urlInput = document.getElementById('songUrl').value.trim();
-
-      if (!title) { alert('Enter Song Title'); return; }
-
-      if (!cover) {
-        cover = 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=300&auto=format&fit=crop';
-      }
-
-      const songs = getStorage();
-
-      if (fileInput.files.length > 0) {
-        const file = fileInput.files[0];
-        const reader = new FileReader();
-        reader.onload = function (e) {
-          songs.push({ id: Date.now(), title, artist, cover, src: e.target.result });
-          saveStorage(songs);
-          finishAdd();
-        };
-        reader.readAsDataURL(file);
-      } else if (urlInput) {
-        songs.push({ id: Date.now(), title, artist, cover, src: urlInput });
-        saveStorage(songs);
-        finishAdd();
-      } else {
-        alert('Please choose an Audio file or paste an Audio URL!');
+      if(tabName === 'home') {
+        document.getElementById('home-view').classList.add('active');
+        document.querySelectorAll('.nav-item')[0].classList.add('active');
+      } else if(tabName === 'search') {
+        document.getElementById('search-view').classList.add('active');
+        document.querySelectorAll('.nav-item')[1].classList.add('active');
+      } else if(tabName === 'settings') {
+        document.getElementById('settings-view').classList.add('active');
+        document.querySelectorAll('.nav-item')[2].classList.add('active');
       }
     }
 
-    function finishAdd() {
-      document.getElementById('songTitle').value = '';
-      document.getElementById('songArtist').value = '';
-      document.getElementById('songCover').value = '';
-      document.getElementById('songUrl').value = '';
-      document.getElementById('songFile').value = '';
-      renderPlaylist();
-      alert('Song added! Refresh par delete nahi hoga.');
+    // Open Player View
+    function openPlayer(title, artist, coverImg) {
+      document.getElementById('mini-title').innerText = title;
+      document.getElementById('mini-artist').innerText = artist;
+      document.getElementById('mini-cover').src = coverImg;
+
+      document.getElementById('modal-title').innerText = title;
+      document.getElementById('modal-artist').innerText = artist;
+      document.getElementById('modal-cover').src = coverImg;
+
+      togglePlayerModal(true);
     }
 
-    function deleteSong(event, index) {
-      event.stopPropagation();
-      const songs = getStorage();
-      songs.splice(index, 1);
-      saveStorage(songs);
-      renderPlaylist();
+    function togglePlayerModal(show) {
+      const modal = document.getElementById('player-modal');
+      if (show) modal.classList.add('open');
+      else modal.classList.remove('open');
     }
-
-    // 5. AUDIO PLAYER CORE LOGIC
-    const audio = document.getElementById('audioEngine');
-    const playBtn = document.getElementById('playBtn');
-    let currentIndex = -1;
-
-    function playTrack(index) {
-      const songs = getStorage();
-      currentIndex = index;
-      const track = songs[index];
-
-      document.getElementById('currentTitle').innerText = track.title;
-      document.getElementById('currentArtist').innerText = track.artist;
-      document.getElementById('currentCover').src = track.cover;
-
-      audio.src = track.src;
-      audio.play();
-      playBtn.innerText = '⏸';
-    }
-
-    function togglePlay() {
-      if (currentIndex === -1) {
-        const songs = getStorage();
-        if(songs.length > 0) playTrack(0);
-        return;
-      }
-      if (audio.paused) {
-        audio.play();
-        playBtn.innerText = '⏸';
-      } else {
-        audio.pause();
-        playBtn.innerText = '▶';
-      }
-    }
-
-    // 6. BACKUP ENGINE
-    function exportBackup() {
-      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(getStorage()));
-      const downloadAnchor = document.createElement('a');
-      downloadAnchor.setAttribute("href", dataStr);
-      downloadAnchor.setAttribute("download", "ishyn_music_backup.json");
-      document.body.appendChild(downloadAnchor);
-      downloadAnchor.click();
-      downloadAnchor.remove();
-    }
-
-    // 7. GOOGLE AUTH & MODALS
-    function triggerGoogleSignIn() {
-      alert("Google Login Activated! Google API Key Add karke Live Host karein.");
-    }
-    function handleGoogleLogin(response) {
-      console.log("Logged in:", response);
-    }
-    function openModal(id) { document.getElementById(id).style.display = 'flex'; }
-    function closeModal(id) { document.getElementById(id).style.display = 'none'; }
   </script>
 </body>
 </html>
