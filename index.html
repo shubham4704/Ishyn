@@ -1392,21 +1392,15 @@ if(!location.hash){
 
 async function searchMusic(){
 
-  const input =
-    document.getElementById("searchInput");
-
-  const query =
-    input.value.trim();
-
+  const query = document
+    .getElementById("searchInput")
+    .value
+    .trim();
 
   if(!query){
-
     alert("Song ya artist ka naam likho.");
-
     return;
-
   }
-
 
   const searchResults =
     document.getElementById("search-results");
@@ -1414,109 +1408,119 @@ async function searchMusic(){
   const resultList =
     document.getElementById("result-list");
 
+  searchResults.style.display = "block";
 
-  searchResults.style.display="block";
-
-  resultList.innerHTML=
-    "<div style='padding:20px;text-align:center;color:#a68c87'>Searching online... 🔎</div>";
-
+  resultList.innerHTML =
+    '<div style="padding:20px;text-align:center;color:#a68c87;">Searching online... 🎵</div>';
 
   try{
 
+    const clientId = "ec96d17f";
+
     const apiUrl =
-      "https://itunes.apple.com/search?term="+
-      encodeURIComponent(query)+
-      "&media=music&entity=song&limit=25&country=IN";
+      "https://api.jamendo.com/v3.0/tracks/?" +
+      "client_id=" + clientId +
+      "&format=json" +
+      "&limit=25" +
+      "&type=single+albumtrack" +
+      "&audioformat=mp32" +
+      "&imagesize=300" +
+      "&search=" + encodeURIComponent(query);
 
+    const response = await fetch(apiUrl);
 
-    const response =
-      await fetch(apiUrl);
+    if(!response.ok){
+      throw new Error("Jamendo API error");
+    }
 
+    const data = await response.json();
 
-    const data =
-      await response.json();
+    if(!data.results || !data.results.length){
 
+      songs = [];
+      currentIndex = -1;
 
-    songs =
-      data.results.filter(function(song){
+      resultList.innerHTML =
+        '<div style="padding:20px;text-align:center;color:#a68c87;">No songs found 😔</div>';
 
-        return song.previewUrl;
+      return;
+    }
+
+    songs = data.results
+      .filter(function(track){
+        return track.audio;
+      })
+      .map(function(track){
+
+        return {
+          trackName: track.name || "Unknown Song",
+
+          artistName:
+            track.artist_name || "Unknown Artist",
+
+          artworkUrl100:
+            track.album_image ||
+            track.image ||
+            "https://picsum.photos/300",
+
+          previewUrl: track.audio,
+
+          audio: track.audio,
+
+          duration: track.duration || 0,
+
+          id: track.id
+        };
 
       });
 
-
-    currentIndex=-1;
-
+    currentIndex = -1;
 
     if(!songs.length){
 
-      resultList.innerHTML=
-        "<div style='padding:20px;text-align:center;color:#a68c87'>No playable preview found 😕</div>";
+      resultList.innerHTML =
+        '<div style="padding:20px;text-align:center;color:#a68c87;">No playable songs found 😔</div>';
 
       return;
-
     }
 
-
-    resultList.innerHTML="";
-
+    resultList.innerHTML = "";
 
     songs.forEach(function(song,index){
 
-      const row =
-        document.createElement("div");
+      const row = document.createElement("div");
 
-      row.className="result-row";
-
+      row.className = "result-row";
 
       const image =
         song.artworkUrl100 ||
-        "https://picsum.photos/200";
+        "https://picsum.photos/300";
 
-
-      row.innerHTML=`
-
+      row.innerHTML = `
         <img src="${image}">
 
         <div class="result-text">
-
           <b>${escapeHtml(song.trackName)}</b>
 
           <span>
             ${escapeHtml(song.artistName)}
           </span>
-
         </div>
 
         <button class="result-play">
           <i class="fa-solid fa-play"></i>
         </button>
-
       `;
 
-
-      row.onclick=function(){
-
+      row.onclick = function(){
         playSong(index);
-
       };
-
 
       resultList.appendChild(row);
 
     });
 
-
   }catch(error){
-
-    console.error(error);
-
-    resultList.innerHTML=
-      "<div style='padding:20px;text-align:center;color:#a68c87'>Internet connection ya API error. Dobara try karo.</div>";
-
-  }
-
-}
 
 
 /* =========================================
