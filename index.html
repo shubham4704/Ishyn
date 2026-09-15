@@ -1,351 +1,1967 @@
 <!DOCTYPE html>
 <html lang="hi">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ishyn Music</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <style>
-    :root {
-      --bg: #120b0b;
-      --card-bg: #231616;
-      --accent: #f88c7d;
-      --accent-dim: #5c2f29;
-      --text: #f7e0dc;
-      --text-dim: #a68c87;
-      --radius: 24px;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ishyn Music</title>
 
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; user-select: none; }
-    body { background: #000; color: var(--text); display: flex; justify-content: center; min-height: 100vh; }
-    
-    .app {
-      width: 100%; max-width: 412px; height: 100vh; background: var(--bg);
-      position: relative; overflow: hidden; display: flex; flex-direction: column;
-    }
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    /* PREMIUM SPLASH SCREEN STYLES */
-    #splash {
-      position: absolute; inset: 0; background: #0d0606; z-index: 1000;
-      display: flex; flex-direction: column; align-items: center; justify-content: space-between;
-      padding: 60px 24px; overflow: hidden;
-      transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.8s;
-    }
-    .ambient-glow { position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.35; pointer-events: none; }
-    .glow-1 { width: 260px; height: 260px; background: #f88c7d; top: 15%; left: 50%; transform: translateX(-50%); animation: pulseGlow 4s infinite alternate ease-in-out; }
-    .glow-2 { width: 180px; height: 180px; background: #8a2d28; bottom: 20%; right: 10%; }
-    .splash-content { display: flex; flex-direction: column; align-items: center; margin-top: auto; margin-bottom: auto; z-index: 2; animation: splashScale 1.2s cubic-bezier(0.16, 1, 0.3, 1); }
-    .logo-wrapper { position: relative; display: flex; align-items: center; justify-content: center; margin-bottom: 24px; }
-    .logo-ring { position: absolute; width: 105px; height: 105px; border-radius: 50%; border: 1.5px solid rgba(248, 140, 125, 0.3); animation: rotateRing 8s linear infinite; }
-    .logo-box { width: 88px; height: 88px; background: linear-gradient(145deg, #f88c7d 0%, #8a2d28 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2.4rem; font-weight: 800; color: #ffffff; letter-spacing: -1px; box-shadow: 0 12px 35px rgba(248, 140, 125, 0.35), inset 0 2px 4px rgba(255, 255, 255, 0.4); }
-    .splash-title { font-size: 3rem; font-weight: 900; letter-spacing: 3px; background: linear-gradient(180deg, #ffffff 30%, #f88c7d 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 6px; }
-    .splash-subtitle { font-size: 0.8rem; letter-spacing: 2px; color: #a68c87; text-transform: uppercase; font-weight: 500; opacity: 0.8; }
-    .splash-dev { display: flex; flex-direction: column; align-items: center; gap: 3px; z-index: 2; animation: fadeInUp 1s ease-out 0.4s backwards; }
-    .dev-label { font-size: 0.65rem; letter-spacing: 2px; color: rgba(247, 224, 220, 0.4); text-transform: uppercase; }
-    .dev-name { font-size: 0.9rem; font-weight: 700; letter-spacing: 1.5px; color: #f7e0dc; text-transform: uppercase; background: linear-gradient(90deg, #f7e0dc, #f88c7d, #f7e0dc); background-size: 200% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent; animation: shine 3s linear infinite; }
+<style>
+:root{
+  --bg:#120b0b;
+  --card-bg:#231616;
+  --accent:#f88c7d;
+  --accent-dim:#5c2f29;
+  --text:#f7e0dc;
+  --text-dim:#a68c87;
+  --radius:24px;
+}
 
-    @keyframes splashScale { 0% { transform: scale(0.85); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
-    @keyframes pulseGlow { 0% { transform: translateX(-50%) scale(0.9); opacity: 0.25; } 100% { transform: translateX(-50%) scale(1.2); opacity: 0.45; } }
-    @keyframes rotateRing { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-    @keyframes fadeInUp { 0% { transform: translateY(15px); opacity: 0; } 100% { transform: translateY(0); opacity: 1; } }
-    @keyframes shine { to { background-position: 200% center; } }
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+  font-family:system-ui,-apple-system,sans-serif;
+  user-select:none;
+}
 
-    /* HEADER & CHIPS */
-    header { padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; }
-    .header-left { display: flex; align-items: center; gap: 10px; font-weight: bold; font-size: 1.2rem; cursor: pointer; }
-    .mini-logo { width: 28px; height: 28px; background: var(--accent); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; color: #000; }
-    .header-icons { display: flex; gap: 16px; color: var(--accent); font-size: 1.1rem; }
-    .header-icons i { cursor: pointer; }
+body{
+  background:#000;
+  color:var(--text);
+  display:flex;
+  justify-content:center;
+  min-height:100vh;
+}
 
-    .chips { display: flex; gap: 8px; padding: 4px 16px 12px; overflow-x: auto; scrollbar-width: none; }
-    .chip { background: var(--card-bg); padding: 8px 16px; border-radius: 16px; font-size: 0.85rem; color: var(--text); white-space: nowrap; cursor: pointer; transition: 0.2s; }
-    .chip.active { background: var(--accent); color: #261614; font-weight: 600; }
+.app{
+  width:100%;
+  max-width:412px;
+  height:100vh;
+  background:var(--bg);
+  position:relative;
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+}
 
-    /* CONTENT VIEWS */
-    .view-container { flex: 1; overflow-y: auto; padding: 0 16px 140px; scrollbar-width: none; }
-    .view { display: none; }
-    .view.active { display: block; }
+/* ================= SPLASH ================= */
 
-    .sec-head { font-size: 1.1rem; font-weight: 700; margin: 16px 0 10px; display: flex; justify-content: space-between; align-items: center; }
-    .card-block { background: var(--card-bg); border-radius: var(--radius); padding: 8px; }
-    .song-row { display: flex; align-items: center; gap: 12px; padding: 8px; border-radius: 12px; cursor: pointer; }
-    .song-row:hover { background: rgba(255,255,255,0.05); }
-    .song-row img { width: 44px; height: 44px; border-radius: 8px; object-fit: cover; }
-    .song-info { flex: 1; }
-    .song-info h4 { font-size: 0.9rem; font-weight: 600; }
-    .song-info p { font-size: 0.75rem; color: var(--text-dim); }
+#splash{
+  position:absolute;
+  inset:0;
+  background:#0d0606;
+  z-index:1000;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:space-between;
+  padding:60px 24px;
+  overflow:hidden;
+  transition:opacity .8s,visibility .8s;
+}
 
-    .circle-grid { display: flex; gap: 14px; overflow-x: auto; scrollbar-width: none; }
-    .circle-item { text-align: center; width: 85px; flex-shrink: 0; cursor: pointer; }
-    .circle-item img { width: 80px; height: 80px; border-radius: 50%; object-fit: cover; margin-bottom: 4px; }
+.ambient-glow{
+  position:absolute;
+  border-radius:50%;
+  filter:blur(80px);
+  opacity:.35;
+  pointer-events:none;
+}
 
-    /* LISTEN TOGETHER */
-    .lt-card { background: var(--card-bg); border-radius: var(--radius); padding: 16px; margin-bottom: 12px; }
-    .code-inputs { display: flex; gap: 6px; margin: 12px 0; }
-    .code-inputs input { width: 100%; height: 45px; background: rgba(0,0,0,0.2); border: 1px solid var(--accent-dim); border-radius: 10px; text-align: center; color: #fff; font-weight: bold; font-size: 1.1rem; }
-    .btn { width: 100%; padding: 12px; background: var(--accent); color: var(--card-bg); border: none; border-radius: 20px; font-weight: bold; cursor: pointer; transition: 0.2s; }
-    .btn:active { transform: scale(0.98); }
+.glow-1{
+  width:260px;
+  height:260px;
+  background:#f88c7d;
+  top:15%;
+  left:50%;
+  transform:translateX(-50%);
+  animation:pulseGlow 4s infinite alternate ease-in-out;
+}
 
-    /* SETTINGS LIST */
-    .set-row { background: var(--card-bg); padding: 16px; border-radius: 16px; margin-bottom: 8px; display: flex; align-items: center; gap: 14px; cursor: pointer; }
-    .set-row i { color: var(--accent); font-size: 1.1rem; }
+.glow-2{
+  width:180px;
+  height:180px;
+  background:#8a2d28;
+  bottom:20%;
+  right:10%;
+}
 
-    /* PLAYER BAR */
-    .mini-player {
-      position: absolute; bottom: 70px; left: 12px; right: 12px; background: var(--card-bg);
-      border-radius: 30px; padding: 6px 14px; display: flex; align-items: center; gap: 10px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.5); cursor: pointer;
-    }
-    .mini-player img { width: 40px; height: 40px; border-radius: 50%; }
+.splash-content{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  margin-top:auto;
+  margin-bottom:auto;
+  z-index:2;
+  animation:splashScale 1.2s cubic-bezier(.16,1,.3,1);
+}
 
-    /* FULL PLAYER */
-    #full-player {
-      position: absolute; inset: 0; background: var(--bg); z-index: 80;
-      transform: translateY(100%); transition: transform 0.35s ease; padding: 20px;
-      display: flex; flex-direction: column; justify-content: space-between;
-    }
-    #full-player.active { transform: translateY(0); }
+.logo-wrapper{
+  position:relative;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  margin-bottom:24px;
+}
 
-    /* OVERLAY MODAL FOR BACKUP / ABOUT / EQUALIZER */
-    .overlay-modal {
-      position: absolute; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(10px);
-      z-index: 500; display: none; align-items: center; justify-content: center; padding: 20px;
-    }
-    .modal-box { background: var(--card-bg); border-radius: var(--radius); padding: 24px; width: 100%; max-width: 320px; text-align: center; border: 1px solid var(--accent-dim); }
-    .modal-box h3 { margin-bottom: 10px; color: var(--accent); }
-    .modal-box p { font-size: 0.85rem; color: var(--text-dim); margin-bottom: 20px; line-height: 1.4; }
+.logo-ring{
+  position:absolute;
+  width:105px;
+  height:105px;
+  border-radius:50%;
+  border:1.5px solid rgba(248,140,125,.3);
+  animation:rotateRing 8s linear infinite;
+}
 
-    /* BOTTOM NAV */
-    .nav { position: absolute; bottom: 0; width: 100%; height: 60px; background: #190e0d; display: flex; justify-content: space-around; align-items: center; }
-    .nav-btn { display: flex; flex-direction: column; align-items: center; color: var(--text-dim); font-size: 0.75rem; gap: 3px; cursor: pointer; }
-    .nav-btn.active { color: var(--accent); }
-    .nav-btn i { font-size: 1.1rem; }
-  </style>
+.logo-box{
+  width:88px;
+  height:88px;
+  background:linear-gradient(145deg,#f88c7d 0%,#8a2d28 100%);
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:2.4rem;
+  font-weight:800;
+  color:#fff;
+  letter-spacing:-1px;
+  box-shadow:
+  0 12px 35px rgba(248,140,125,.35),
+  inset 0 2px 4px rgba(255,255,255,.4);
+}
+
+.splash-title{
+  font-size:3rem;
+  font-weight:900;
+  letter-spacing:3px;
+  background:linear-gradient(180deg,#fff 30%,#f88c7d 100%);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  margin-bottom:6px;
+}
+
+.splash-subtitle{
+  font-size:.8rem;
+  letter-spacing:2px;
+  color:#a68c87;
+  text-transform:uppercase;
+  font-weight:500;
+  opacity:.8;
+}
+
+.splash-dev{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:3px;
+  z-index:2;
+}
+
+.dev-label{
+  font-size:.65rem;
+  letter-spacing:2px;
+  color:rgba(247,224,220,.4);
+  text-transform:uppercase;
+}
+
+.dev-name{
+  font-size:.9rem;
+  font-weight:700;
+  letter-spacing:1.5px;
+  color:#f7e0dc;
+  text-transform:uppercase;
+}
+
+@keyframes splashScale{
+  0%{transform:scale(.85);opacity:0}
+  100%{transform:scale(1);opacity:1}
+}
+
+@keyframes pulseGlow{
+  0%{transform:translateX(-50%) scale(.9);opacity:.25}
+  100%{transform:translateX(-50%) scale(1.2);opacity:.45}
+}
+
+@keyframes rotateRing{
+  0%{transform:rotate(0)}
+  100%{transform:rotate(360deg)}
+}
+
+/* ================= HEADER ================= */
+
+header{
+  padding:12px 16px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.header-left{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  font-weight:bold;
+  font-size:1.2rem;
+  cursor:pointer;
+}
+
+.mini-logo{
+  width:28px;
+  height:28px;
+  background:var(--accent);
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:.8rem;
+  color:#000;
+}
+
+.header-icons{
+  display:flex;
+  gap:16px;
+  color:var(--accent);
+  font-size:1.1rem;
+}
+
+.header-icons i{
+  cursor:pointer;
+}
+
+/* ================= SEARCH ================= */
+
+.search-box{
+  margin:4px 16px 10px;
+  background:var(--card-bg);
+  border:1px solid rgba(248,140,125,.12);
+  border-radius:22px;
+  display:flex;
+  align-items:center;
+  padding:5px 6px 5px 14px;
+}
+
+.search-box i{
+  color:var(--text-dim);
+  margin-right:10px;
+}
+
+.search-box input{
+  flex:1;
+  background:transparent;
+  border:none;
+  outline:none;
+  color:white;
+  font-size:.9rem;
+  min-width:0;
+}
+
+.search-box input::placeholder{
+  color:#8d7773;
+}
+
+.search-box button{
+  border:none;
+  background:var(--accent);
+  color:#241313;
+  border-radius:17px;
+  padding:9px 13px;
+  font-weight:bold;
+}
+
+/* ================= CHIPS ================= */
+
+.chips{
+  display:flex;
+  gap:8px;
+  padding:4px 16px 12px;
+  overflow-x:auto;
+  scrollbar-width:none;
+}
+
+.chip{
+  background:var(--card-bg);
+  padding:8px 16px;
+  border-radius:16px;
+  font-size:.85rem;
+  color:var(--text);
+  white-space:nowrap;
+  cursor:pointer;
+}
+
+.chip.active{
+  background:var(--accent);
+  color:#261614;
+  font-weight:600;
+}
+
+/* ================= CONTENT ================= */
+
+.view-container{
+  flex:1;
+  overflow-y:auto;
+  padding:0 16px 140px;
+  scrollbar-width:none;
+}
+
+.view{
+  display:none;
+}
+
+.view.active{
+  display:block;
+}
+
+.sec-head{
+  font-size:1.1rem;
+  font-weight:700;
+  margin:16px 0 10px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.card-block{
+  background:var(--card-bg);
+  border-radius:var(--radius);
+  padding:8px;
+}
+
+.song-row{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:8px;
+  border-radius:12px;
+  cursor:pointer;
+}
+
+.song-row:hover{
+  background:rgba(255,255,255,.05);
+}
+
+.song-row img{
+  width:44px;
+  height:44px;
+  border-radius:8px;
+  object-fit:cover;
+}
+
+.song-info{
+  flex:1;
+  min-width:0;
+}
+
+.song-info h4{
+  font-size:.9rem;
+  font-weight:600;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+.song-info p{
+  font-size:.75rem;
+  color:var(--text-dim);
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+/* ================= SEARCH RESULTS ================= */
+
+#search-results{
+  display:none;
+}
+
+.search-result-title{
+  margin-top:15px;
+  margin-bottom:10px;
+  font-weight:bold;
+  font-size:1.1rem;
+}
+
+.result-list{
+  display:flex;
+  flex-direction:column;
+  gap:7px;
+}
+
+.result-row{
+  background:var(--card-bg);
+  border-radius:15px;
+  padding:8px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  cursor:pointer;
+}
+
+.result-row img{
+  width:54px;
+  height:54px;
+  border-radius:10px;
+  object-fit:cover;
+}
+
+.result-text{
+  flex:1;
+  min-width:0;
+}
+
+.result-text b{
+  display:block;
+  font-size:.88rem;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+.result-text span{
+  display:block;
+  color:var(--text-dim);
+  font-size:.73rem;
+  margin-top:3px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+.result-play{
+  width:38px;
+  height:38px;
+  border-radius:50%;
+  border:none;
+  background:var(--accent);
+  color:#291313;
+}
+
+/* ================= ARTISTS ================= */
+
+.circle-grid{
+  display:flex;
+  gap:14px;
+  overflow-x:auto;
+  scrollbar-width:none;
+}
+
+.circle-item{
+  text-align:center;
+  width:85px;
+  flex-shrink:0;
+  cursor:pointer;
+}
+
+.circle-item img{
+  width:80px;
+  height:80px;
+  border-radius:50%;
+  object-fit:cover;
+  margin-bottom:4px;
+}
+
+/* ================= TOGETHER ================= */
+
+.lt-card{
+  background:var(--card-bg);
+  border-radius:var(--radius);
+  padding:16px;
+  margin-bottom:12px;
+}
+
+.code-inputs{
+  display:flex;
+  gap:6px;
+  margin:12px 0;
+}
+
+.code-inputs input{
+  width:100%;
+  height:45px;
+  background:rgba(0,0,0,.2);
+  border:1px solid var(--accent-dim);
+  border-radius:10px;
+  text-align:center;
+  color:#fff;
+  font-weight:bold;
+  font-size:1.1rem;
+}
+
+.btn{
+  width:100%;
+  padding:12px;
+  background:var(--accent);
+  color:var(--card-bg);
+  border:none;
+  border-radius:20px;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+/* ================= SETTINGS ================= */
+
+.set-row{
+  background:var(--card-bg);
+  padding:16px;
+  border-radius:16px;
+  margin-bottom:8px;
+  display:flex;
+  align-items:center;
+  gap:14px;
+  cursor:pointer;
+}
+
+.set-row i{
+  color:var(--accent);
+  font-size:1.1rem;
+}
+
+/* ================= MINI PLAYER ================= */
+
+.mini-player{
+  position:absolute;
+  bottom:70px;
+  left:12px;
+  right:12px;
+  background:var(--card-bg);
+  border-radius:30px;
+  padding:6px 14px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  box-shadow:0 4px 15px rgba(0,0,0,.5);
+  cursor:pointer;
+  z-index:40;
+}
+
+.mini-player img{
+  width:40px;
+  height:40px;
+  border-radius:50%;
+  object-fit:cover;
+}
+
+.mini-play{
+  color:var(--accent);
+  font-size:1.1rem;
+  padding:6px;
+}
+
+/* ================= FULL PLAYER ================= */
+
+#full-player{
+  position:absolute;
+  inset:0;
+  background:var(--bg);
+  z-index:80;
+  transform:translateY(100%);
+  transition:transform .35s ease;
+  padding:20px;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+}
+
+#full-player.active{
+  transform:translateY(0);
+}
+
+.full-cover{
+  width:100%;
+  aspect-ratio:1;
+  border-radius:20px;
+  object-fit:cover;
+}
+
+.player-progress{
+  width:100%;
+  margin-top:12px;
+}
+
+.player-time{
+  display:flex;
+  justify-content:space-between;
+  color:var(--text-dim);
+  font-size:.7rem;
+}
+
+.controls{
+  display:flex;
+  justify-content:space-around;
+  align-items:center;
+  font-size:1.6rem;
+  color:var(--text);
+}
+
+.controls i{
+  cursor:pointer;
+}
+
+.controls .main-control{
+  font-size:3.2rem;
+  color:var(--accent);
+}
+
+/* ================= MODAL ================= */
+
+.overlay-modal{
+  position:absolute;
+  inset:0;
+  background:rgba(0,0,0,.85);
+  backdrop-filter:blur(10px);
+  z-index:500;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+}
+
+.modal-box{
+  background:var(--card-bg);
+  border-radius:var(--radius);
+  padding:24px;
+  width:100%;
+  max-width:320px;
+  text-align:center;
+  border:1px solid var(--accent-dim);
+}
+
+.modal-box h3{
+  margin-bottom:10px;
+  color:var(--accent);
+}
+
+.modal-box p{
+  font-size:.85rem;
+  color:var(--text-dim);
+  margin-bottom:20px;
+  line-height:1.4;
+}
+
+/* ================= NAV ================= */
+
+.nav{
+  position:absolute;
+  bottom:0;
+  width:100%;
+  height:60px;
+  background:#190e0d;
+  display:flex;
+  justify-content:space-around;
+  align-items:center;
+  z-index:50;
+}
+
+.nav-btn{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  color:var(--text-dim);
+  font-size:.75rem;
+  gap:3px;
+  cursor:pointer;
+}
+
+.nav-btn.active{
+  color:var(--accent);
+}
+
+.nav-btn i{
+  font-size:1.1rem;
+}
+
+/* ================= AUDIO ================= */
+
+audio{
+  display:none;
+}
+</style>
 </head>
+
 <body>
 
 <div class="app">
-  <!-- 1. INTRO SPLASH SCREEN -->
-  <div id="splash">
-    <div class="ambient-glow glow-1"></div>
-    <div class="ambient-glow glow-2"></div>
-    
-    <div class="splash-content">
-      <div class="logo-wrapper">
-        <div class="logo-ring"></div>
-        <div class="logo-box">is</div>
-      </div>
-      
-      <h1 class="splash-title">ishyn</h1>
-      <p class="splash-subtitle">Premium Audio Experience</p>
+
+<!-- SPLASH -->
+
+<div id="splash">
+
+  <div class="ambient-glow glow-1"></div>
+  <div class="ambient-glow glow-2"></div>
+
+  <div class="splash-content">
+
+    <div class="logo-wrapper">
+      <div class="logo-ring"></div>
+      <div class="logo-box">is</div>
     </div>
 
-    <div class="splash-dev">
-      <span class="dev-label">Designed & Developed by</span>
-      <span class="dev-name">Shubham Rawat</span>
-    </div>
-  </div>
-
-  <!-- HEADER -->
-  <header>
-    <div class="header-left" onclick="showView('home')"><div class="mini-logo">is</div> Music</div>
-    <div class="header-icons">
-      <i class="fa-solid fa-clock-rotate-left" title="History" onclick="showModal('Recently Played', 'No recent history found. Start playing music!')"></i>
-      <i class="fa-solid fa-sliders" title="Equalizer" onclick="showModal('Equalizer', 'Bass Boost & 3D Audio enabled for Shubham Rawat.')"></i>
-      <i class="fa-solid fa-users" title="Listen Together" onclick="showView('together')"></i>
-      <i class="fa-solid fa-gear" title="Settings" onclick="showView('settings')"></i>
-    </div>
-  </header>
-
-  <!-- CHIPS -->
-  <div class="chips">
-    <div class="chip active" onclick="filterCategory(this, 'Workout')">Workout</div>
-    <div class="chip" onclick="filterCategory(this, 'Energize')">Energize</div>
-    <div class="chip" onclick="filterCategory(this, 'Romance')">Romance</div>
-    <div class="chip" onclick="filterCategory(this, 'Feel good')">Feel good</div>
-    <div class="chip" onclick="filterCategory(this, 'Sleep')">Sleep</div>
-  </div>
-
-  <!-- VIEWS CONTAINER -->
-  <div class="view-container">
-    
-    <!-- HOME VIEW -->
-    <div id="view-home" class="view active">
-      <div class="sec-head">Covers and remixes <span style="font-size: 0.8rem; color: var(--accent); cursor: pointer;" onclick="showModal('Play All', 'Playing top remix songs queued.')">Play all</span></div>
-      <div class="card-block">
-        <div class="song-row" onclick="playSong('Raat Ke Shikari', 'Masoom Sharma', 'https://picsum.photos/300?random=1')">
-          <img src="https://picsum.photos/300?random=1">
-          <div class="song-info"><h4>Raat Ke Shikari</h4><p>Masoom Sharma</p></div>
-          <i class="fa-solid fa-ellipsis-vertical"></i>
-        </div>
-        <div class="song-row" onclick="playSong('Save Your Tears', 'The Weeknd', 'https://picsum.photos/300?random=2')">
-          <img src="https://picsum.photos/300?random=2">
-          <div class="song-info"><h4>Save Your Tears</h4><p>The Weeknd • 769M plays</p></div>
-          <i class="fa-solid fa-ellipsis-vertical"></i>
-        </div>
-      </div>
-
-      <div class="sec-head">Top Artists</div>
-      <div class="circle-grid">
-        <div class="circle-item" onclick="showModal('Vikram Malik', 'Loading artist top tracks...')"><img src="https://picsum.photos/200?random=10"><div>Vikram Malik</div></div>
-        <div class="circle-item" onclick="showModal('Haryanvi Hits', 'Loading top Haryanvi playlist...')"><img src="https://picsum.photos/200?random=11"><div>Haryanvi Hits</div></div>
-        <div class="circle-item" onclick="showModal('Shiqaari', 'Loading Shiqaari tracks...')"><img src="https://picsum.photos/200?random=12"><div>Shiqaari</div></div>
-      </div>
-    </div>
-
-    <!-- LISTEN TOGETHER VIEW -->
-    <div id="view-together" class="view">
-      <div class="sec-head">Listen Together</div>
-      <div class="lt-card">
-        <p style="font-size:0.85rem; color:var(--text-dim)">Listen to music with your friends in real-time. Create a room or join one.</p>
-        <div style="margin-top:12px;"><button class="btn" onclick="showModal('Listen Together', 'Connecting to real-time server... Room created successfully!')">Connect Room</button></div>
-      </div>
-      <div class="lt-card">
-        <div style="font-size:0.85rem; font-weight:bold;">Enter 6-Digit Code</div>
-        <div class="code-inputs">
-          <input type="text" maxlength="1"><input type="text" maxlength="1"><input type="text" maxlength="1">
-          <input type="text" maxlength="1"><input type="text" maxlength="1"><input type="text" maxlength="1">
-        </div>
-        <button class="btn" onclick="showModal('Join Room', 'Joining room code... Please wait!')">+ Create Room</button>
-      </div>
-    </div>
-
-    <!-- SETTINGS VIEW -->
-    <div id="view-settings" class="view">
-      <div class="sec-head">Settings</div>
-      <div class="set-row" onclick="showModal('System Update', 'ishyn app v2.4 is up to date!')">
-        <i class="fa-solid fa-arrows-rotate"></i>
-        <div><b>System update</b><br><small style="color:var(--text-dim)">Up to date</small></div>
-      </div>
-      <div class="set-row" onclick="showModal('Backup & Restore', 'Playlist backup created! Storage synchronized safely.')">
-        <i class="fa-solid fa-cloud-arrow-up"></i>
-        <div><b>Backup & Restore</b><br><small style="color:var(--text-dim)">Backup playlists & downloads</small></div>
-      </div>
-      <div class="set-row" onclick="showModal('About App', 'ishyn Player v2.4<br>Designed & Developed by <b>Shubham Rawat</b>')">
-        <i class="fa-solid fa-circle-info"></i>
-        <div><b>About ishyn</b><br><small style="color:var(--text-dim)">App version & developer info</small></div>
-      </div>
-    </div>
+    <h1 class="splash-title">ishyn</h1>
+    <p class="splash-subtitle">Premium Audio Experience</p>
 
   </div>
 
-  <!-- MINI PLAYER -->
-  <div class="mini-player" onclick="toggleFullPlayer(true)">
-    <img id="m-img" src="https://picsum.photos/300?random=1">
-    <div class="song-info">
-      <h4 id="m-title" style="font-size:0.8rem;">Raat Ke Shikari</h4>
-      <p id="m-artist" style="font-size:0.7rem;">Masoom Sharma</p>
-    </div>
-    <i class="fa-solid fa-play" id="mini-play-btn" onclick="event.stopPropagation(); toggleAudioPlay();" style="color:var(--accent); font-size:1.1rem; padding: 6px;"></i>
+  <div class="splash-dev">
+    <span class="dev-label">
+      Designed & Developed by
+    </span>
+
+    <span class="dev-name">
+      Shubham Rawat
+    </span>
   </div>
 
-  <!-- FULL PLAYER MODAL -->
-  <div id="full-player">
-    <div style="display:flex; justify-content:space-between; align-items:center;">
-      <i class="fa-solid fa-chevron-down" style="cursor:pointer;" onclick="toggleFullPlayer(false)"></i>
-      <span style="font-size:0.8rem;">Now Playing</span>
-      <i class="fa-solid fa-ellipsis-vertical"></i>
-    </div>
-    <img id="f-img" src="https://picsum.photos/300?random=1" style="width:100%; aspect-ratio:1; border-radius:20px; object-fit:cover;">
-    <div>
-      <h2 id="f-title">Raat Ke Shikari</h2>
-      <p id="f-artist" style="color:var(--text-dim);">Masoom Sharma</p>
-    </div>
-    <div style="display:flex; justify-content:space-around; align-items:center; font-size:1.6rem; color:var(--text);">
-      <i class="fa-solid fa-backward-step" onclick="showModal('Previous', 'Playing previous track')" style="cursor:pointer;"></i>
-      <i class="fa-solid fa-circle-play" id="full-play-btn" onclick="toggleAudioPlay()" style="font-size:3rem; color:var(--accent); cursor:pointer;"></i>
-      <i class="fa-solid fa-forward-step" onclick="showModal('Next', 'Playing next track')" style="cursor:pointer;"></i>
-    </div>
-  </div>
-
-  <!-- COMMON FUNCTIONAL MODAL -->
-  <div id="dialog-modal" class="overlay-modal">
-    <div class="modal-box">
-      <h3 id="modal-title">Title</h3>
-      <p id="modal-msg">Message details go here.</p>
-      <button class="btn" onclick="closeModal()">Close</button>
-    </div>
-  </div>
-
-  <!-- BOTTOM NAVBAR -->
-  <div class="nav">
-    <div class="nav-btn active" id="nav-home" onclick="showView('home')"><i class="fa-solid fa-house"></i>Home</div>
-    <div class="nav-btn" id="nav-together" onclick="showView('together')"><i class="fa-solid fa-users"></i>Together</div>
-    <div class="nav-btn" id="nav-settings" onclick="showView('settings')"><i class="fa-solid fa-gear"></i>Settings</div>
-  </div>
 </div>
 
+
+<!-- HEADER -->
+
+<header>
+
+  <div class="header-left"
+       onclick="showView('home')">
+
+    <div class="mini-logo">is</div>
+
+    Music
+
+  </div>
+
+  <div class="header-icons">
+
+    <i class="fa-solid fa-clock-rotate-left"
+       title="History"
+       onclick="showModal(
+       'Recently Played',
+       'Your recently played songs appear here.'
+       )">
+    </i>
+
+    <i class="fa-solid fa-sliders"
+       title="Equalizer"
+       onclick="showModal(
+       'Equalizer',
+       'Equalizer controls will be added here.'
+       )">
+    </i>
+
+    <i class="fa-solid fa-users"
+       title="Listen Together"
+       onclick="showView('together')">
+    </i>
+
+    <i class="fa-solid fa-gear"
+       title="Settings"
+       onclick="showView('settings')">
+    </i>
+
+  </div>
+
+</header>
+
+
+<!-- SEARCH -->
+
+<div class="search-box">
+
+  <i class="fa-solid fa-magnifying-glass"></i>
+
+  <input
+    id="searchInput"
+    type="text"
+    placeholder="Search songs or artists..."
+    onkeydown="if(event.key==='Enter') searchMusic()"
+  >
+
+  <button onclick="searchMusic()">
+    Search
+  </button>
+
+</div>
+
+
+<!-- CHIPS -->
+
+<div class="chips">
+
+  <div class="chip active"
+       onclick="filterCategory(this,'Workout')">
+    Workout
+  </div>
+
+  <div class="chip"
+       onclick="filterCategory(this,'Energize')">
+    Energize
+  </div>
+
+  <div class="chip"
+       onclick="filterCategory(this,'Romance')">
+    Romance
+  </div>
+
+  <div class="chip"
+       onclick="filterCategory(this,'Feel good')">
+    Feel good
+  </div>
+
+  <div class="chip"
+       onclick="filterCategory(this,'Sleep')">
+    Sleep
+  </div>
+
+</div>
+
+
+<!-- CONTENT -->
+
+<div class="view-container">
+
+<!-- HOME -->
+
+<div id="view-home" class="view active">
+
+  <div class="sec-head">
+
+    Covers and remixes
+
+    <span
+      style="font-size:.8rem;color:var(--accent);cursor:pointer"
+      onclick="playAllHome()">
+      Play all
+    </span>
+
+  </div>
+
+
+  <div class="card-block">
+
+    <div class="song-row"
+         onclick="searchAndPlay('Raat Ke Shikari Masoom Sharma')">
+
+      <img src="https://picsum.photos/300?random=1">
+
+      <div class="song-info">
+
+        <h4>Raat Ke Shikari</h4>
+
+        <p>Masoom Sharma</p>
+
+      </div>
+
+      <i class="fa-solid fa-play"></i>
+
+    </div>
+
+
+    <div class="song-row"
+         onclick="searchAndPlay('Save Your Tears The Weeknd')">
+
+      <img src="https://picsum.photos/300?random=2">
+
+      <div class="song-info">
+
+        <h4>Save Your Tears</h4>
+
+        <p>The Weeknd</p>
+
+      </div>
+
+      <i class="fa-solid fa-play"></i>
+
+    </div>
+
+  </div>
+
+
+  <!-- SEARCH RESULTS -->
+
+  <div id="search-results">
+
+    <div class="search-result-title">
+      Online Results
+    </div>
+
+    <div id="result-list" class="result-list"></div>
+
+  </div>
+
+
+  <!-- TOP ARTISTS -->
+
+  <div class="sec-head">
+    Top Artists
+  </div>
+
+  <div class="circle-grid">
+
+    <div class="circle-item"
+         onclick="searchAndPlay('Vikram Malik')">
+
+      <img src="https://picsum.photos/200?random=10">
+
+      <div>Vikram Malik</div>
+
+    </div>
+
+
+    <div class="circle-item"
+         onclick="searchAndPlay('Haryanvi Hits')">
+
+      <img src="https://picsum.photos/200?random=11">
+
+      <div>Haryanvi Hits</div>
+
+    </div>
+
+
+    <div class="circle-item"
+         onclick="searchAndPlay('Shiqaari')">
+
+      <img src="https://picsum.photos/200?random=12">
+
+      <div>Shiqaari</div>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- TOGETHER -->
+
+<div id="view-together" class="view">
+
+  <div class="sec-head">
+    Listen Together
+  </div>
+
+  <div class="lt-card">
+
+    <p style="font-size:.85rem;color:var(--text-dim)">
+      Listen to music with your friends.
+    </p>
+
+    <div style="margin-top:12px">
+
+      <button class="btn"
+        onclick="showModal(
+        'Listen Together',
+        'Room system will be connected here.'
+        )">
+
+        Connect Room
+
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <div class="lt-card">
+
+    <div style="font-size:.85rem;font-weight:bold">
+      Enter 6-Digit Code
+    </div>
+
+    <div class="code-inputs">
+
+      <input maxlength="1">
+      <input maxlength="1">
+      <input maxlength="1">
+      <input maxlength="1">
+      <input maxlength="1">
+      <input maxlength="1">
+
+    </div>
+
+    <button class="btn"
+      onclick="showModal(
+      'Join Room',
+      'Room feature will be connected later.'
+      )">
+
+      Join Room
+
+    </button>
+
+  </div>
+
+</div>
+
+
+<!-- SETTINGS -->
+
+<div id="view-settings" class="view">
+
+  <div class="sec-head">
+    Settings
+  </div>
+
+  <div class="set-row"
+       onclick="showModal(
+       'System Update',
+       'ishyn app is up to date!'
+       )">
+
+    <i class="fa-solid fa-arrows-rotate"></i>
+
+    <div>
+      <b>System update</b>
+      <br>
+      <small style="color:var(--text-dim)">
+        Up to date
+      </small>
+    </div>
+
+  </div>
+
+
+  <div class="set-row"
+       onclick="showModal(
+       'Backup & Restore',
+       'Playlist backup feature.'
+       )">
+
+    <i class="fa-solid fa-cloud-arrow-up"></i>
+
+    <div>
+      <b>Backup & Restore</b>
+      <br>
+      <small style="color:var(--text-dim)">
+        Backup playlists & downloads
+      </small>
+    </div>
+
+  </div>
+
+
+  <div class="set-row"
+       onclick="showModal(
+       'About App',
+       'ishyn Music<br><br>Designed & Developed by <b>Shubham Rawat</b>'
+       )">
+
+    <i class="fa-solid fa-circle-info"></i>
+
+    <div>
+      <b>About ishyn</b>
+      <br>
+      <small style="color:var(--text-dim)">
+        App information
+      </small>
+    </div>
+
+  </div>
+
+</div>
+
+</div>
+
+
+<!-- MINI PLAYER -->
+
+<div class="mini-player"
+     onclick="toggleFullPlayer(true)">
+
+  <img
+    id="m-img"
+    src="https://picsum.photos/300?random=1"
+  >
+
+  <div class="song-info">
+
+    <h4 id="m-title"
+        style="font-size:.8rem">
+      Raat Ke Shikari
+    </h4>
+
+    <p id="m-artist"
+       style="font-size:.7rem">
+      Masoom Sharma
+    </p>
+
+  </div>
+
+  <i
+    class="fa-solid fa-play mini-play"
+    id="mini-play-btn"
+    onclick="event.stopPropagation();toggleAudioPlay()">
+  </i>
+
+</div>
+
+
+<!-- FULL PLAYER -->
+
+<div id="full-player">
+
+  <div style="
+    display:flex;
+    justify-content:space-between;
+    align-items:center">
+
+    <i
+      class="fa-solid fa-chevron-down"
+      style="cursor:pointer"
+      onclick="toggleFullPlayer(false)">
+    </i>
+
+    <span style="font-size:.8rem">
+      Now Playing
+    </span>
+
+    <i class="fa-solid fa-ellipsis-vertical"></i>
+
+  </div>
+
+
+  <img
+    id="f-img"
+    class="full-cover"
+    src="https://picsum.photos/300?random=1"
+  >
+
+
+  <div>
+
+    <h2 id="f-title">
+      Raat Ke Shikari
+    </h2>
+
+    <p id="f-artist"
+       style="color:var(--text-dim)">
+      Masoom Sharma
+    </p>
+
+    <input
+      id="progress"
+      class="player-progress"
+      type="range"
+      min="0"
+      max="100"
+      value="0"
+      oninput="seekAudio()"
+    >
+
+    <div class="player-time">
+
+      <span id="currentTime">
+        0:00
+      </span>
+
+      <span id="duration">
+        0:30
+      </span>
+
+    </div>
+
+  </div>
+
+
+  <div class="controls">
+
+    <i
+      class="fa-solid fa-backward-step"
+      onclick="previousSong()">
+    </i>
+
+    <i
+      class="fa-solid fa-circle-play main-control"
+      id="full-play-btn"
+      onclick="toggleAudioPlay()">
+    </i>
+
+    <i
+      class="fa-solid fa-forward-step"
+      onclick="nextSong()">
+    </i>
+
+  </div>
+
+</div>
+
+
+<!-- MODAL -->
+
+<div id="dialog-modal"
+     class="overlay-modal">
+
+  <div class="modal-box">
+
+    <h3 id="modal-title">
+      Title
+    </h3>
+
+    <p id="modal-msg">
+      Message
+    </p>
+
+    <button
+      class="btn"
+      onclick="closeModal()">
+      Close
+    </button>
+
+  </div>
+
+</div>
+
+
+<!-- NAV -->
+
+<div class="nav">
+
+  <div
+    class="nav-btn active"
+    id="nav-home"
+    onclick="showView('home')">
+
+    <i class="fa-solid fa-house"></i>
+    Home
+
+  </div>
+
+
+  <div
+    class="nav-btn"
+    id="nav-together"
+    onclick="showView('together')">
+
+    <i class="fa-solid fa-users"></i>
+    Together
+
+  </div>
+
+
+  <div
+    class="nav-btn"
+    id="nav-settings"
+    onclick="showView('settings')">
+
+    <i class="fa-solid fa-gear"></i>
+    Settings
+
+  </div>
+
+</div>
+
+
+<!-- REAL AUDIO PLAYER -->
+
+<audio
+  id="audio"
+  preload="auto">
+</audio>
+
+
 <script>
-  let isPlaying = false;
 
-  // Splash Screen Delay
-  setTimeout(() => {
-    const splash = document.getElementById('splash');
-    splash.style.opacity = '0';
-    setTimeout(() => splash.style.visibility = 'hidden', 800);
-  }, 2600);
+/* =========================================
+   GLOBAL MUSIC VARIABLES
+========================================= */
 
-  // View Switching Logic
-  function showView(viewName) {
-    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+const audio = document.getElementById("audio");
 
-    document.getElementById(`view-${viewName}`).classList.add('active');
-    
-    if(viewName === 'home') document.getElementById('nav-home').classList.add('active');
-    if(viewName === 'together') document.getElementById('nav-together').classList.add('active');
-    if(viewName === 'settings') document.getElementById('nav-settings').classList.add('active');
+let songs = [];
+let currentIndex = -1;
+let isPlaying = false;
+
+
+/* =========================================
+   SPLASH
+========================================= */
+
+setTimeout(function(){
+
+  const splash =
+    document.getElementById("splash");
+
+  splash.style.opacity="0";
+
+  setTimeout(function(){
+
+    splash.style.visibility="hidden";
+
+  },800);
+
+},2600);
+
+
+/* =========================================
+   VIEW SWITCH
+========================================= */
+
+function showView(viewName){
+
+  document
+    .querySelectorAll(".view")
+    .forEach(function(v){
+
+      v.classList.remove("active");
+
+    });
+
+
+  document
+    .querySelectorAll(".nav-btn")
+    .forEach(function(b){
+
+      b.classList.remove("active");
+
+    });
+
+
+  document
+    .getElementById("view-"+viewName)
+    .classList.add("active");
+
+
+  if(viewName==="home")
+    document
+      .getElementById("nav-home")
+      .classList.add("active");
+
+
+  if(viewName==="together")
+    document
+      .getElementById("nav-together")
+      .classList.add("active");
+
+
+  if(viewName==="settings")
+    document
+      .getElementById("nav-settings")
+      .classList.add("active");
+
+}
+
+
+/* =========================================
+   SEARCH ONLINE MUSIC
+========================================= */
+
+async function searchMusic(){
+
+  const input =
+    document.getElementById("searchInput");
+
+  const query =
+    input.value.trim();
+
+
+  if(!query){
+
+    alert("Song ya artist ka naam likho.");
+
+    return;
+
   }
 
-  // Functional Modal Handler for Buttons
-  function showModal(title, msg) {
-    document.getElementById('modal-title').innerHTML = title;
-    document.getElementById('modal-msg').innerHTML = msg;
-    document.getElementById('dialog-modal').style.display = 'flex';
-  }
 
-  function closeModal() {
-    document.getElementById('dialog-modal').style.display = 'none';
-  }
+  const searchResults =
+    document.getElementById("search-results");
 
-  // Play/Pause Song Toggle
-  function toggleAudioPlay() {
-    isPlaying = !isPlaying;
-    const miniBtn = document.getElementById('mini-play-btn');
-    const fullBtn = document.getElementById('full-play-btn');
+  const resultList =
+    document.getElementById("result-list");
 
-    if(isPlaying) {
-      miniBtn.className = 'fa-solid fa-pause';
-      fullBtn.className = 'fa-solid fa-circle-pause';
-    } else {
-      miniBtn.className = 'fa-solid fa-play';
-      fullBtn.className = 'fa-solid fa-circle-play';
+
+  searchResults.style.display="block";
+
+  resultList.innerHTML=
+    "<div style='padding:20px;text-align:center;color:#a68c87'>Searching online... 🔎</div>";
+
+
+  try{
+
+    const apiUrl =
+      "https://itunes.apple.com/search?term="+
+      encodeURIComponent(query)+
+      "&media=music&entity=song&limit=25&country=IN";
+
+
+    const response =
+      await fetch(apiUrl);
+
+
+    const data =
+      await response.json();
+
+
+    songs =
+      data.results.filter(function(song){
+
+        return song.previewUrl;
+
+      });
+
+
+    currentIndex=-1;
+
+
+    if(!songs.length){
+
+      resultList.innerHTML=
+        "<div style='padding:20px;text-align:center;color:#a68c87'>No playable preview found 😕</div>";
+
+      return;
+
     }
+
+
+    resultList.innerHTML="";
+
+
+    songs.forEach(function(song,index){
+
+      const row =
+        document.createElement("div");
+
+      row.className="result-row";
+
+
+      const image =
+        song.artworkUrl100 ||
+        "https://picsum.photos/200";
+
+
+      row.innerHTML=`
+
+        <img src="${image}">
+
+        <div class="result-text">
+
+          <b>${escapeHtml(song.trackName)}</b>
+
+          <span>
+            ${escapeHtml(song.artistName)}
+          </span>
+
+        </div>
+
+        <button class="result-play">
+          <i class="fa-solid fa-play"></i>
+        </button>
+
+      `;
+
+
+      row.onclick=function(){
+
+        playSong(index);
+
+      };
+
+
+      resultList.appendChild(row);
+
+    });
+
+
+  }catch(error){
+
+    console.error(error);
+
+    resultList.innerHTML=
+      "<div style='padding:20px;text-align:center;color:#a68c87'>Internet connection ya API error. Dobara try karo.</div>";
+
   }
 
-  // Change Track Logic
-  function playSong(title, artist, img) {
-    document.getElementById('m-title').innerText = title;
-    document.getElementById('m-artist').innerText = artist;
-    document.getElementById('m-img').src = img;
+}
 
-    document.getElementById('f-title').innerText = title;
-    document.getElementById('f-artist').innerText = artist;
-    document.getElementById('f-img').src = img;
 
-    isPlaying = false;
-    toggleAudioPlay();
+/* =========================================
+   SEARCH THEN PLAY FIRST RESULT
+========================================= */
+
+async function searchAndPlay(query){
+
+  document
+    .getElementById("searchInput")
+    .value=query;
+
+
+  await searchMusic();
+
+
+  if(songs.length>0){
+
+    playSong(0);
+
   }
 
-  function toggleFullPlayer(open) {
-    document.getElementById('full-player').classList.toggle('active', open);
+}
+
+
+/* =========================================
+   PLAY SONG
+========================================= */
+
+function playSong(index){
+
+  if(!songs[index]){
+
+    return;
+
   }
 
-  // Chip Filters
-  function filterCategory(element, name) {
-    document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
-    element.classList.add('active');
+
+  currentIndex=index;
+
+
+  const song =
+    songs[index];
+
+
+  const image =
+    song.artworkUrl100 ||
+    "https://picsum.photos/300";
+
+
+  /* AUDIO SOURCE */
+
+  audio.src =
+    song.previewUrl;
+
+
+  /* MINI PLAYER */
+
+  document
+    .getElementById("m-title")
+    .innerText=
+    song.trackName;
+
+
+  document
+    .getElementById("m-artist")
+    .innerText=
+    song.artistName;
+
+
+  document
+    .getElementById("m-img")
+    .src=image;
+
+
+  /* FULL PLAYER */
+
+  document
+    .getElementById("f-title")
+    .innerText=
+    song.trackName;
+
+
+  document
+    .getElementById("f-artist")
+    .innerText=
+    song.artistName;
+
+
+  document
+    .getElementById("f-img")
+    .src=image;
+
+
+  /* OPEN PLAYER */
+
+  toggleFullPlayer(true);
+
+
+  /* PLAY */
+
+  audio.play()
+    .then(function(){
+
+      isPlaying=true;
+
+      updatePlayerButtons();
+
+    })
+    .catch(function(error){
+
+      console.error(error);
+
+      alert(
+        "Audio play nahi ho paya. Dobara Play dabao."
+      );
+
+    });
+
+}
+
+
+/* =========================================
+   PLAY / PAUSE
+========================================= */
+
+function toggleAudioPlay(){
+
+  if(!audio.src){
+
+    if(songs.length>0){
+
+      playSong(0);
+
+    }else{
+
+      alert(
+        "Pehle koi song search karo."
+      );
+
+    }
+
+    return;
+
   }
+
+
+  if(audio.paused){
+
+    audio.play();
+
+  }else{
+
+    audio.pause();
+
+  }
+
+}
+
+
+/* =========================================
+   AUDIO EVENTS
+========================================= */
+
+audio.addEventListener(
+  "play",
+  function(){
+
+    isPlaying=true;
+
+    updatePlayerButtons();
+
+  }
+);
+
+
+audio.addEventListener(
+  "pause",
+  function(){
+
+    isPlaying=false;
+
+    updatePlayerButtons();
+
+  }
+);
+
+
+audio.addEventListener(
+  "ended",
+  function(){
+
+    nextSong();
+
+  }
+);
+
+
+audio.addEventListener(
+  "timeupdate",
+  function(){
+
+    if(!audio.duration) return;
+
+
+    const progress =
+      document.getElementById("progress");
+
+
+    progress.value =
+      (audio.currentTime /
+      audio.duration)*100;
+
+
+    document
+      .getElementById("currentTime")
+      .innerText=
+      formatTime(audio.currentTime);
+
+
+    document
+      .getElementById("duration")
+      .innerText=
+      formatTime(audio.duration);
+
+  }
+);
+
+
+/* =========================================
+   BUTTON ICONS
+========================================= */
+
+function updatePlayerButtons(){
+
+  const mini =
+    document.getElementById(
+      "mini-play-btn"
+    );
+
+
+  const full =
+    document.getElementById(
+      "full-play-btn"
+    );
+
+
+  if(isPlaying){
+
+    mini.className=
+      "fa-solid fa-pause mini-play";
+
+
+    full.className=
+      "fa-solid fa-circle-pause main-control";
+
+  }else{
+
+    mini.className=
+      "fa-solid fa-play mini-play";
+
+
+    full.className=
+      "fa-solid fa-circle-play main-control";
+
+  }
+
+}
+
+
+/* =========================================
+   NEXT SONG
+========================================= */
+
+function nextSong(){
+
+  if(!songs.length){
+
+    return;
+
+  }
+
+
+  currentIndex++;
+
+
+  if(currentIndex>=songs.length){
+
+    currentIndex=0;
+
+  }
+
+
+  playSong(currentIndex);
+
+}
+
+
+/* =========================================
+   PREVIOUS SONG
+========================================= */
+
+function previousSong(){
+
+  if(!songs.length){
+
+    return;
+
+  }
+
+
+  currentIndex--;
+
+
+  if(currentIndex<0){
+
+    currentIndex=
+      songs.length-1;
+
+  }
+
+
+  playSong(currentIndex);
+
+}
+
+
+/* =========================================
+   PROGRESS SEEK
+========================================= */
+
+function seekAudio(){
+
+  if(!audio.duration){
+
+    return;
+
+  }
+
+
+  const value =
+    document
+      .getElementById("progress")
+      .value;
+
+
+  audio.currentTime =
+    (value/100)*audio.duration;
+
+}
+
+
+/* =========================================
+   TIME FORMAT
+========================================= */
+
+function formatTime(seconds){
+
+  if(isNaN(seconds)){
+
+    return "0:00";
+
+  }
+
+
+  const minutes =
+    Math.floor(seconds/60);
+
+
+  const secs =
+    Math.floor(seconds%60);
+
+
+  return minutes+
+    ":"+
+    (secs<10?"0":"")+
+    secs;
+
+}
+
+
+/* =========================================
+   FULL PLAYER
+========================================= */
+
+function toggleFullPlayer(open){
+
+  document
+    .getElementById("full-player")
+    .classList.toggle(
+      "active",
+      open
+    );
+
+}
+
+
+/* =========================================
+   PLAY ALL HOME
+========================================= */
+
+function playAllHome(){
+
+  searchAndPlay(
+    "Raat Ke Shikari Masoom Sharma"
+  );
+
+}
+
+
+/* =========================================
+   MODAL
+========================================= */
+
+function showModal(title,msg){
+
+  document
+    .getElementById("modal-title")
+    .innerHTML=title;
+
+
+  document
+    .getElementById("modal-msg")
+    .innerHTML=msg;
+
+
+  document
+    .getElementById("dialog-modal")
+    .style.display="flex";
+
+}
+
+
+function closeModal(){
+
+  document
+    .getElementById("dialog-modal")
+    .style.display="none";
+
+}
+
+
+/* =========================================
+   CHIP FILTER
+========================================= */
+
+function filterCategory(element,name){
+
+  document
+    .querySelectorAll(".chip")
+    .forEach(function(c){
+
+      c.classList.remove("active");
+
+    });
+
+
+  element.classList.add("active");
+
+
+  /*
+    Category ke naam se online search.
+  */
+
+  searchAndPlay(name);
+
+}
+
+
+/* =========================================
+   HTML SAFETY
+========================================= */
+
+function escapeHtml(text){
+
+  return String(text)
+
+    .replaceAll("&","&amp;")
+
+    .replaceAll("<","&lt;")
+
+    .replaceAll(">","&gt;")
+
+    .replaceAll('"',"&quot;")
+
+    .replaceAll("'","&#039;");
+
+}
+
 </script>
+
+</div>
+
 </body>
 </html>
