@@ -1958,7 +1958,325 @@ function escapeHtml(text){
     .replaceAll("'","&#039;");
 
 }
+/* =========================================
+   FAVORITES ❤️ + RECENTLY PLAYED 🕘
+========================================= */
 
+let favorites = JSON.parse(
+  localStorage.getItem("ishynFavorites") || "[]"
+);
+
+let recentlyPlayed = JSON.parse(
+  localStorage.getItem("ishynRecentlyPlayed") || "[]"
+);
+
+
+/* SAVE RECENT SONG */
+
+function saveRecentlyPlayed(){
+
+  if(currentIndex < 0 || !songs[currentIndex]){
+    return;
+  }
+
+  const song = songs[currentIndex];
+
+  const item = {
+    trackName: song.trackName,
+    artistName: song.artistName,
+    artworkUrl100: song.artworkUrl100,
+    previewUrl: song.previewUrl
+  };
+
+  recentlyPlayed =
+    recentlyPlayed.filter(function(x){
+      return x.trackName !== item.trackName ||
+             x.artistName !== item.artistName;
+    });
+
+  recentlyPlayed.unshift(item);
+
+  recentlyPlayed =
+    recentlyPlayed.slice(0,20);
+
+  localStorage.setItem(
+    "ishynRecentlyPlayed",
+    JSON.stringify(recentlyPlayed)
+  );
+}
+
+
+/* SAVE WHEN SONG STARTS */
+
+audio.addEventListener("play",function(){
+
+  saveRecentlyPlayed();
+
+  updateFavoriteButton();
+
+});
+
+
+/* CHECK FAVORITE */
+
+function isFavorite(){
+
+  if(currentIndex < 0 || !songs[currentIndex]){
+    return false;
+  }
+
+  const song = songs[currentIndex];
+
+  return favorites.some(function(x){
+
+    return x.trackName === song.trackName &&
+           x.artistName === song.artistName;
+
+  });
+
+}
+
+
+/* ADD / REMOVE FAVORITE */
+
+function toggleFavorite(){
+
+  if(currentIndex < 0 || !songs[currentIndex]){
+    alert("Pehle koi song play karo ❤️");
+    return;
+  }
+
+  const song = songs[currentIndex];
+
+  const index =
+    favorites.findIndex(function(x){
+
+      return x.trackName === song.trackName &&
+             x.artistName === song.artistName;
+
+    });
+
+
+  if(index >= 0){
+
+    favorites.splice(index,1);
+
+    alert("Removed from Favorites");
+
+  }else{
+
+    favorites.push({
+
+      trackName: song.trackName,
+
+      artistName: song.artistName,
+
+      artworkUrl100: song.artworkUrl100,
+
+      previewUrl: song.previewUrl
+
+    });
+
+    alert("❤️ Added to Favorites");
+
+  }
+
+
+  localStorage.setItem(
+    "ishynFavorites",
+    JSON.stringify(favorites)
+  );
+
+  updateFavoriteButton();
+
+}
+
+
+/* FAVORITE BUTTON */
+
+function updateFavoriteButton(){
+
+  const btn =
+    document.getElementById("favorite-button");
+
+  if(!btn){
+    return;
+  }
+
+  if(isFavorite()){
+
+    btn.innerHTML =
+      '<i class="fa-solid fa-heart"></i>';
+
+    btn.style.color =
+      "var(--accent)";
+
+  }else{
+
+    btn.innerHTML =
+      '<i class="fa-regular fa-heart"></i>';
+
+    btn.style.color =
+      "var(--text)";
+
+  }
+
+}
+
+
+/* CREATE HEART BUTTON */
+
+const favoriteButton =
+  document.createElement("button");
+
+favoriteButton.id =
+  "favorite-button";
+
+favoriteButton.innerHTML =
+  '<i class="fa-regular fa-heart"></i>';
+
+favoriteButton.style.cssText = `
+  position:absolute;
+  right:22px;
+  bottom:155px;
+  width:48px;
+  height:48px;
+  border-radius:50%;
+  border:none;
+  background:var(--card-bg);
+  color:var(--text);
+  font-size:21px;
+  z-index:90;
+`;
+
+favoriteButton.onclick =
+  toggleFavorite;
+
+document
+  .getElementById("full-player")
+  .appendChild(favoriteButton);
+
+
+/* RECENTLY PLAYED MODAL */
+
+function showRecentlyPlayed(){
+
+  if(recentlyPlayed.length === 0){
+
+    showModal(
+      "Recently Played",
+      "Abhi koi recently played song nahi hai 🎵"
+    );
+
+    return;
+  }
+
+
+  let html =
+    '<div style="text-align:left;max-height:300px;overflow-y:auto">';
+
+
+  recentlyPlayed.forEach(function(song){
+
+    html += `
+
+      <div
+        onclick="playRecentSong('${escapeHtml(song.trackName)}','${escapeHtml(song.artistName)}','${song.previewUrl}','${song.artworkUrl100}')"
+        style="
+          display:flex;
+          align-items:center;
+          gap:10px;
+          padding:8px;
+          margin-bottom:6px;
+          background:#120b0b;
+          border-radius:12px;
+          cursor:pointer;
+        "
+      >
+
+        <img
+          src="${song.artworkUrl100}"
+          style="
+            width:45px;
+            height:45px;
+            border-radius:8px;
+            object-fit:cover;
+          "
+        >
+
+        <div style="min-width:0">
+
+          <b style="
+            display:block;
+            white-space:nowrap;
+            overflow:hidden;
+            text-overflow:ellipsis;
+          ">
+            ${escapeHtml(song.trackName)}
+          </b>
+
+          <small style="color:var(--text-dim)">
+            ${escapeHtml(song.artistName)}
+          </small>
+
+        </div>
+
+      </div>
+
+    `;
+
+  });
+
+
+  html += "</div>";
+
+
+  showModal(
+    "Recently Played 🕘",
+    html
+  );
+
+}
+
+
+/* PLAY RECENT SONG */
+
+function playRecentSong(
+  title,
+  artist,
+  preview,
+  artwork
+){
+
+  songs = [{
+    trackName:title,
+    artistName:artist,
+    previewUrl:preview,
+    artworkUrl100:artwork
+  }];
+
+  currentIndex = 0;
+
+  closeModal();
+
+  playSong(0);
+
+}
+
+
+/* REPLACE HISTORY BUTTON ACTION */
+
+const historyIcon =
+  document.querySelector(
+    '.fa-clock-rotate-left'
+  );
+
+if(historyIcon){
+
+  historyIcon.onclick =
+    showRecentlyPlayed;
+
+}
 </script>
 
 </div>
