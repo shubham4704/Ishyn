@@ -676,6 +676,18 @@ header{
 audio{
   display:none;
 }
+  /* AUTO HIDE SPLASH */
+#splash{
+  animation: hideSplash 0.5s ease 2.5s forwards;
+}
+
+@keyframes hideSplash{
+  to{
+    opacity:0;
+    visibility:hidden;
+    pointer-events:none;
+  }
+}
 </style>
 </head>
 
@@ -1528,7 +1540,7 @@ async function searchMusic(){
       '<div style="padding:20px;text-align:center;color:#a68c87;">Search failed. Please try again.</div>';
 
   }
-
+  }
 /* =========================================
    SEARCH THEN PLAY FIRST RESULT
 ========================================= */
