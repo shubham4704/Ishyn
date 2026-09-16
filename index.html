@@ -2346,9 +2346,231 @@ if(historyIcon){
     showRecentlyPlayed;
 
 }
+  const YOUTUBE_API_KEY = "AIzaSyDKtC9vvb20EFNXszCzsYYZ2ov2ZyKChFQ";
+
+let ytPlayer = null;
+let ytReady = false;
+let searchSongs = [];
+let currentIndex = 0;
+
+let currentSong = {
+  videoId: "",
+  title: "",
+  artist: "",
+  thumbnail: ""
+};
+
+/* YouTube Player */
+function onYouTubeIframeAPIReady() {
+  ytPlayer = new YT.Player("youtube-player", {
+    height: "1",
+    width: "1",
+    videoId: "",
+    playerVars: {
+      autoplay: 0,
+      controls: 0,
+      playsinline: 1,
+      rel: 0
+    },
+    events: {
+      onReady: function () {
+        ytReady = true;
+      },
+      onStateChange: function (event) {
+        if (event.data === YT.PlayerState.ENDED) {
+          nextSong();
+        }
+        updatePlayButtons();
+      }
+    }
+  });
+}
+/* ONLINE MUSIC SEARCH */
+
+async function searchMusic() {
+
+  const input = document.getElementById("searchInput");
+  const searchResults = document.getElementById("search-results");
+  const resultList = document.getElementById("result-list");
+
+  const query = input.value.trim();
+
+  if (!query) {
+    alert("Song ya artist ka naam likho");
+    return;
+  }
+
+  searchResults.style.display = "block";
+
+  resultList.innerHTML =
+    '<div style="padding:20px;text-align:center;">Searching...</div>';
+
+  try {
+
+    const url =
+      "https://www.googleapis.com/youtube/v3/search" +
+      "?part=snippet" +
+      "&q=" + encodeURIComponent(query + " song") +
+      "&type=video" +
+      "&videoCategoryId=10" +
+      "&videoEmbeddable=true" +
+      "&maxResults=10" +
+      "&regionCode=IN" +
+      "&key=" + YOUTUBE_API_KEY;
+
+    const response = await fetch(url);
+    const data = await response.json();
+
+    if (data.error) {
+      resultList.innerHTML =
+        '<div style="padding:20px;color:#ff8888;">' +
+        "API Error: " + data.error.message +
+        "</div>";
+      return;
+    }
+
+    if (!data.items || data.items.length === 0) {
+      resultList.innerHTML =
+        '<div style="padding:20px;text-align:center;">' +
+        "Song nahi mila" +
+        "</div>";
+      return;
+    }
+
+    resultList.innerHTML = "";
+
+    data.items.forEach((item) => {
+
+      if (!item.id || !item.id.videoId) return;
+
+      const videoId = item.id.videoId;
+      const title = item.snippet.title;
+      const artist = item.snippet.channelTitle;
+
+      const thumbnail =
+        item.snippet.thumbnails.high
+          ? item.snippet.thumbnails.high.url
+          : item.snippet.thumbnails.default.url;
+
+      const row = document.createElement("div");
+
+      row.className = "result-row";
+
+      row.style.cssText =
+        "display:flex;" +
+        "align-items:center;" +
+        "padding:12px;" +
+        "margin-bottom:8px;" +
+        "border-radius:12px;" +
+        "background:#181818;" +
+        "cursor:pointer;";
+
+      row.innerHTML = `
+        <img
+          src="${thumbnail}"
+          style="
+            width:60px;
+            height:60px;
+            border-radius:8px;
+            object-fit:cover;
+          "
+        >
+
+        <div style="flex:1;margin-left:12px;min-width:0;">
+
+          <div style="
+            font-weight:bold;
+            color:white;
+            white-space:nowrap;
+            overflow:hidden;
+            text-overflow:ellipsis;
+          ">
+            ${title}
+          </div>
+
+          <div style="
+            font-size:13px;
+            color:#aaa;
+            margin-top:5px;
+          ">
+            ${artist}
+          </div>
+
+        </div>
+
+        <button
+          style="
+            width:42px;
+            height:42px;
+            border:none;
+            border-radius:50%;
+            background:#1db954;
+            color:white;
+            font-size:18px;
+          "
+        >
+          ▶
+        </button>
+      `;
+
+      row.onclick = function () {
+
+        songs = [{
+          trackName: title,
+          artistName: artist,
+          videoId: videoId,
+          artworkUrl100: thumbnail
+        }];
+
+        currentIndex = 0;
+
+        if (typeof playYouTubeSong === "function") {
+          playYouTubeSong(0);
+        } else if (ytPlayer && ytReady  
+
+/* YouTube player */
+function onYouTubeIframeAPIReady() {
+
+  ytPlayer = new YT.Player("youtube-player", {
+
+    height: "1",
+    width: "1",
+
+    videoId: "",
+
+    playerVars: {
+      autoplay: 0,
+      controls: 0,
+      playsinline: 1,
+      rel: 0
+    },
+
+    events: {
+
+      onReady: function () {
+        ytReady = true;
+      },
+
+      onStateChange: function (event) {
+
+        if (event.data === YT.PlayerState.ENDED) {
+          nextSong();
+        }
+
+        updatePlayButtons();
+      }
+
+    }
+
+  });
+
+}
+
 </script>
 
-</div>
+<div id="youtube-player"></div>
+
+<script src="https://www.youtube.com/iframe_api"></script>
 
 </body>
 </html>
