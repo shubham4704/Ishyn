@@ -1519,9 +1519,15 @@ async function searchMusic(){
       resultList.appendChild(row);
 
     });
-
+    
   }catch(error){
 
+    console.error(error);
+
+    resultList.innerHTML =
+      '<div style="padding:20px;text-align:center;color:#a68c87;">Search failed. Please try again.</div>';
+
+  }
 
 /* =========================================
    SEARCH THEN PLAY FIRST RESULT
