@@ -2387,7 +2387,8 @@ function onYouTubeIframeAPIReady() {
 }
 /* ONLINE MUSIC SEARCH */
 
-async function searchMusic() {
+<script>
+  async function searchMusic(){
 
   const input = document.getElementById("searchInput");
   const searchResults = document.getElementById("search-results");
@@ -2395,88 +2396,119 @@ async function searchMusic() {
 
   const query = input.value.trim();
 
-  if (!query) {
-    alert("Song ya artist ka naam likho");
+  if(!query){
+    alert("Artist ya song ka naam likho");
     return;
   }
 
   searchResults.style.display = "block";
 
-  resultList.innerHTML =
-    '<div style="padding:20px;text-align:center;">Searching...</div>';
+  resultList.innerHTML = `
+    <div style="padding:20px;text-align:center;color:#aaa">
+      Searching...
+    </div>
+  `;
 
-  try {
+  try{
 
     const url =
       "https://www.googleapis.com/youtube/v3/search" +
       "?part=snippet" +
-      "&q=" + encodeURIComponent(query + " song") +
+      "&q=" + encodeURIComponent(query) +
       "&type=video" +
       "&videoCategoryId=10" +
-      "&videoEmbeddable=true" +
-      "&maxResults=10" +
-      "&regionCode=IN" +
+      "&maxResults=20" +
+      "&order=relevance" +
       "&key=" + YOUTUBE_API_KEY;
 
     const response = await fetch(url);
     const data = await response.json();
 
-    if (data.error) {
-      resultList.innerHTML =
-        '<div style="padding:20px;color:#ff8888;">' +
-        "API Error: " + data.error.message +
-        "</div>";
+    if(data.error){
+
+      resultList.innerHTML = `
+        <div style="padding:20px;color:#f88c7d">
+          YouTube API Error:<br>
+          ${data.error.message}
+        </div>
+      `;
+
       return;
     }
 
-    if (!data.items || data.items.length === 0) {
-      resultList.innerHTML =
-        '<div style="padding:20px;text-align:center;">' +
-        "Song nahi mila" +
-        "</div>";
+    if(!data.items || data.items.length === 0){
+
+      resultList.innerHTML = `
+        <div style="padding:20px;text-align:center;color:#aaa">
+          No songs found
+        </div>
+      `;
+
       return;
     }
 
-    resultList.innerHTML = "";
+    /* Search results ko songs list mein save karo */
 
-    data.items.forEach((item) => {
+    songs = [];
 
-      if (!item.id || !item.id.videoId) return;
+    data.items.forEach(function(item){
+
+      if(!item.id || !item.id.videoId){
+        return;
+      }
 
       const videoId = item.id.videoId;
       const title = item.snippet.title;
       const artist = item.snippet.channelTitle;
 
-      const thumbnail =
+      let thumbnail =
         item.snippet.thumbnails.high
-          ? item.snippet.thumbnails.high.url
-          : item.snippet.thumbnails.default.url;
+        ? item.snippet.thumbnails.high.url
+        : item.snippet.thumbnails.default.url;
+
+      songs.push({
+
+        trackName: title,
+
+        artistName: artist,
+
+        videoId: videoId,
+
+        artworkUrl: thumbnail
+
+      });
+
+    });
+
+    currentIndex = 0;
+
+    resultList.innerHTML = "";
+
+    /* Results screen par show karo */
+
+    songs.forEach(function(song, index){
 
       const row = document.createElement("div");
 
       row.className = "result-row";
 
-      row.style.cssText =
-        "display:flex;" +
-        "align-items:center;" +
-        "padding:12px;" +
-        "margin-bottom:8px;" +
-        "border-radius:12px;" +
-        "background:#181818;" +
-        "cursor:pointer;";
-
       row.innerHTML = `
+
         <img
-          src="${thumbnail}"
+          src="${song.artworkUrl}"
           style="
             width:60px;
             height:60px;
-            border-radius:8px;
+            border-radius:10px;
             object-fit:cover;
           "
         >
 
-        <div style="flex:1;margin-left:12px;min-width:0;">
+        <div style="
+          flex:1;
+          margin-left:12px;
+          min-width:0;
+        ">
 
           <div style="
             font-weight:bold;
@@ -2485,15 +2517,18 @@ async function searchMusic() {
             overflow:hidden;
             text-overflow:ellipsis;
           ">
-            ${title}
+            ${song.trackName}
           </div>
 
           <div style="
             font-size:13px;
             color:#aaa;
             margin-top:5px;
+            white-space:nowrap;
+            overflow:hidden;
+            text-overflow:ellipsis;
           ">
-            ${artist}
+            ${song.artistName}
           </div>
 
         </div>
@@ -2504,30 +2539,173 @@ async function searchMusic() {
             height:42px;
             border:none;
             border-radius:50%;
-            background:#1db954;
-            color:white;
-            font-size:18px;
+            background:#f88c7d;
+            color:#241313;
+            font-size:16px;
           "
         >
-          ▶
+          <i class="fa-solid fa-play"></i>
         </button>
+
       `;
 
-      row.onclick = function () {
+      /* Song par tap */
 
-        songs = [{
-          trackName: title,
-          artistName: artist,
-          videoId: videoId,
-          artworkUrl100: thumbnail
-        }];
+      row.onclick = function(){
 
-        currentIndex = 0;
+        currentIndex = index;
 
-        if (typeof playYouTubeSong === "function") {
-          playYouTubeSong(0);
-        } else if (ytPlayer && ytReady  
+        if(typeof playYouTubeSong === "function"){
 
+          playYouTubeSong();
+
+        }
+        else if(
+          typeof ytPlayer !== "undefined" &&
+          ytPlayer &&
+          typeof ytPlayer.loadVideoById === "function"
+        ){
+
+          ytPlayer.loadVideoById(song.videoId);
+
+          ytPlayer.playVideo();
+
+        }
+
+      };
+
+      resultList.appendChild(row);
+
+    });
+
+  }
+  catch(error){
+
+    console.error("Search error:", error);
+
+    resultList.innerHTML = `
+      <div style="
+        padding:20px;
+        text-align:center;
+        color:#f88c7d;
+      ">
+        Search failed.<br>
+        Internet connection check karo.
+      </div>
+    `;
+
+  }
+
+  }
+async function searchMusic(){
+
+  const input = document.getElementById("searchInput");
+  const searchResults = document.getElementById("search-results");
+  const resultList = document.getElementById("result-list");
+
+  const query = input.value.trim();
+
+  if(!query){
+    alert("Artist ya song ka naam likho");
+    return;
+  }
+
+  searchResults.style.display = "block";
+
+  resultList.innerHTML =
+    '<div style="padding:20px;text-align:center;color:#aaa">Searching...</div>';
+
+  try{
+
+    const url =
+      "https://www.googleapis.com/youtube/v3/search" +
+      "?part=snippet" +
+      "&q=" + encodeURIComponent(query + " songs") +
+      "&type=video" +
+      "&videoCategoryId=10" +
+      "&maxResults=20" +
+      "&order=relevance" +
+      "&key=" + YOUTUBE_API_KEY;
+
+    const response = await fetch(url);
+    const data = await response.json();
+
+    if(data.error){
+
+      resultList.innerHTML =
+        '<div style="padding:20px;color:#f88c7d">' +
+        'API Error: ' + data.error.message +
+        '</div>';
+
+      return;
+    }
+
+    if(!data.items || data.items.length === 0){
+
+      resultList.innerHTML =
+        '<div style="padding:20px;text-align:center;color:#aaa">' +
+        'No songs found' +
+        '</div>';
+
+      return;
+    }
+
+    /* OLD SEARCH LIST CLEAR */
+    resultList.innerHTML = "";
+
+    /* STORE SEARCH RESULTS */
+    songs = [];
+    currentIndex = 0;
+
+    data.items.forEach(function(item){
+
+      if(!item.id || !item.id.videoId){
+        return;
+      }
+
+      const videoId = item.id.videoId;
+      const title = item.snippet.title;
+
+
+      /* CLICK SONG */
+
+      row.onclick = function(){
+
+        const index =
+          Array.from(resultList.children).indexOf(row);
+
+        currentIndex = index;
+
+        if(typeof playYouTubeSong === "function"){
+
+          playYouTubeSong();
+
+        }else if(typeof ytPlayer !== "undefined" && ytReady){
+
+          ytPlayer.loadVideoById(videoId);
+          ytPlayer.playVideo();
+
+        }
+
+      };
+
+      resultList.appendChild(row);
+
+    });
+
+  }catch(error){
+
+    console.error(error);
+
+    resultList.innerHTML =
+      '<div style="padding:20px;color:#f88c7d">' +
+      'Search failed. Internet check karo.' +
+      '</div>';
+
+  }
+
+}
+</script>
 /* YouTube player */
 function onYouTubeIframeAPIReady() {
 
